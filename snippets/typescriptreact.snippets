@@ -1,0 +1,21 @@
+# Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
+
+snippet fc "Functional Component"
+const $1: FC${2:<$3>} = ($4) => {
+	$6
+
+	return (
+		$5
+	);
+};
+endsnippet
+
+snippet ue "useEffect"
+useEffect(() => {
+	$2
+}, [$1]);
+endsnippet
+
+snippet us "useState"
+const [$1, $2] = useState${3:<$4>}($5);
+endsnippet
