@@ -16,6 +16,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'neoclide/coc.nvim' , { 'branch' : 'release' }
 Plug 'preservim/nerdcommenter'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-dispatch'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 call plug#end()
 
