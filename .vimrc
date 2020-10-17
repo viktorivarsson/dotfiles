@@ -134,7 +134,7 @@ nnoremap <silent> <leader>rg :Rg<cr>
 
 " NERDTree
 nnoremap <leader>ft :NERDTreeToggle<Enter>
-nnoremap <leader>ff :NERDTreeFocus<Enter>
+nnoremap <leader>ff :NERDTreeFind<Enter>
 
 " CoC Suggestions
 inoremap <silent><expr> <c-Space> coc#refresh()
