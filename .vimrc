@@ -81,11 +81,11 @@ let g:fzf_layout = { 'down': '40%' }
 let $FZF_DEFAULT_OPTS = '--layout=reverse --info=inline'
 
 " NERDTree
-let NERDTreeMinimalUI=1         " Hide bookmarks label
-let NERDTreeDirArrows=1         " Tree directory arrows
-let NERDTreeShowHidden=1        " Show hidden files
-let NERDTreeQuitOnOpen=1        " Close NERDTree after opening file
 let NERDTreeAutoDeleteBuffer=1  " Close a deleted files buffer
+let NERDTreeDirArrows=1         " Tree directory arrows
+let NERDTreeMinimalUI=1         " Hide bookmarks label
+let NERDTreeQuitOnOpen=1        " Close NERDTree after opening file
+let NERDTreeShowHidden=1        " Show hidden files
 let g:NERDTreeWinSize=60        " Width of sidebar
 
 
