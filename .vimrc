@@ -8,7 +8,7 @@ Plug 'haishanh/night-owl.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'TaDaa/vimade'
 Plug 'tpope/vim-fugitive'         " :Gblame
-Plug 'airblade/vim-gitgutter'     " Show git diff of lines edited
+" Plug 'airblade/vim-gitgutter'     " Show git diff of lines edited
 Plug 'preservim/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'junegunn/fzf.vim'           " Set up fzf and fzf.vim
