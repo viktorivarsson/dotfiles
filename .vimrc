@@ -147,7 +147,8 @@ inoremap <expr> <cr> pumvisible() ? "\<c-y>" : "\<c-g>u\<cr>"
 " CoC Actions
 nnoremap <silent>K :call <sid>show_documentation()<cr>
 nmap <leader>sd :CocDiagnostics<cr>
-nmap <leader>do <plug>(coc-codeaction)
+nmap <leader>as <plug>(coc-codeaction-selected)
+nmap <leader>ac <plug>(coc-codeaction)
 nmap <leader>qf <plug>(coc-fix-current)
 nmap <leader>rn <plug>(coc-rename)
 
