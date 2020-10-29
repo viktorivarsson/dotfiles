@@ -1,4 +1,4 @@
-if has("gui_macvim")
+if has("gui_running")
   source $HOME/.guivimrc
 endif
 "

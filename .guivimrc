@@ -1,4 +1,3 @@
-
 " Keep Plug commands between plug#begin() and plug#end().
 call plug#begin()
 Plug 'sheerun/vim-polyglot'
