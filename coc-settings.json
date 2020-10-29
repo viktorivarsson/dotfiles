@@ -1,3 +1,4 @@
 {
-  "coc.preferences.formatOnSaveFiletypes": ["javascript", "javascriptreact", "typescript", "typescriptreact", "graphql", "css", "markdown", "json", "rust"]
+  "coc.preferences.formatOnSaveFiletypes": ["javascript", "javascriptreact", "typescript", "typescriptreact", "graphql", "css", "markdown", "json", "rust"],
+  "tsserver.maxTsServerMemory": 4000
 }
