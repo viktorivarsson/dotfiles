@@ -1,7 +1,5 @@
 source ~/gitstatus/gitstatus.prompt.zsh
 
-eval "$(zoxide init zsh)"
-
 alias restart:touchbar="pkill 'Touch Bar agent'"
 
 alias ..="cd ../"
@@ -54,3 +52,5 @@ export PATH="/usr/local/opt/php@7.4/bin:$PATH"
 
 [ -f "/Users/viktorivarsson/.ghcup/env" ] && source "/Users/viktorivarsson/.ghcup/env" # ghcup-env
 
+eval $(/opt/homebrew/bin/brew shellenv)
+eval "$(zoxide init zsh)"
