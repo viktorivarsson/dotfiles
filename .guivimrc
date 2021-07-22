@@ -1,15 +1,20 @@
+" remove all existing autocmds
+autocmd!
+
 " Keep Plug commands between plug#begin() and plug#end().
 call plug#begin()
 Plug 'sheerun/vim-polyglot'
 " Plug 'jparise/vim-graphql'        " GraphQL syntax
 " Plug 'elixir-lang/vim-elixir'     " Elixir syntax
 " Plug 'styled-components/vim-styled-components'
-Plug 'haishanh/night-owl.vim'
-Plug 'itchyny/lightline.vim'
-Plug 'TaDaa/vimade'
-Plug 'tpope/vim-fugitive'         " :Gblame
-Plug 'vim-scripts/delimitMate.vim'
-" Plug 'airblade/vim-gitgutter'     " Show git diff of lines edited
+
+" Plug 'itchyny/lightline.vim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'TaDaa/vimade'                 " Fade out inactive buffers
+Plug 'tpope/vim-fugitive'           " :Gblame
+Plug 'vim-scripts/delimitMate.vim'  " Auto close of tags
+Plug 'airblade/vim-gitgutter'       " Show git diff of lines edited
 Plug 'preservim/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'junegunn/fzf.vim'           " Set up fzf and fzf.vim
@@ -17,16 +22,21 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'neoclide/coc.nvim' , { 'branch' : 'release' }
 Plug 'preservim/nerdcommenter'
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-dispatch'
-Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+" Plug 'tpope/vim-dispatch'
+" Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+"
+" THEMES
+" Plug 'haishanh/night-owl.vim'
+" Plug 'jonathanfilip/vim-lucius'
+Plug 'dracula/vim', { 'as': 'dracula' }
 call plug#end()
 
 
 " ================ 1. CONFIG ======================
 syntax on
 filetype plugin indent on       " https://vi.stackexchange.com/questions/10124/what-is-the-difference-between-filetype-plugin-indent-on-and-filetype-indent
-colorscheme night-owl           " Editor theme
-set guifont=Dank\ Mono:h14      " Font
+colorscheme dracula " Editor theme
+set guifont=MonoLisa:h14      " Font
 
 " File extension map to filetype overrides
 au BufRead,BufNewFile *.jsx set filetype=javascript.jsx
@@ -53,8 +63,8 @@ set backspace=indent,eol,start  " Backspace settings
 set smartindent                 " No idea how this works
 set autoindent                  " Keep indentation for next line
 set shiftwidth=2                " Indendation step for << and >>
-set tabstop=2                   " Width of <TAB>
 set expandtab                   " Convert tabs to spaces on <TAB>
+set tabstop=2                   " Width of <TAB>
 
 " Search settings
 set ignorecase                  " Case insensitivity search
@@ -65,7 +75,6 @@ set hidden                      " Hide buffer with unsaved changes without warni
 set updatetime=300              " Default updatetime leads to delays (CoC)
 
 let g:coc_global_extensions = [
-  \ 'coc-bookmark',
   \ 'coc-css',
   \ 'coc-cssmodules',
   \ 'coc-eslint',
@@ -89,6 +98,14 @@ let NERDTreeQuitOnOpen=1        " Close NERDTree after opening file
 let NERDTreeShowHidden=1        " Show hidden files
 let g:NERDTreeWinSize=60        " Width of sidebar
 
+" airline
+let g:airline_symbols_ascii = 1
+let g:airline_theme = 'dracula'
+let g:airline#extensions#tabline#enabled = 0
+let g:airline#extensions#branch#enabled = 1
+let g:airline_section_y = ''
+" let g:airline_left_sep = ' ★ '
+"
 
 " ================ 2. BEHAVIOR ======================
 set splitbelow
@@ -113,7 +130,7 @@ endif
 
 " CoC - signcolumn to avoid layout change when checking lints and stuff
 if has("patch-8.1.1564")
-  set signcolumn=number " Recently vim can merge signcolumn and number column into one
+  set signcolumn=auto" Recently vim can merge signcolumn and number column into one
 else
   set signcolumn=yes
 endif
@@ -124,7 +141,8 @@ endif
 nnoremap <space> <nop>
 let mapleader=" "
 
-nnoremap <leader>b :buffers<cr>:b<space>
+" nnoremap <leader>b :buffers<cr>:b<space>
+nnoremap <leader>b :Buffers<cr>
 
 " FZF
 nnoremap <c-p> :Files<cr>
@@ -164,26 +182,25 @@ vmap <c-j> <plug>(coc-snippets-select)
 let g:coc_snippet_next = '<c-j>'
 let g:coc_snippet_prev = '<c-k>'
 
-" CoC Bookmarks
-nmap <Leader>bb <Plug>(coc-bookmark-toggle)
-nmap <Leader>bj <Plug>(coc-bookmark-next)
-nmap <Leader>bk <Plug>(coc-bookmark-prev)
-
 " Save and exit shortcuts
 nnoremap <silent><leader>w :w!<cr>
 nnoremap <silent><leader>q :q!<cr>
-nnoremap <silent><leader>x :x<cr>
 
 " File open / close shortcuts
 nnoremap <silent><leader>bd :bd<cr>
 nnoremap <silent><leader>1 :source ~/.vimrc \| :PlugInstall<CR>
 nnoremap <silent><leader>2 :e ~/.vimrc<cr>
+nnoremap <silent><leader>3 :e ~/.guivimrc<cr>
+nnoremap <silent><leader>4 :e ~/.vim-cheatsheet.md<cr>
 
 " Window splits
+" Move around splits with <c-hjkl>
 nnoremap <c-j> <c-w><c-j>
 nnoremap <c-k> <c-w><c-k>
 nnoremap <c-l> <c-w><c-l>
 nnoremap <c-h> <c-w><c-h>
+" Close all other splits
+nnoremap <leader>o :only<cr>
 
 " Move lines in normal mode
 nnoremap <c-j> :m .+1<cr>==
@@ -205,20 +222,38 @@ function! s:show_documentation()
   endif
 endfunction
 
+" MULTIPURPOSE TAB KEY
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Indent if we're at the beginning of a line. Else, do completion.
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! InsertTabWrapper()
+    let col = col('.') - 1
+    if !col
+        return "\<tab>"
+    endif
 
-" ================ 5. OLD SHIET ======================
+    let char = getline('.')[col - 1]
+    if char =~ '\k'
+        " There's an identifier before the cursor, so complete the identifier.
+        return "\<c-p>"
+    else
+        return "\<tab>"
+    endif
+endfunction
+inoremap <expr> <tab> InsertTabWrapper()
+inoremap <s-tab> <c-n>
 
-" Prettier binding to format file
-" command! -nargs=0 Prettier :CocCommand prettier.formatFile
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" RENAME CURRENT FILE
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! RenameFile()
+    let old_name = expand('%')
+    let new_name = input('New file name: ', expand('%'), 'file')
+    if new_name != '' && new_name != old_name
+        exec ':saveas ' . new_name
+        exec ':silent !rm ' . old_name
+        redraw!
+    endif
+endfunction
+map <leader>n :call RenameFile()<cr>
 
-" highlight ColorColumn ctermbg=0 guibg=lightgrey
-"
-" " Add CoC Prettier if prettier is installed
-" if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
-"   let g:coc_global_extensions += ['coc-prettier']
-" endif
-
-" " Add CoC ESLint if ESLint is installed
-" if isdirectory('./node_modules') && isdirectory('./node_modules/eslint')
-"   let g:coc_global_extensions += ['coc-eslint']
-" endif

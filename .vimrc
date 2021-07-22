@@ -12,6 +12,7 @@ set laststatus=2                " Always show status line
 set wrap!                       " Turn off wrapping of text
 set nu rnu                      " Line numbers
 set backspace=indent,eol,start  " Backspace settings
+set cursorline!                 " highlight current cursor line
 
 if has("gui_running")
   source $HOME/.guivimrc
