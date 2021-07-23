@@ -1,0 +1,11 @@
+{
+  "coc.preferences.formatOnSaveFiletypes": ["javascript", "javascriptreact", "typescript", "typescriptreact", "graphql", "css", "markdown", "json", "rust"],
+  "tsserver.maxTsServerMemory": 4000,
+  "diagnostic.level": "hint",
+  "diagnostic.checkCurrentLine": true,
+  "diagnostic.virtualTextLines": 3,
+  "diagnostic.maxWindowHeight": 8,
+  "diagnostic.maxWindowWidth": 80,
+  "diagnostic.messageTarget": "echo"
+}
+

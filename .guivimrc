@@ -23,7 +23,7 @@ Plug 'neoclide/coc.nvim' , { 'branch' : 'release' }
 Plug 'preservim/nerdcommenter'
 Plug 'tpope/vim-surround'
 " Plug 'tpope/vim-dispatch'
-" Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 "
 " THEMES
 " Plug 'haishanh/night-owl.vim'
@@ -164,11 +164,14 @@ inoremap <expr> <cr> pumvisible() ? "\<c-y>" : "\<c-g>u\<cr>"
 
 " CoC Actions
 nnoremap <silent>K :call <sid>show_documentation()<cr>
+nnoremap <leader>K :call <sid>show_coc_hover()<cr>
 nmap <leader>sd :CocDiagnostics<cr>
 nmap <leader>as <plug>(coc-codeaction-selected)
 nmap <leader>ac <plug>(coc-codeaction)
 nmap <leader>qf <plug>(coc-fix-current)
 nmap <leader>rn <plug>(coc-rename)
+nmap <leader>gn <plug>(coc-diagnostic-next)
+nmap <leader>gN <plug>(coc-diagnostic-prev)
 
 " CoC Go to
 nmap <silent>gd <plug>(coc-definition)
