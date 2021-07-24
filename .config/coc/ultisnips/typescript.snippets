@@ -1,0 +1,35 @@
+# Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
+
+snippet cl "console log"
+console.log($1)$2
+endsnippet
+
+snippet cld "console debug"
+console.debug($1)$2
+endsnippet
+
+snippet clc "console count"
+console.count($1)$2
+endsnippet
+
+snippet rue "useEffect"
+useEffect(() => {
+	$1
+}, [$2])
+endsnippet
+
+snippet ruc "useCallback"
+useCallback(($1) => {
+	$2
+}, [$3])
+endsnippet
+
+snippet rum "useMemo"
+useMemo(() => {
+	$1
+}, [$3])
+endsnippet
+
+snippet rus "useState"
+const [$1, $2] = useState${3:<$4>}($5)
+endsnippet
