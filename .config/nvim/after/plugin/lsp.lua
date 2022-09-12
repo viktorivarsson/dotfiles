@@ -40,10 +40,10 @@ cmp.setup({
         end,
     },
     sources = cmp.config.sources({
-        -- tabnine completion? yayaya
-        { name = "cmp_tabnine" },
         { name = "nvim_lsp" },
         { name = "luasnip" },
+        -- tabnine completion? yayaya
+        { name = "cmp_tabnine" },
         { name = "buffer" },
     })
 })
