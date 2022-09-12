@@ -22,6 +22,9 @@ return require('packer').startup(function(use)
       requires = { {'nvim-lua/plenary.nvim'}, {'BurntSushi/ripgrep' }}
   }
 
+  -- toggle term
+  use "akinsho/toggleterm.nvim"
+
   -- lsp
   use("neovim/nvim-lspconfig")
   use("hrsh7th/cmp-nvim-lsp")
