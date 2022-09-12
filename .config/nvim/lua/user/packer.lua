@@ -23,7 +23,10 @@ return require('packer').startup(function(use)
   }
 
   -- toggle term
-  use "akinsho/toggleterm.nvim"
+  use("akinsho/toggleterm.nvim")
+
+  -- git blame
+  use("f-person/git-blame.nvim")
 
   -- lsp
   use("neovim/nvim-lspconfig")

@@ -99,6 +99,11 @@ _G.packer_plugins = {
     path = "/Users/viktor.ivarsson/.local/share/nvim/site/pack/packer/start/cmp_luasnip",
     url = "https://github.com/saadparwaiz1/cmp_luasnip"
   },
+  ["git-blame.nvim"] = {
+    loaded = true,
+    path = "/Users/viktor.ivarsson/.local/share/nvim/site/pack/packer/start/git-blame.nvim",
+    url = "https://github.com/f-person/git-blame.nvim"
+  },
   ["lsp_extensions.nvim"] = {
     loaded = true,
     path = "/Users/viktor.ivarsson/.local/share/nvim/site/pack/packer/start/lsp_extensions.nvim",

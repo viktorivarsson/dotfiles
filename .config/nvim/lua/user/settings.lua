@@ -36,3 +36,6 @@ vim.api.nvim_create_autocmd(
   { "BufWritePre" },
   { pattern = "*", command = "Neoformat" }
 )
+
+vim.g.gitblame_message_template = "<author> • <date> • <summary>"
+vim.g.gitblame_date_format = "%r (%Y-%m-%d)"

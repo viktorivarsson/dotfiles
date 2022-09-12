@@ -48,4 +48,5 @@ map("n", "<leader>dp", ":Lspsaga diagnostic_jump_prev<cr>", options)
 map("n", "<leader>dc", ":Lspsaga show_cursor_diagnostics<cr>", options)
 
 -- Lazy Git
-map("n", "<leader>lg", "<cmd>lua _lazygit_toggle()<cr>", {})
+map("n", "<leader>gg", "<cmd>lua _lazygit_toggle()<cr>", {})
+map("n", "<leader>gb", ":GitBlameToggle<cr>", {})
