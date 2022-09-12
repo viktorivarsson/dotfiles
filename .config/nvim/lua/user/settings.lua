@@ -27,3 +27,10 @@ vim.opt.cmdheight = 1
 -- delays and poor user experience.
 vim.opt.updatetime = 50
 
+
+vim.g.neoformat_try_node_exe = 1
+
+vim.api.nvim_create_autocmd(
+  { "BufWritePre", "TextChanged" ,"InsertLeave" },
+  { pattern = "*", command = "Neoformat" }
+)
