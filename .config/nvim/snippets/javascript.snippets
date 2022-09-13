@@ -1,0 +1,173 @@
+# Functions
+
+# Function
+snippet fun "function"
+	function ${1:function_name}(${2}) {
+		${0:${VISUAL}}
+	}
+
+# Asynchronous Function
+snippet asf "async function"
+	async function ${1:function_name}(${2}) {
+		${0:${VISUAL}}
+	}
+
+# Flow control
+
+# if
+snippet if "if (condition) { ... }"
+	if (${1:true}) {
+		${0:${VISUAL}}
+	}
+# if ... else
+snippet ife "if (condition) { ... } else { ... }"
+	if (${1:true}) {
+		${0:${VISUAL}}
+	} else {
+		${2}
+	}
+# tertiary conditional
+snippet ter Ternary: `condition ? true : false`
+	$1 ? $2: $0
+# switch
+snippet switch
+	switch (${1:expression}) {
+		case '${3:case}':
+			${4}
+			break;
+		${0}
+		default:
+			${2}
+	}
+
+snippet case "case 'xyz': ... break"
+	case '${1:case}':
+		${0:${VISUAL}}
+		break;
+
+snippet try "try { ... } catch(e) { ... }"
+	try {
+		${0:${VISUAL}}
+	} catch (${1:e}) {
+		${2:/* handle error */}
+	}
+
+snippet tryf "try { ... } catch(e) { ... } finally { ... }"
+	try {
+		${0:${VISUAL}}
+	} catch (${1:e}) {
+		${2:/* handle error */}
+	} finally {
+		${3:/* be executed regardless of the try / catch result*/}
+	}
+
+# throw Error
+snippet terr
+	throw new Error('${1:error message}')
+
+# return
+snippet ret
+	return ${0:result};
+
+# Documentation
+
+# docstring
+snippet /**
+	/**
+	 * ${0:description}
+	 *
+	 */
+
+# JSON.parse
+snippet jsonp
+	JSON.parse(${0:jstr});
+
+# JSON.stringify
+snippet jsons
+	JSON.stringify(${0:object});
+
+# Debugging
+snippet de
+	debugger;
+snippet cl "console.log"
+	console.log(${0});
+snippet cd "console.debug"
+	console.debug(${0});
+snippet ce "console.error"
+	console.error(${0});
+snippet cw "console.warn"
+	console.warn(${0});
+snippet ci "console.info"
+	console.info(${0});
+snippet ct "console.trace"
+	console.trace(${0:label});
+snippet ctime "console.time ... console.timeEnd"
+	console.time("${1:label}");
+	${0:${VISUAL}}
+	console.timeEnd("$1");
+snippet ca "console.assert"
+	console.assert(${1:expression}, ${0:obj});
+snippet cdir "console.dir"
+	console.dir(${0:obj});
+snippet cgroup "console.group"
+	console.group("${1:label}");
+	${0:${VISUAL}}
+	console.groupEnd();
+snippet cgroupc "console.groupCollapsed"
+	console.groupCollapsed("${1:label}");
+	${0:${VISUAL}}
+	console.groupEnd();
+snippet ctable "console.table"
+	console.table(${1:"${2:value}"});
+snippet clstr "console.log stringified"
+	console.log(JSON.stringify(${0}, null, 2));
+
+# Misc
+snippet timeout
+	setTimeout(function () {${0}}${2}, ${1:10});
+snippet const
+	const ${1} = ${0};
+snippet constn
+	const ${1} = new ${0};
+snippet let
+	let ${1} = ${0};
+snippet im "import xyz from 'xyz'"
+	import ${1} from '${2:$1}';
+snippet imas "import * as xyz from 'xyz'"
+	import * as ${1} from '${2:$1}';
+snippet imm "import { member } from 'xyz'"
+	import { ${1} } from '${2}';
+snippet cla
+	class ${1} {
+		${0:${VISUAL}}
+	}
+snippet clax
+	class ${1} extends ${2} {
+		${0:${VISUAL}}
+	}
+snippet c=>
+	const ${1:function_name} = (${2}) => {
+		${0:${VISUAL}}
+	}
+snippet ca=>
+	const ${1:function_name} = async (${2}) => {
+		${0:${VISUAL}}
+	}
+snippet =>
+	(${1}) => {
+		${0:${VISUAL}}
+	}
+snippet af "() =>"
+	(${1}) => ${0:${VISUAL}}
+snippet afb "() => {}"
+	(${1}) => {
+		${0:${VISUAL}}
+	}
+snippet ed
+	export default ${0}
+snippet ${
+	\${${1}}${0}
+snippet as "async"
+	async ${0}
+snippet aw "await"
+	await ${0:${VISUAL}}
