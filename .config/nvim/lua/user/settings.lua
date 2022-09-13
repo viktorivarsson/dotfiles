@@ -1,5 +1,3 @@
--- vim.opt.guicursor = ""
-
 vim.opt.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20"
 
 vim.opt.nu = true
@@ -39,3 +37,6 @@ vim.api.nvim_create_autocmd(
 
 vim.g.gitblame_message_template = "<author> • <date> • <summary>"
 vim.g.gitblame_date_format = "%r (%Y-%m-%d)"
+
+-- vim.g.netrw_banner = 0
+vim.g.netrw_winsize = 25
