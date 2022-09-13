@@ -13,6 +13,7 @@ map("v", "J", ":m '>+1<cr>gv=gv", options)
 map("v", "K", ":m '<-2<cr>gv=gv", options)
 
 map("x", "<leader>p", "\"_dP", options)
+map("v", "<leader>y", "\"*y", options)
 
 -- Edit VIM
 map("n", "<leader>1", ":e $MYVIMRC<cr>", options)
