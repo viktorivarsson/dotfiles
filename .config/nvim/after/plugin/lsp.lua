@@ -54,22 +54,13 @@ cmp.setup({
         end, { "i", "s" }),
     }),
     formatting = {
-        format = function(entry, vim_item)
-            vim_item.kind = lspkind.presets.default[vim_item.kind]
-            local menu = source_mapping[entry.source.name]
-            if entry.source.name == "cmp_tabnine" then
-                if entry.completion_item.data ~= nil and entry.completion_item.data.detail ~= nil then
-                    menu = entry.completion_item.data.detail .. " " .. menu
-                end
-                vim_item.kind = ""
-            end
-            vim_item.menu = menu
-            return vim_item
-        end,
+        format = require("lspkind").cmp_format({
+            mode = 'symbol_text',
+        })
     },
     sources = cmp.config.sources({
-        { name = "luasnip" },
         { name = "nvim_lsp" },
+        { name = "luasnip" },
         -- tabnine completion? yayaya
         -- { name = "cmp_tabnine" },
         { name = "buffer" },
@@ -117,26 +108,30 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<leader>f', vim.lsp.buf.formatting, bufopts)
 end
 
-require("lspconfig").html.setup{
-    on_attach = on_attach
+local nvim_lsp = require("lspconfig")
+
+nvim_lsp.html.setup{
+    on_attach = on_attach,
 }
-require("lspconfig").tsserver.setup{
-    on_attach = on_attach
+nvim_lsp.tsserver.setup{
+    on_attach = on_attach,
+    root_dir = nvim_lsp.util.root_pattern("package.json"),
 }
-require("lspconfig").cssls.setup{
-    on_attach = on_attach
+nvim_lsp.cssls.setup{
+    on_attach = on_attach,
 }
--- require("lspconfig").denols.setup{
--- on_attach = on_attach
--- }
-require("lspconfig").eslint.setup{
-    on_attach = on_attach
+nvim_lsp.denols.setup{
+    on_attach = on_attach,
+    root_dir = nvim_lsp.util.root_pattern("deno.json"),
 }
-require("lspconfig").tailwindcss.setup{
-    on_attach = on_attach
+nvim_lsp.eslint.setup{
+    on_attach = on_attach,
 }
-require("lspconfig").graphql.setup{
-    on_attach = on_attach
+nvim_lsp.tailwindcss.setup{
+    on_attach = on_attach,
+}
+nvim_lsp.graphql.setup{
+    on_attach = on_attach,
 }
 
 require("luasnip.loaders.from_snipmate").lazy_load()
