@@ -126,9 +126,9 @@ require("lspconfig").tsserver.setup{
 require("lspconfig").cssls.setup{
     on_attach = on_attach
 }
-require("lspconfig").denols.setup{
-    on_attach = on_attach
-}
+-- require("lspconfig").denols.setup{
+-- on_attach = on_attach
+-- }
 require("lspconfig").eslint.setup{
     on_attach = on_attach
 }

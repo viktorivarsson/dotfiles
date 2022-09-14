@@ -10,6 +10,12 @@ return require('packer').startup(function(use)
   -- theme
   use("folke/tokyonight.nvim")
 
+  -- treesitter
+  use({
+      'nvim-treesitter/nvim-treesitter',
+      run = ':TSUpdate'
+  })
+
   -- status line
   use({
       'nvim-lualine/lualine.nvim',
