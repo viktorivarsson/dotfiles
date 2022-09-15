@@ -130,6 +130,9 @@ nvim_lsp.eslint.setup{
 nvim_lsp.tailwindcss.setup{
     on_attach = on_attach,
 }
+nvim_lsp.gopls.setup{
+    on_attach = on_attach,
+}
 nvim_lsp.graphql.setup{
     on_attach = on_attach,
 }
