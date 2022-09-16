@@ -136,6 +136,9 @@ nvim_lsp.gopls.setup{
 nvim_lsp.graphql.setup{
     on_attach = on_attach,
 }
+nvim_lsp.rust_analyzer.setup {
+    on_attach = on_attach,
+}
 
 require("luasnip.loaders.from_snipmate").lazy_load()
 

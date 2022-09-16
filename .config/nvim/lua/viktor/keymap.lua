@@ -17,7 +17,7 @@ map("v", "<leader>y", "\"*y", options)
 
 -- Edit VIM
 map("n", "<leader>1", ":e $MYVIMRC<cr>", options)
-map("n", "<leader>2", ":source $MYVIMRC<cr>", options)
+map("n", "<leader>2", ":lua reload_nvim_conf()<cr>", options)
 
 -- Save and exit shortcuts
 map("n", "<leader>w", ":w!<cr>", options)
