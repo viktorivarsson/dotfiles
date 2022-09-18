@@ -52,7 +52,6 @@ function prepare-vnim-sync() {
 
 function backup-nvim() {
     prepare-vnim-sync
-    cp -r ~/.config/nvim/after ~/code/dotfiles/.config/nvim
     cp -r ~/.config/nvim/init.lua ~/code/dotfiles/.config/nvim
     cp -r ~/.config/nvim/lua ~/code/dotfiles/.config/nvim
     cp -r ~/.config/nvim/snippets ~/code/dotfiles/.config/nvim
@@ -60,7 +59,6 @@ function backup-nvim() {
 
 function restore-nvim() {
     prepare-vnim-sync
-    cp -r ~/code/dotfiles/.config/nvim/after ~/.config/nvim
     cp -r ~/code/dotfiles/.config/nvim/init.lua ~/.config/nvim/init.lua
     cp -r ~/code/dotfiles/.config/nvim/lua ~/.config/nvim
     cp -r ~/code/dotfiles/.config/nvim/snippets ~/.config/nvim
@@ -70,6 +68,9 @@ function restore-nvim() {
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Custom bin
+export PATH="$HOME/bin:$PATH"
 
 # Yarn
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
