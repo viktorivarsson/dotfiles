@@ -19,11 +19,23 @@ return require('packer').startup(function(use)
         run = ':TSUpdate'
     })
 
+    use("kyazdani42/nvim-web-devicons")
+
     -- status line
     use({
-        'nvim-lualine/lualine.nvim',
-        requires = { 'kyazdani42/nvim-web-devicons', opt = true }
+        "nvim-lualine/lualine.nvim",
+        requires = { "kyazdani42/nvim-web-devicons" }
     })
+
+    use {
+        "folke/trouble.nvim",
+        requires = "kyazdani42/nvim-web-devicons",
+        config = function()
+            require("trouble").setup({
+                position = "right",
+            })
+        end
+    }
 
     -- telescope
     use {
@@ -48,6 +60,8 @@ return require('packer').startup(function(use)
     use("neovim/nvim-lspconfig")
     use("hrsh7th/cmp-nvim-lsp")
     use("hrsh7th/cmp-buffer")
+    use("hrsh7th/cmp-nvim-lsp-signature-help")
+    use("hrsh7th/cmp-path")
     use("hrsh7th/nvim-cmp")
     use{'tzachar/cmp-tabnine', run='./install.sh', requires = 'hrsh7th/nvim-cmp'}
     use("onsails/lspkind-nvim")

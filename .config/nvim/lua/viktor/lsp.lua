@@ -18,6 +18,12 @@ local has_words_before = function()
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
+vim.diagnostic.config({
+  virtual_text = false,
+  signs = true,
+  underline = true,
+})
+
 cmp.setup({
     snippet = {
         expand = function(args)
@@ -54,16 +60,24 @@ cmp.setup({
         end, { "i", "s" }),
     }),
     formatting = {
-        format = require("lspkind").cmp_format({
-            mode = 'symbol_text',
-        })
+        fields = { "kind", "abbr", "menu" },
+        format = function(entry, vim_item)
+            local kind = require("lspkind").cmp_format({ mode = "symbol_text", maxwidth = 50 })(entry, vim_item)
+            local strings = vim.split(kind.kind, "%s", { trimempty = true })
+            kind.kind = " " .. strings[1] .. " "
+            kind.menu = "    " .. strings[2]
+
+            return kind
+        end,
     },
     sources = cmp.config.sources({
-        { name = "nvim_lsp" },
+        { name = "nvim_lsp", keyword_length = 3 },
         { name = "luasnip" },
+        { name = "nvim_lsp_signature_help" },
+        { name = "path", keyword_length = 3 },
         -- tabnine completion? yayaya
         -- { name = "cmp_tabnine" },
-        { name = "buffer" },
+        { name = "buffer", keyword_length = 2 },
     })
 })
 

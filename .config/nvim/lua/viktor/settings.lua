@@ -32,9 +32,10 @@ vim.g.neoformat_try_node_exe = 1
 
 vim.api.nvim_create_autocmd(
   { "BufWritePre" },
-  { pattern = "*", command = "Neoformat" }
+  { pattern = "*", command = "undojoin | Neoformat" }
 )
 
+vim.g.gitblame_enabled = 0
 vim.g.gitblame_message_template = "<author> • <date> • <summary>"
 vim.g.gitblame_date_format = "%r (%Y-%m-%d)"
 

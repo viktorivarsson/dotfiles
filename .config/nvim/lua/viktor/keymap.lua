@@ -33,6 +33,15 @@ map("n", "<leader>fg", "<cmd>lua require('telescope.builtin').live_grep(require(
 map("n", "<leader>fb", "<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_ivy({}))<cr>", options)
 map("n", "<leader>fh", "<cmd>lua require('telescope.builtin').help_tags(require('telescope.themes').get_ivy({}))<cr>", options)
 
+-- Trouble
+local options = { silent = true, noremap = true }
+map("n", "<leader>xx", "<cmd>TroubleToggle<cr>", options)
+map("n", "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>", options)
+map("n", "<leader>xd", "<cmd>TroubleToggle document_diagnostics<cr>", options)
+map("n", "<leader>xl", "<cmd>TroubleToggle loclist<cr>", options)
+map("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>", options)
+map("n", "gR", "<cmd>TroubleToggle lsp_references<cr>", options)
+
 -- Lazy Git
 map("n", "<leader>gg", "<cmd>lua _lazygit_toggle()<cr>", {})
 map("n", "<leader>gb", ":GitBlameToggle<cr>", {})
