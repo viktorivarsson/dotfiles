@@ -3,6 +3,7 @@ vim.opt.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20"
 vim.opt.nu = true
 vim.opt.relativenumber = true
 
+vim.opt.hidden = true
 vim.opt.errorbells = false
 
 vim.opt.tabstop = 4
@@ -30,10 +31,10 @@ vim.opt.updatetime = 50
 
 vim.g.neoformat_try_node_exe = 1
 
-vim.api.nvim_create_autocmd(
-  { "BufWritePre" },
-  { pattern = "*", command = "undojoin | Neoformat" }
-)
+-- vim.api.nvim_create_autocmd(
+--   { "BufWritePre" },
+--   { pattern = "*", command = "undojoin | Neoformat" }
+-- )
 
 vim.g.gitblame_enabled = 0
 vim.g.gitblame_message_template = "<author> • <date> • <summary>"
