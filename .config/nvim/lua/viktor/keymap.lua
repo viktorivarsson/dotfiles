@@ -49,4 +49,3 @@ map("n", "<leader>fa", "<cmd>Neoformat<cr>", { silent = true, noremap = true })
 
 -- Lazy Git
 map("n", "<leader>gg", "<cmd>lua _lazygit_toggle()<cr>", {})
-map("n", "<leader>gb", ":GitBlameToggle<cr>", {})

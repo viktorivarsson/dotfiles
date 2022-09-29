@@ -52,16 +52,14 @@ function prepare-vnim-sync() {
 
 function backup-nvim() {
     prepare-vnim-sync
-    cp -r ~/.config/nvim/init.lua ~/code/dotfiles/.config/nvim
-    cp -r ~/.config/nvim/lua ~/code/dotfiles/.config/nvim
-    cp -r ~/.config/nvim/snippets ~/code/dotfiles/.config/nvim
+    rm -rf ~/code/dotfiles/.config/nvim
+    cp -r ~/.config/nvim ~/code/dotfiles/.config/nvim
 }
 
 function restore-nvim() {
     prepare-vnim-sync
-    cp -r ~/code/dotfiles/.config/nvim/init.lua ~/.config/nvim/init.lua
-    cp -r ~/code/dotfiles/.config/nvim/lua ~/.config/nvim
-    cp -r ~/code/dotfiles/.config/nvim/snippets ~/.config/nvim
+    rm -rf ~/.config/nvim
+    cp -r ~/code/dotfiles/.config/nvim ~/.config/nvim
 }
 
 # NVM

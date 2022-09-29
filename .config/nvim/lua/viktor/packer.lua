@@ -11,7 +11,8 @@ return require('packer').startup(function(use)
     use("wbthomason/packer.nvim")
 
     -- theme
-    use({"sam4llis/nvim-tundra"})
+    use("sam4llis/nvim-tundra")
+    use("folke/tokyonight.nvim")
 
     -- treesitter
     use({
@@ -21,11 +22,28 @@ return require('packer').startup(function(use)
 
     use("kyazdani42/nvim-web-devicons")
 
+
     -- status line
     use({
         "nvim-lualine/lualine.nvim",
         requires = { "kyazdani42/nvim-web-devicons" }
     })
+
+    use('lewis6991/gitsigns.nvim')
+
+    use("petertriho/nvim-scrollbar")
+
+    -- surround --
+    use({
+        "kylechui/nvim-surround",
+        tag = "*", -- Use for stability; omit to use `main` branch for the latest features
+        config = function()
+            require("nvim-surround").setup({
+                -- Configuration here, or leave empty to use defaults
+            })
+        end
+    })
+
 
     use {
         "folke/trouble.nvim",
@@ -52,9 +70,6 @@ return require('packer').startup(function(use)
             require("Comment").setup()
         end
     })
-
-    -- git blame
-    use("f-person/git-blame.nvim")
 
     -- lsp
     use("neovim/nvim-lspconfig")
