@@ -1,6 +1,7 @@
 source ~/gitstatus/gitstatus.prompt.zsh
 
-PROMPT='%F{blue}%1~%f %# '
+# PROMPT='%F{blue}%1~%f %# '
+PROMPT='%F{blue}❯%f'
 RPROMPT='$GITSTATUS_PROMPT'  # right prompt: git status
 
 alias restart:touchbar="pkill 'Touch Bar agent'"
