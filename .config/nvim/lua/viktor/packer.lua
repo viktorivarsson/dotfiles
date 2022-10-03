@@ -5,7 +5,10 @@ vim.cmd [[packadd packer.nvim]]
 
 return require('packer').startup(function(use)
     -- faster loading
-    use 'lewis6991/impatient.nvim'
+    use ("lewis6991/impatient.nvim")
+
+    -- center
+    use("smithbm2316/centerpad.nvim")
 
     -- packer can manage itself
     use("wbthomason/packer.nvim")
@@ -32,6 +35,17 @@ return require('packer').startup(function(use)
     use('lewis6991/gitsigns.nvim')
 
     use("petertriho/nvim-scrollbar")
+
+    use {
+        "nvim-neotest/neotest",
+        requires = {
+            "nvim-lua/plenary.nvim",
+            "nvim-treesitter/nvim-treesitter",
+            "antoinemadec/FixCursorHold.nvim",
+            "rouge8/neotest-rust",
+            "haydenmeade/neotest-jest",
+        }
+    }
 
     -- surround --
     use({

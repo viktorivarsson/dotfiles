@@ -19,6 +19,10 @@ map("v", "<leader>y", "\"*y", options)
 map("n", "<leader>1", ":e $MYVIMRC<cr>", options)
 map("n", "<leader>2", ":lua reload_nvim_conf()<cr>", options)
 
+-- Centerpad
+map("n", "<leader>z", "<cmd>Centerpad<cr>", { silent = true, noremap = true })
+
+
 -- Save and exit shortcuts
 map("n", "<leader>w", ":w!<cr>", options)
 map("n", "<leader>q", ":q!<cr>", options)

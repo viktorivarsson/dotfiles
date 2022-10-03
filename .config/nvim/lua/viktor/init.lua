@@ -1,4 +1,5 @@
 require("viktor.color")
+require("viktor.test")
 require("viktor.keymap")
 require("viktor.lsp")
 require("viktor.packer")
