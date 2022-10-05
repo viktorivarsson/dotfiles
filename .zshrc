@@ -45,22 +45,10 @@ alias dcr="docker-compose run"
 # Python
 alias python=/opt/homebrew/bin/python3
 
-# Vim config
-function prepare-vnim-sync() {
+# Sync Dotfiles
+function sync-dotfiles() {
     echo "Pulling dotfiles repo..."
     git --git-dir ~/code/dotfiles/.git pull
-}
-
-function backup-nvim() {
-    prepare-vnim-sync
-    rm -rf ~/code/dotfiles/.config/nvim
-    cp -r ~/.config/nvim ~/code/dotfiles/.config/nvim
-}
-
-function restore-nvim() {
-    prepare-vnim-sync
-    rm -rf ~/.config/nvim
-    cp -r ~/code/dotfiles/.config/nvim ~/.config/nvim
 }
 
 # NVM
