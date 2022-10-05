@@ -26,6 +26,8 @@ return require('packer').startup(function(use)
 
     use("kyazdani42/nvim-web-devicons")
 
+    use("ThePrimeagen/git-worktree.nvim")
+
 
     -- status line
     use({

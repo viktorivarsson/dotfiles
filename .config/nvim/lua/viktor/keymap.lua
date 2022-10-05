@@ -38,6 +38,8 @@ map("n", "<leader>fh", "<cmd>lua require('viktor.telescope').help_tags()<cr>", o
 map("n", "<leader>gr", "<cmd>lua require('viktor.telescope').lsp_references()<cr>", options)
 map("n", "<leader>fb", "<cmd>lua require('viktor.telescope').buffers()<cr>", options)
 map("n", "<leader>ft", "<cmd>lua require('viktor.telescope').treesitter()<cr>", options)
+map("n", "<leader>gwc", "<cmd>lua require('telescope').extensions.git_worktree.git_worktrees()<cr>", options)
+map("n", "<leader>gwl", "<cmd>lua require('telescope').extensions.git_worktree.create_git_worktree()<cr>", options)
 
 -- Trouble
 local options = { silent = true, noremap = true }
