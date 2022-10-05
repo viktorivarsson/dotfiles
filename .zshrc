@@ -1,10 +1,7 @@
 source ~/gitstatus/gitstatus.prompt.zsh
 
-# PROMPT='%F{blue}%1~%f %# '
-PROMPT='%F{blue}❯%f '
+PROMPT='%F{blue}%1~%f ❯ '
 RPROMPT='$GITSTATUS_PROMPT'  # right prompt: git status
-
-alias restart:touchbar="pkill 'Touch Bar agent'"
 
 # Navigation
 alias ..="cd ../"
@@ -49,6 +46,7 @@ alias python=/opt/homebrew/bin/python3
 function sync-dotfiles() {
     echo "Pulling dotfiles repo..."
     git --git-dir ~/code/dotfiles/.git pull
+    ~/code/dotfiles/setup-dotfiles.sh
 }
 
 # NVM
