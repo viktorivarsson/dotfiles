@@ -6,9 +6,9 @@ vim.opt.relativenumber = true
 vim.opt.hidden = true
 vim.opt.errorbells = false
 
-vim.opt.tabstop = 4
-vim.opt.softtabstop = 4
-vim.opt.shiftwidth = 4
+vim.opt.tabstop = 2
+vim.opt.softtabstop = 2
+vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
 
 vim.opt.smartindent = true
@@ -30,8 +30,8 @@ vim.opt.updatetime = 50
 
 
 vim.g.neoformat_try_node_exe = 1
-vim.g.neoformat_enabled_typescript = {"tsfmt", "prettierd", "prettier", "prettiereslint", "tslint", "eslint_d", "denofmt", "clangformat"}
-vim.g.neoformat_enabled_typescriptreact = {"tsfmt", "prettierd", "prettier", "prettiereslint", "tslint", "eslint_d", "denofmt", "clangformat"}
+vim.g.neoformat_enabled_typescript = {"tsfmt", "prettierd", "prettier", "prettiereslint", "tslint", "eslint_d", "denofmt"}
+vim.g.neoformat_enabled_typescriptreact = {"tsfmt", "prettierd", "prettier", "prettiereslint", "tslint", "eslint_d", "denofmt"}
 
 
 -- vim.api.nvim_create_autocmd(

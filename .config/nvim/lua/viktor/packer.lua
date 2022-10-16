@@ -7,9 +7,6 @@ return require('packer').startup(function(use)
     -- faster loading
     use ("lewis6991/impatient.nvim")
 
-    -- center
-    use("smithbm2316/centerpad.nvim")
-
     -- packer can manage itself
     use("wbthomason/packer.nvim")
 
@@ -38,6 +35,15 @@ return require('packer').startup(function(use)
     use('lewis6991/gitsigns.nvim')
 
     use("petertriho/nvim-scrollbar")
+
+    use({
+        "folke/zen-mode.nvim",
+        config = function()
+            require("zen-mode").setup {
+            }
+        end
+    })
+
 
     use {
         "nvim-neotest/neotest",

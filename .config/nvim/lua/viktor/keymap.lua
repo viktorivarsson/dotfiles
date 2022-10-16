@@ -19,8 +19,8 @@ map("v", "<leader>y", "\"*y", options)
 map("n", "<leader>1", ":e $MYVIMRC<cr>", options)
 map("n", "<leader>2", ":lua reload_nvim_conf()<cr>", options)
 
--- Centerpad
-map("n", "<leader>z", "<cmd>Centerpad<cr>", { silent = true, noremap = true })
+-- Zenmode
+map("n", "<leader>z", ":ZenMode<cr>", { noremap = true, silent = true })
 
 
 -- Save and exit shortcuts
