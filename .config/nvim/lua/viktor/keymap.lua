@@ -32,12 +32,12 @@ map("n", "<leader>bd", ":bd<cr>", options)
 map("n", "<leader>bb", ":buffers<cr>", options)
 
 -- Telescope
-map("n", "<leader>ff", "<cmd>lua require('viktor.telescope').find_files()<cr>", options)
-map("n", "<leader>fg", "<cmd>lua require('viktor.telescope').live_grep()<cr>", options)
-map("n", "<leader>fh", "<cmd>lua require('viktor.telescope').help_tags()<cr>", options)
-map("n", "<leader>gr", "<cmd>lua require('viktor.telescope').lsp_references()<cr>", options)
-map("n", "<leader>fb", "<cmd>lua require('viktor.telescope').buffers()<cr>", options)
-map("n", "<leader>ft", "<cmd>lua require('viktor.telescope').treesitter()<cr>", options)
+map("n", "<leader>ff", "<cmd>lua require('telescope.builtin').find_files()<cr>", options)
+map("n", "<leader>fg", "<cmd>lua require('telescope.builtin').live_grep()<cr>", options)
+map("n", "<leader>fh", "<cmd>lua require('telescope.builtin').help_tags()<cr>", options)
+map("n", "<leader>gr", "<cmd>lua require('telescope.builtin').lsp_references()<cr>", options)
+map("n", "<leader>fb", "<cmd>lua require('telescope.builtin').buffers()<cr>", options)
+map("n", "<leader>ft", "<cmd>lua require('telescope.builtin').treesitter()<cr>", options)
 map("n", "<leader>gwc", "<cmd>lua require('telescope').extensions.git_worktree.git_worktrees()<cr>", options)
 map("n", "<leader>gwl", "<cmd>lua require('telescope').extensions.git_worktree.create_git_worktree()<cr>", options)
 
