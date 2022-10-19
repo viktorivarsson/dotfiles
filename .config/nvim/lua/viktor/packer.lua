@@ -10,6 +10,8 @@ return require('packer').startup(function(use)
     -- packer can manage itself
     use("wbthomason/packer.nvim")
 
+    use("metakirby5/codi.vim")
+
     -- theme
     use("sam4llis/nvim-tundra")
     use("folke/tokyonight.nvim")
