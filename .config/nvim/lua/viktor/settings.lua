@@ -28,11 +28,11 @@ vim.opt.cmdheight = 1
 -- delays and poor user experience.
 vim.opt.updatetime = 50
 
-
 vim.g.neoformat_try_node_exe = 1
-vim.g.neoformat_enabled_typescript = {"tsfmt", "prettierd", "prettier", "prettiereslint", "tslint", "eslint_d", "denofmt"}
-vim.g.neoformat_enabled_typescriptreact = {"tsfmt", "prettierd", "prettier", "prettiereslint", "tslint", "eslint_d", "denofmt"}
-
+vim.g.neoformat_enabled_typescript =
+	{ "tsfmt", "prettierd", "prettier", "prettiereslint", "tslint", "eslint_d", "denofmt" }
+vim.g.neoformat_enabled_typescriptreact =
+	{ "tsfmt", "prettierd", "prettier", "prettiereslint", "tslint", "eslint_d", "denofmt" }
 
 -- vim.api.nvim_create_autocmd(
 --   { "BufWritePre" },
