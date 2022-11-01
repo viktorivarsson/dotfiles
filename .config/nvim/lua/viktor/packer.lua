@@ -21,7 +21,6 @@ return require("packer").startup(function(use)
 		"nvim-treesitter/nvim-treesitter",
 		run = ":TSUpdate",
 	})
-	use("nvim-treesitter/nvim-treesitter-context")
 
 	use("kyazdani42/nvim-web-devicons")
 
@@ -54,6 +53,9 @@ return require("packer").startup(function(use)
 			"haydenmeade/neotest-jest",
 		},
 	})
+
+  use("windwp/nvim-autopairs")
+	use({ "windwp/nvim-ts-autotag", after = "nvim-treesitter" })
 
 	-- surround --
 	use({

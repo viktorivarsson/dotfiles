@@ -1,7 +1,7 @@
-source ~/gitstatus/gitstatus.prompt.zsh
+# source ~/gitstatus/gitstatus.prompt.zsh
 
-PROMPT='%F{blue}%1~%f ❯ '
-RPROMPT='$GITSTATUS_PROMPT'  # right prompt: git status
+# PROMPT='%F{blue}%1~%f ❯ '
+# RPROMPT='$GITSTATUS_PROMPT'  # right prompt: git status
 
 # Navigation
 alias ..="cd ../"
