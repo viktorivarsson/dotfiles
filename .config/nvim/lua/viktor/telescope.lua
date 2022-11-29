@@ -10,7 +10,7 @@ table.insert(vimgrep_arguments, "!.git/*")
 
 require("telescope").setup({
 	defaults = {
-		file_ignore_patterns = { "node_modules", "yarn.lock", ".git" },
+		file_ignore_patterns = { "node_modules", "yarn.lock", ".git", ".bin" },
 		vimgrep_arguments = vimgrep_arguments,
 		path_display = {
 			truncate = 3,
@@ -27,7 +27,7 @@ require("telescope").setup({
 			},
 		},
 		find_files = {
-			find_command = { "rg", "--files", "--hidden", "--glob", "!.git/*" },
+			find_command = { "rg", "--files", "--hidden", "--glob", "!.git/*", "--glob", "!.bin/*" },
 			theme = "ivy",
 		},
 		live_grep = {
