@@ -59,11 +59,10 @@ cmp.setup({
 		end,
 	},
 	sources = cmp.config.sources({
-		{ name = "nvim_lsp", keyword_length = 3 },
+		{ name = "nvim_lsp", keyword_length = 2 },
 		{ name = "luasnip", keyword_length = 2 },
 		{ name = "nvim_lsp_signature_help" },
-		{ name = "path", keyword_length = 3 },
-		-- tabnine completion? yayaya
+		-- { name = "path", keyword_length = 3 },
 		-- { name = "cmp_tabnine" },
 		{ name = "buffer", keyword_length = 2 },
 	}),
@@ -98,16 +97,8 @@ local on_attach = function(client, bufnr)
 	vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
 	vim.keymap.set("n", "gi", vim.lsp.buf.implementation, bufopts)
 	vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, bufopts)
-	vim.keymap.set("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, bufopts)
-	vim.keymap.set("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, bufopts)
-	vim.keymap.set("n", "<leader>wl", function()
-		print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-	end, bufopts)
-	vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, bufopts)
 	vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, bufopts)
 	vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, bufopts)
-	-- vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-	-- vim.keymap.set('n', '<leader>f', vim.lsp.buf.formatting, bufopts)
 end
 
 local nvim_lsp = require("lspconfig")
