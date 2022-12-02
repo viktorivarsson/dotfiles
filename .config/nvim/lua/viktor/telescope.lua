@@ -1,6 +1,20 @@
-local action_state = require("telescope.actions.state")
-local actions = require("telescope.actions")
+local ok, telescope = pcall(require, "telescope")
+
+if not ok then
+	return
+end
+
 local telescope_config = require("telescope.config")
+
+local map = vim.api.nvim_set_keymap
+
+local options = { noremap = true }
+map("n", "<leader>ff", "<cmd>lua require('telescope.builtin').find_files()<cr>", options)
+map("n", "<leader>fg", "<cmd>lua require('telescope.builtin').live_grep()<cr>", options)
+map("n", "<leader>fh", "<cmd>lua require('telescope.builtin').help_tags()<cr>", options)
+map("n", "<leader>gr", "<cmd>lua require('telescope.builtin').lsp_references()<cr>", options)
+map("n", "<leader>fb", "<cmd>lua require('telescope.builtin').buffers()<cr>", options)
+map("n", "<leader>ft", "<cmd>lua require('telescope.builtin').treesitter()<cr>", options)
 
 -- Clone the default Telescope configuration
 local vimgrep_arguments = { unpack(telescope_config.values.vimgrep_arguments) }
@@ -8,7 +22,7 @@ table.insert(vimgrep_arguments, "--hidden")
 table.insert(vimgrep_arguments, "--glob")
 table.insert(vimgrep_arguments, "!.git/*")
 
-require("telescope").setup({
+telescope.setup({
 	defaults = {
 		file_ignore_patterns = { "node_modules", "yarn.lock", ".git", ".bin" },
 		vimgrep_arguments = vimgrep_arguments,

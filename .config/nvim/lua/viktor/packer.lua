@@ -34,24 +34,11 @@ return require("packer").startup(function(use)
 
 	use("lewis6991/gitsigns.nvim")
 
-	use("petertriho/nvim-scrollbar")
-
 	use({
 		"folke/zen-mode.nvim",
 		config = function()
 			require("zen-mode").setup({})
 		end,
-	})
-
-	use({
-		"nvim-neotest/neotest",
-		requires = {
-			"nvim-lua/plenary.nvim",
-			"nvim-treesitter/nvim-treesitter",
-			"antoinemadec/FixCursorHold.nvim",
-			"rouge8/neotest-rust",
-			"haydenmeade/neotest-jest",
-		},
 	})
 
 	use("windwp/nvim-autopairs")
@@ -71,11 +58,6 @@ return require("packer").startup(function(use)
 	use({
 		"folke/trouble.nvim",
 		requires = "kyazdani42/nvim-web-devicons",
-		config = function()
-			require("trouble").setup({
-				position = "right",
-			})
-		end,
 	})
 
 	-- telescope
@@ -84,9 +66,6 @@ return require("packer").startup(function(use)
 		tag = "0.1.0",
 		requires = { { "nvim-lua/plenary.nvim" }, { "BurntSushi/ripgrep" } },
 	})
-
-	-- toggle term
-	use("akinsho/toggleterm.nvim")
 
 	use({
 		"numToStr/Comment.nvim",

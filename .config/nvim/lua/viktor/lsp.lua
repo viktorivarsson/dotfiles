@@ -1,5 +1,17 @@
-local cmp = require("cmp")
+local ok, cmp = pcall(require, "cmp")
+
+if not ok then
+	return
+end
+
 local luasnip = require("luasnip")
+
+local options = { noremap = true, silent = true }
+
+vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, options)
+vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, options)
+vim.keymap.set("n", "]d", vim.diagnostic.goto_next, options)
+vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, options)
 
 local has_words_before = function()
 	local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -59,11 +71,9 @@ cmp.setup({
 		end,
 	},
 	sources = cmp.config.sources({
+		{ name = "nvim_lsp_signature_help" },
 		{ name = "nvim_lsp", keyword_length = 2 },
 		{ name = "luasnip", keyword_length = 2 },
-		{ name = "nvim_lsp_signature_help" },
-		-- { name = "path", keyword_length = 3 },
-		-- { name = "cmp_tabnine" },
 		{ name = "buffer", keyword_length = 2 },
 	}),
 })
@@ -76,12 +86,6 @@ tabnine:setup({
 	run_on_every_keystroke = true,
 	snippet_placeholder = "..",
 })
-
-local opts = { noremap = true, silent = true }
-vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts)
-vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
-vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
-vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, opts)
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer

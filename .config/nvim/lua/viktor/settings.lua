@@ -34,14 +34,8 @@ vim.g.neoformat_enabled_typescript =
 vim.g.neoformat_enabled_typescriptreact =
 	{ "tsfmt", "prettierd", "prettier", "prettiereslint", "tslint", "eslint_d", "denofmt" }
 
--- vim.api.nvim_create_autocmd(
---   { "BufWritePre" },
---   { pattern = "*", command = "undojoin | Neoformat" }
--- )
-
 vim.g.gitblame_enabled = 0
 vim.g.gitblame_message_template = "<author> • <date> • <summary>"
 vim.g.gitblame_date_format = "%r (%Y-%m-%d)"
 
--- vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
