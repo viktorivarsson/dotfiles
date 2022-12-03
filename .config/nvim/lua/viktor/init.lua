@@ -1,6 +1,7 @@
 require("viktor.color")
 require("viktor.copilot")
 require("viktor.gitsigns")
+require("viktor.harpoon")
 require("viktor.keymap")
 require("viktor.lsp")
 require("viktor.neoformat")

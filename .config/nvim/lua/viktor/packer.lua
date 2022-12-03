@@ -60,6 +60,8 @@ return require("packer").startup(function(use)
 		requires = "kyazdani42/nvim-web-devicons",
 	})
 
+	use("nvim-lua/plenary.nvim")
+
 	-- telescope
 	use({
 		"nvim-telescope/telescope.nvim",
@@ -67,6 +69,9 @@ return require("packer").startup(function(use)
 		requires = { { "nvim-lua/plenary.nvim" }, { "BurntSushi/ripgrep" } },
 	})
 	use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
+
+	-- harpoon
+	use("theprimeagen/harpoon")
 
 	use({
 		"numToStr/Comment.nvim",
