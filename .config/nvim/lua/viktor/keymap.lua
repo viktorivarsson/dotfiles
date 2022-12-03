@@ -14,6 +14,10 @@ map("n", "<leader>pv", ":Ex<cr>", silent_options)
 map("v", "J", ":m '>+1<cr>gv=gv", options)
 map("v", "K", ":m '<-2<cr>gv=gv", options)
 
+map("n", "<c-d>", "<c-d>zz", silent_options)
+map("n", "<c-u>", "<c-u>zz", silent_options)
+
+-- Yank and paste
 map("x", "<leader>p", '"_dP', options)
 map("v", "<leader>y", '"*y', options)
 
