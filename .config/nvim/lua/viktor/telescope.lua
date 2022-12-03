@@ -15,6 +15,7 @@ map("n", "<leader>fh", "<cmd>lua require('telescope.builtin').help_tags()<cr>", 
 map("n", "<leader>gr", "<cmd>lua require('telescope.builtin').lsp_references()<cr>", options)
 map("n", "<leader>fb", "<cmd>lua require('telescope.builtin').buffers()<cr>", options)
 map("n", "<leader>ft", "<cmd>lua require('telescope.builtin').treesitter()<cr>", options)
+map("n", "<leader>fk", "<cmd>lua require('telescope.builtin').keymaps()<cr>", options)
 
 -- Clone the default Telescope configuration
 local vimgrep_arguments = { unpack(telescope_config.values.vimgrep_arguments) }
