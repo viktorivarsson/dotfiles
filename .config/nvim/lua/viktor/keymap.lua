@@ -14,8 +14,14 @@ map("n", "<leader>pv", ":Ex<cr>", silent_options)
 map("v", "J", ":m '>+1<cr>gv=gv", options)
 map("v", "K", ":m '<-2<cr>gv=gv", options)
 
+-- Center after navigation commands
 map("n", "<c-d>", "<c-d>zz", silent_options)
 map("n", "<c-u>", "<c-u>zz", silent_options)
+map("n", "n", "nzz", silent_options)
+map("n", "N", "Nzz", silent_options)
+
+-- No hl search
+map("n", "<leader>nl", ":nohlsearch<cr>", silent_options)
 
 -- Yank and paste
 map("x", "<leader>p", '"_dP', options)
