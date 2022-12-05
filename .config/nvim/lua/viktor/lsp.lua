@@ -1,155 +1,95 @@
-local ok, cmp = pcall(require, "cmp")
+local ok, lsp = pcall(require, "lsp-zero")
 
 if not ok then
 	return
 end
 
-local luasnip = require("luasnip")
-
-local options = { noremap = true, silent = true }
-
-vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, options)
-vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, options)
-vim.keymap.set("n", "]d", vim.diagnostic.goto_next, options)
-vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, options)
-
-local has_words_before = function()
-	local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-	return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-end
-
-vim.diagnostic.config({
-	virtual_text = false,
-	signs = true,
-	underline = true,
-})
-
-cmp.setup({
-	snippet = {
-		expand = function(args)
-			require("luasnip").lsp_expand(args.body)
-		end,
-	},
-	mapping = cmp.mapping.preset.insert({
-		["<C-b>"] = cmp.mapping.scroll_docs(-4),
-		["<C-f>"] = cmp.mapping.scroll_docs(4),
-		["<C-Space>"] = cmp.mapping.complete(),
-		["<C-e>"] = cmp.mapping.abort(),
-		["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-
-		["<Tab>"] = cmp.mapping(function(fallback)
-			if cmp.visible() then
-				cmp.select_next_item()
-			elseif luasnip.expand_or_jumpable() then
-				luasnip.expand_or_jump()
-			elseif has_words_before() then
-				cmp.complete()
-			else
-				fallback()
-			end
-		end, { "i", "s" }),
-
-		["<S-Tab>"] = cmp.mapping(function(fallback)
-			if cmp.visible() then
-				cmp.select_prev_item()
-			elseif luasnip.jumpable(-1) then
-				luasnip.jump(-1)
-			else
-				fallback()
-			end
-		end, { "i", "s" }),
-	}),
-	formatting = {
-		fields = { "kind", "abbr", "menu" },
-		format = function(entry, vim_item)
-			local kind = require("lspkind").cmp_format({ mode = "symbol_text", maxwidth = 50 })(entry, vim_item)
-			local strings = vim.split(kind.kind, "%s", { trimempty = true })
-			kind.kind = " " .. strings[1] .. " "
-			kind.menu = "    " .. strings[2]
-
-			return kind
-		end,
-	},
-	sources = cmp.config.sources({
-		{ name = "nvim_lsp_signature_help" },
-		{ name = "nvim_lsp", keyword_length = 2 },
-		{ name = "luasnip", keyword_length = 2 },
-		{ name = "buffer", keyword_length = 2 },
-	}),
-})
-
-local tabnine = require("cmp_tabnine.config")
-tabnine:setup({
-	max_lines = 1000,
-	max_num_results = 20,
-	sort = true,
-	run_on_every_keystroke = true,
-	snippet_placeholder = "..",
-})
-
--- Use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
-local on_attach = function(client, bufnr)
-	-- Enable completion triggered by <c-x><c-o>
-	vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-
-	-- Mappings.
-	-- See `:help vim.lsp.*` for documentation on any of the below functions
-	local bufopts = { noremap = true, silent = true, buffer = bufnr }
-	vim.keymap.set("n", "gD", vim.lsp.buf.declaration, bufopts)
-	vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
-	vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
-	vim.keymap.set("n", "gi", vim.lsp.buf.implementation, bufopts)
-	vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, bufopts)
-	vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, bufopts)
-	vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, bufopts)
-end
-
 local nvim_lsp = require("lspconfig")
+local cmp = require("cmp")
 
-nvim_lsp.html.setup({
-	on_attach = on_attach,
+lsp.preset("recommended")
+
+lsp.ensure_installed({
+	"eslint",
+	"rust_analyzer",
+	"sumneko_lua",
+	"tsserver",
+	"cssls",
+	"denols",
+	"graphql",
+	"html",
+	"tailwindcss",
 })
-nvim_lsp.tsserver.setup({
-	on_attach = on_attach,
+
+lsp.configure("tsserver", {
 	root_dir = nvim_lsp.util.root_pattern("package.json"),
 })
-nvim_lsp.cssls.setup({
-	on_attach = on_attach,
-})
-nvim_lsp.denols.setup({
-	on_attach = on_attach,
+
+lsp.configure("denols", {
 	root_dir = nvim_lsp.util.root_pattern("deno.json"),
 })
-nvim_lsp.eslint.setup({
-	on_attach = on_attach,
-})
-nvim_lsp.tailwindcss.setup({
-	on_attach = on_attach,
-})
-nvim_lsp.gopls.setup({
-	on_attach = on_attach,
-})
-nvim_lsp.graphql.setup({
-	on_attach = on_attach,
-})
-nvim_lsp.rust_analyzer.setup({
-	on_attach = on_attach,
-})
-nvim_lsp.elmls.setup({
-	on_attach = on_attach,
+
+local function lsp_keymaps(bufnr)
+	local map = function(m, lhs, rhs)
+		local opts = { remap = false, silent = true, buffer = bufnr }
+		vim.keymap.set(m, lhs, rhs, opts)
+	end
+
+	-- LSP actions
+	map("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>")
+	map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>")
+	map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>")
+	map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>")
+	map("n", "go", "<cmd>lua vim.lsp.buf.type_definition()<cr>")
+	map("n", "gr", "<cmd>lua vim.lsp.buf.references()<cr>")
+	map("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<cr>")
+	map("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<cr>")
+	map("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>")
+	map("x", "<F4>", "<cmd>lua vim.lsp.buf.range_code_action()<cr>")
+
+	-- Diagnostics
+	map("n", "gl", "<cmd>lua vim.diagnostic.open_float()<cr>")
+	map("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<cr>")
+	map("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<cr>")
+end
+
+local function lsp_attach(client, bufnr)
+	local buf_command = vim.api.nvim_buf_create_user_command
+
+	lsp_keymaps(bufnr)
+
+	buf_command(bufnr, "LspFormat", function()
+		vim.lsp.buf.format()
+	end, { desc = "Format buffer with language server" })
+end
+
+require("mason-lspconfig").setup_handlers({
+	function(server_name)
+		require("lspconfig")[server_name].setup({
+			on_attach = lsp_attach,
+			capabilities = require("cmp_nvim_lsp").default_capabilities(),
+		})
+	end,
 })
 
-nvim_lsp.sumneko_lua.setup({
-	on_attach = on_attach,
-	settings = {
-		Lua = {
-			diagnostics = {
-				-- Get the language server to recognize the `vim` global
-				globals = { "vim" },
-			},
-		},
+local cmp_select = { behavior = cmp.SelectBehavior.Select }
+
+lsp.setup_nvim_cmp({
+	mapping = {
+		["<cr>"] = cmp.mapping.confirm({ select = false }),
+		["<c-p>"] = cmp.mapping.select_prev_item(cmp_select),
+		["<c-n>"] = cmp.mapping.select_next_item(cmp_select),
+		["<c-space>"] = cmp.mapping(function(fallback)
+			if cmp.visible() then
+				cmp.close()
+				fallback()
+			else
+				cmp.complete()
+			end
+		end),
 	},
 })
 
 require("luasnip.loaders.from_snipmate").lazy_load()
+
+lsp.setup()
