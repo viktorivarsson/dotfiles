@@ -84,6 +84,8 @@ return require("packer").startup(function(use)
 	-- harpoon
 	use("theprimeagen/harpoon")
 
+  use("mbbill/undotree")
+
 	use({
 		"numToStr/Comment.nvim",
 		config = function()
