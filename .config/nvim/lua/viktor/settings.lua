@@ -21,6 +21,8 @@ vim.opt.swapfile = false
 vim.opt.hlsearch = true
 vim.opt.incsearch = true
 
+vim.opt.spell = true
+
 vim.opt.termguicolors = true
 
 -- Give more space for displaying messages.
