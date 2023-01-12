@@ -1,6 +1,6 @@
 local map = vim.api.nvim_set_keymap
 
-local options = { noremap = true, siltent = true }
+local options = { noremap = true, silent = true }
 
 map("n", "<leader>a", "<cmd>lua require('harpoon.mark').add_file()<cr>", options)
 map("n", "<leader>hl", "<cmd>lua require('harpoon.ui').toggle_quick_menu()<cr>", options)
