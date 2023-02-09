@@ -23,6 +23,13 @@ return require("packer").startup(function(use)
 		end,
 	})
 
+	use({
+		"jcdickinson/wpm.nvim",
+		config = function()
+			require("wpm").setup({})
+		end,
+	})
+
 	-- theme
 	use("sam4llis/nvim-tundra")
 	use("folke/tokyonight.nvim")
@@ -84,7 +91,7 @@ return require("packer").startup(function(use)
 	-- harpoon
 	use("theprimeagen/harpoon")
 
-  use("mbbill/undotree")
+	use("mbbill/undotree")
 
 	use({
 		"numToStr/Comment.nvim",
