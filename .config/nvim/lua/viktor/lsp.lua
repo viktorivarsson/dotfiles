@@ -58,7 +58,6 @@ lsp.setup_nvim_cmp({
 lsp.ensure_installed({
 	"eslint",
 	"rust_analyzer",
-	"sumneko_lua",
 	"tsserver",
 	"cssls",
 	"denols",
