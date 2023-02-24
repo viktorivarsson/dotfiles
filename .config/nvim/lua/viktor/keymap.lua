@@ -2,7 +2,8 @@ local map = vim.api.nvim_set_keymap
 
 -- Map leader
 map("n", "<space>", "", {})
-vim.g.mapleader = " " -- 'vim.g' sets global variables
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
 local options = { noremap = true }
 local silent_options = { noremap = true, silent = true }
@@ -40,4 +41,3 @@ map("n", "<leader>bb", ":buffers<cr>", options)
 
 -- Edit VIM
 map("n", "<leader>1", ":e $MYVIMRC<cr>", options)
-map("n", "<leader>2", ":lua reload_nvim_conf()<cr>", options)
