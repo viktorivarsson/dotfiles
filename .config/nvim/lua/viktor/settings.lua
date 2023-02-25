@@ -32,6 +32,10 @@ vim.opt.cmdheight = 1
 -- delays and poor user experience.
 vim.opt.updatetime = 50
 
+vim.diagnostic.config({
+	virtual_text = true,
+})
+
 vim.g.neoformat_try_node_exe = 1
 vim.g.neoformat_enabled_typescript =
 	{ "tsfmt", "prettierd", "prettier", "prettiereslint", "tslint", "eslint_d", "denofmt" }
