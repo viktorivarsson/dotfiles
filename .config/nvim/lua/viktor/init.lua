@@ -1,10 +1,5 @@
 require("viktor.keymap")
 require("viktor.color")
 require("viktor.copilot")
-require("viktor.gitsigns")
-require("viktor.lsp")
 require("viktor.settings")
-require("viktor.statusline")
-require("viktor.telescope")
-require("viktor.treesitter")
-require("viktor.trouble")
+
