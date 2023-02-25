@@ -1,31 +1,18 @@
-require("lazy").setup({
+return {
 	"metakirby5/codi.vim",
-
-	{
-		"folke/which-key.nvim",
-		config = function()
-			require("which-key").setup({})
-		end,
-	},
-
-	{
-		"jcdickinson/wpm.nvim",
-		config = function()
-			require("wpm").setup({})
-		end,
-	},
 
 	-- theme
 	"sam4llis/nvim-tundra",
 	"folke/tokyonight.nvim",
 
+  {
+
+  },
+
 	-- treesitter
 	{
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
-		requires = {
-			"windwp/nvim-ts-autotag",
-		},
 	},
 
 	"kyazdani42/nvim-web-devicons",
@@ -37,13 +24,6 @@ require("lazy").setup({
 	},
 
 	"lewis6991/gitsigns.nvim",
-
-	{
-		"folke/zen-mode.nvim",
-		config = function()
-			require("zen-mode").setup({})
-		end,
-	},
 
 	{
 		"folke/trouble.nvim",
@@ -59,18 +39,6 @@ require("lazy").setup({
 		dependencies = { { "nvim-lua/plenary.nvim" }, { "BurntSushi/ripgrep" } },
 	},
 	{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-
-	-- harpoon
-	"theprimeagen/harpoon",
-
-	"mbbill/undotree",
-
-	{
-		"numToStr/Comment.nvim",
-		config = function()
-			require("Comment").setup()
-		end,
-	},
 
 	{
 		"VonHeikemen/lsp-zero.nvim",
@@ -94,7 +62,4 @@ require("lazy").setup({
 			{ "rafamadriz/friendly-snippets" },
 		},
 	},
-
-	-- format
-	"sbdchd/neoformat",
-})
+}

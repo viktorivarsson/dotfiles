@@ -11,4 +11,12 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+local map = vim.api.nvim_set_keymap
+
+-- Map leader
+map("n", "<space>", "", {})
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
+require("lazy").setup("plugins")
 require("viktor")
