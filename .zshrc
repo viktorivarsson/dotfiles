@@ -21,17 +21,29 @@ alias ls="exa"
 alias ll="exa -la"
 alias cat="bat"
 
+# Applications
+alias n="nvim"
+
 # Yarn
 alias yd="yarn dev"
 alias yyd="yarn && yarn dev"
 alias yb="yarn build"
-alias yyb="yarn && yarn build"
 alias ys="yarn start"
 alias yt="yarn test"
 alias ytw="yarn test --watch"
 alias yc="yarn codegen"
 alias ycw="yarn codegen --watch"
 alias yui="yarn upgrade-interactive --latest"
+
+# PNPM
+alias pd="pnpm dev"
+alias ppd="pnpm && pnpm dev"
+alias pb="pnpm build"
+alias ps="pnpm start"
+alias pt="pnpm test"
+alias ptw="pnpm test --watch"
+alias pc="pnpm codegen"
+alias pcw="pnpm codegen --watch"
 
 # Git
 alias gst="git status"
