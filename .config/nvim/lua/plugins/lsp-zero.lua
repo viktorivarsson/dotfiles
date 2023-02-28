@@ -86,10 +86,11 @@ return {
 
 			lsp.configure("tsserver", {
 				root_dir = nvim_lsp.util.root_pattern("package.json"),
+				single_file_support = false,
 			})
 
 			lsp.configure("denols", {
-				root_dir = nvim_lsp.util.root_pattern("deno.json"),
+				root_dir = nvim_lsp.util.root_pattern("deno.json", "deno.jsonc"),
 			})
 
 			lsp.configure("sumneko_lua", {
