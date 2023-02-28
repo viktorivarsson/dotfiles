@@ -2,21 +2,22 @@ return {
 	{
 		"folke/tokyonight.nvim",
 		config = function()
+			-- vim.cmd([[set background=dark]])
 			-- vim.cmd([[colorscheme tokyonight-night]])
 		end,
 	},
 	{
-		"Yazeed1s/oh-lucy.nvim",
+		"arcticicestudio/nord-vim",
 		config = function()
-			-- vim.cmd([[colorscheme oh-lucy]]) -- for oh-lucy
-			-- vim.cmd([[colorscheme oh-lucy-evening]]) -- for oh-lucy-evening
+			-- vim.cmd([[set background=dark]])
+			-- vim.cmd([[colorscheme nord]])
 		end,
 	},
 	{
-		"olivercederborg/poimandres.nvim",
+		"cocopon/iceberg.vim",
 		config = function()
-			require("poimandres").setup({})
-			vim.cmd([[colorscheme poimandres]])
+			vim.cmd([[set background=dark]])
+			vim.cmd([[colorscheme iceberg]])
 		end,
 	},
 }
