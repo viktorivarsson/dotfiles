@@ -10,17 +10,18 @@ return {
 		config = function()
 			local telescope = require("telescope")
 			local telescope_config = require("telescope.config")
-
-			local map = vim.api.nvim_set_keymap
+			local builtin = require("telescope.builtin")
+			local map = vim.keymap.set
 
 			local options = { noremap = true }
-			map("n", "<leader>ff", "<cmd>lua require('telescope.builtin').find_files()<cr>", options)
-			map("n", "<leader>fg", "<cmd>lua require('telescope.builtin').live_grep()<cr>", options)
-			map("n", "<leader>fh", "<cmd>lua require('telescope.builtin').help_tags()<cr>", options)
-			map("n", "<leader>gr", "<cmd>lua require('telescope.builtin').lsp_references()<cr>", options)
-			map("n", "<leader>fb", "<cmd>lua require('telescope.builtin').buffers()<cr>", options)
-			map("n", "<leader>ft", "<cmd>lua require('telescope.builtin').treesitter()<cr>", options)
-			map("n", "<leader>fk", "<cmd>lua require('telescope.builtin').keymaps()<cr>", options)
+
+			map("n", "<leader>ff", builtin.find_files, options)
+			map("n", "<leader>fg", builtin.live_grep, options)
+			map("n", "<leader>fh", builtin.help_tags, options)
+			map("n", "<leader>gr", builtin.lsp_references, options)
+			map("n", "<leader>fb", builtin.buffers, options)
+			map("n", "<leader>ft", builtin.treesitter, options)
+			map("n", "<leader>fk", builtin.keymaps, options)
 
 			-- Clone the default Telescope configuration
 			local vimgrep_arguments = { unpack(telescope_config.values.vimgrep_arguments) }
