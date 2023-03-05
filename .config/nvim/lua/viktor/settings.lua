@@ -1,5 +1,7 @@
 vim.opt.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20"
 
+vim.opt.cursorline = true
+
 vim.opt.signcolumn = "yes"
 
 vim.opt.nu = true
