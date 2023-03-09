@@ -11,6 +11,7 @@ return {
 			local telescope = require("telescope")
 			local telescope_config = require("telescope.config")
 			local builtin = require("telescope.builtin")
+			local actions = require("telescope.actions")
 			local map = vim.keymap.set
 
 			local options = { noremap = true }
@@ -21,6 +22,7 @@ return {
 			map("n", "<leader>gr", builtin.lsp_references, options)
 			map("n", "<leader>fb", builtin.buffers, options)
 			map("n", "<leader>ft", builtin.treesitter, options)
+			map("n", "<leader>fk", builtin.keymaps, options)
 			map("n", "<leader>fk", builtin.keymaps, options)
 
 			-- Clone the default Telescope configuration
@@ -35,6 +37,16 @@ return {
 					vimgrep_arguments = vimgrep_arguments,
 					path_display = {
 						truncate = 3,
+					},
+					mappings = {
+						i = {
+							["<c-q>a"] = actions.send_to_qflist + actions.open_qflist,
+							["<c-q>s"] = actions.send_selected_to_qflist + actions.open_qflist,
+						},
+						n = {
+							["<c-q>a"] = actions.send_to_qflist + actions.open_qflist,
+							["<c-q>s"] = actions.send_selected_to_qflist + actions.open_qflist,
+						},
 					},
 				},
 				pickers = {

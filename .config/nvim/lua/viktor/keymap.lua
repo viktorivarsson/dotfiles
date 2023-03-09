@@ -28,9 +28,15 @@ map("n", "<leader>nl", ":nohlsearch<cr>", silent_options)
 map("x", "<leader>p", '"_dP', options)
 map("v", "<leader>y", '"*y', options)
 
--- Save and exit shortcuts
+-- Save
 map("n", "<leader>w", ":w!<cr>", options)
-map("n", "<leader>q", ":q!<cr>", options)
+
+-- Quickfix
+map("n", "<leader>cf", ":copen<cr>", options)
+map("n", "<leader>cn", ":cn<cr>", options)
+map("n", "<leader>cp", ":cp<cr>", options)
+map("n", "<leader>cN", ":cnew<cr>", options)
+map("n", "<leader>cP", ":cold<cr>", options)
 
 -- Buffers
 map("n", "<leader>bd", ":bd<cr>", options)
