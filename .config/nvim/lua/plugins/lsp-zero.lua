@@ -53,8 +53,34 @@ return {
 			lsp.setup_nvim_cmp({
 				mapping = {
 					["<cr>"] = cmp.mapping.confirm({ select = false }),
-					["<c-p>"] = cmp.mapping.select_prev_item(cmp_select),
-					["<c-n>"] = cmp.mapping.select_next_item(cmp_select),
+					["<c-n>"] = function(fallback)
+						if cmp.visible() then
+							cmp.select_next_item(cmp_select)
+						else
+							fallback()
+						end
+					end,
+					["<down>"] = function(fallback)
+						if cmp.visible() then
+							cmp.select_next_item(cmp_select)
+						else
+							fallback()
+						end
+					end,
+					["<c-p>"] = function(fallback)
+						if cmp.visible() then
+							cmp.select_prev_item(cmp_select)
+						else
+							fallback()
+						end
+					end,
+					["<up>"] = function(fallback)
+						if cmp.visible() then
+							cmp.select_prev_item(cmp_select)
+						else
+							fallback()
+						end
+					end,
 					["<c-space>"] = cmp.mapping(function(fallback)
 						if cmp.visible() then
 							cmp.close()
