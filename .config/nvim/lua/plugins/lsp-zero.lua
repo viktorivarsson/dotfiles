@@ -52,7 +52,7 @@ return {
 
 			lsp.setup_nvim_cmp({
 				mapping = {
-					["<cr>"] = cmp.mapping.confirm({ select = false }),
+					["<c-y>"] = cmp.mapping.confirm({ select = false }),
 					["<c-n>"] = function(fallback)
 						if cmp.visible() then
 							cmp.select_next_item(cmp_select)
