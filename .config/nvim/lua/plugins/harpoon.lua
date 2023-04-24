@@ -9,6 +9,8 @@ return {
 		map("n", "<leader>hq", "<cmd>lua require('harpoon.ui').nav_file(1)<cr>", options)
 		map("n", "<leader>hw", "<cmd>lua require('harpoon.ui').nav_file(2)<cr>", options)
 		map("n", "<leader>he", "<cmd>lua require('harpoon.ui').nav_file(3)<cr>", options)
+		map("n", "<leader>hf", "<cmd>lua require('harpoon.ui').nav_file(3)<cr>", options)
 		map("n", "<leader>hr", "<cmd>lua require('harpoon.ui').nav_file(4)<cr>", options)
+		map("n", "<leader>hp", "<cmd>lua require('harpoon.ui').nav_file(4)<cr>", options)
 	end,
 }
