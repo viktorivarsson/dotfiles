@@ -6,7 +6,7 @@ local silent_options = { noremap = true, silent = true }
 map("n", "<leader>l", "<cmd>Lazy<cr>", silent_options)
 
 -- ex
-map("n", "<leader>pv", ":Ex<cr>", silent_options)
+-- map("n", "<leader>pv", ":Ex<cr>", silent_options)
 
 -- copy relative file path to clipboard
 map("n", "<leader>fp", ":let @+ = expand('%')<cr>", silent_options)
