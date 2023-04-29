@@ -14,6 +14,8 @@ map("n", "<leader>fp", ":let @+ = expand('%')<cr>", silent_options)
 -- Move lines up / down
 map("v", "J", ":m '>+1<cr>gv=gv", options)
 map("v", "K", ":m '<-2<cr>gv=gv", options)
+map("v", "<s-down>", ":m '>+1<cr>gv=gv", options)
+map("v", "<s-up>", ":m '<-2<cr>gv=gv", options)
 
 -- Center after navigation commands
 map("n", "<c-d>", "<c-d>zz", silent_options)
