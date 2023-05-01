@@ -78,6 +78,7 @@ export NVM_DIR="$HOME/.nvm"
 
 # Custom bin
 export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/code/dotfiles/bin:$PATH"
 
 # Yarn
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
