@@ -41,6 +41,7 @@ map("n", "<leader>cN", ":cnew<cr>", options)
 map("n", "<leader>cP", ":cold<cr>", options)
 
 -- Buffers
+map("n", "<leader>ha", ":b#<cr>", options)
 map("n", "<leader>bd", ":bd<cr>", options)
 map("n", "<leader>bb", ":buffers<cr>", options)
 
