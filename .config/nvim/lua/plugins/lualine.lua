@@ -10,7 +10,7 @@ return {
 		require("lualine").setup({
 			options = {
 				icons_enabled = true,
-				theme = "sonokai",
+				theme = "gruvbox",
 			},
 			sections = {
 				lualine_a = { "branch" },

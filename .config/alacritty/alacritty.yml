@@ -126,4 +126,4 @@ schemes:
         foreground: "#6e6a86"
         background: "#2a273f"
 
-  colors: *rose-pine-moon
+  colors: *gruvbox-dark
