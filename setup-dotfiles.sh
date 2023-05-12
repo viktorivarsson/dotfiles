@@ -9,3 +9,5 @@ setup_link ".config/brewfile/Brewfile"
 setup_link ".tmux.conf"
 setup_link ".zshrc"
 setup_link "Brewfile"
+
+deno install -f --allow-read --allow-run ./scripts/npr/npr.ts
