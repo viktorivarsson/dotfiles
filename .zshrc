@@ -1,4 +1,4 @@
-PROMPT='%F{red}▸%f '
+PROMPT='%F{blue}%1~%f %F{red}▸%f '
 
 # Navigation
 alias ..="cd ../"
