@@ -1,5 +1,6 @@
 return {
 	"windwp/nvim-spectre",
+	event = "VeryLazy",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 	},

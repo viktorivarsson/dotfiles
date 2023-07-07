@@ -1,5 +1,6 @@
 return {
 	"nvim-lualine/lualine.nvim",
+	event = "VeryLazy",
 	dependencies = {
 		"jcdickinson/wpm.nvim",
 		"kyazdani42/nvim-web-devicons",

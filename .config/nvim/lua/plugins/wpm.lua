@@ -1,8 +1,7 @@
 return {
-	{
-		"jcdickinson/wpm.nvim",
-		config = function()
-			require("wpm").setup({})
-		end,
-	},
+	"jcdickinson/wpm.nvim",
+	event = "VeryLazy",
+	config = function()
+		require("wpm").setup({})
+	end,
 }
