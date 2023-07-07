@@ -25,6 +25,9 @@ return {
 					end, opts)
 
 					vim.keymap.set("n", "<leader>mm", ":Git merge origin/main<cr>", opts)
+					vim.keymap.set("n", "<leader>cb", ":Git checkout -b ", opts)
+					vim.keymap.set("n", "<leader>co", ":Git checkout ", opts)
+					vim.keymap.set("n", "<leader>cm", ":Git checkout main<cr>", opts)
 				end,
 			})
 		end,
