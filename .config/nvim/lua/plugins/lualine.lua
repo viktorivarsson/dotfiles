@@ -13,8 +13,8 @@ return {
 				theme = "gruvbox",
 			},
 			sections = {
-				lualine_a = { "branch" },
-				lualine_b = { "diff", "diagnostics", "searchcount" },
+				lualine_a = { "mode" },
+				lualine_b = { "branch", "diff", "diagnostics", "searchcount" },
 				lualine_c = { { "filename", file_status = true, path = 1 } },
 				lualine_x = { "filetype" },
 				lualine_y = { wpm.wpm, wpm.historic_graph, "progress" },

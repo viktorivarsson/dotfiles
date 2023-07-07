@@ -2,6 +2,7 @@ return {
 	"m4xshen/hardtime.nvim",
 	event = "VeryLazy",
 	opts = {
+		max_count = 3,
 		restricted_keys = {
 			["h"] = { "n", "v" },
 			["j"] = { "n", "v" },
