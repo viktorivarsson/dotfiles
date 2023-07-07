@@ -14,16 +14,13 @@ return {
 			local actions = require("telescope.actions")
 			local map = vim.keymap.set
 
-			local options = { noremap = true }
-
-			map("n", "<leader>ff", builtin.find_files, options)
-			map("n", "<leader>fg", builtin.live_grep, options)
-			map("n", "<leader>fh", builtin.help_tags, options)
-			map("n", "<leader>gr", builtin.lsp_references, options)
-			map("n", "<leader>fb", builtin.buffers, options)
-			map("n", "<leader>ft", builtin.treesitter, options)
-			map("n", "<leader>fk", builtin.keymaps, options)
-			map("n", "<leader>fk", builtin.keymaps, options)
+			map("n", "<leader>ff", builtin.find_files, { desc = "[F]ind [F]iles" })
+			map("n", "<leader>fg", builtin.live_grep, { desc = "[F]ind [G]rep" })
+			map("n", "<leader>fh", builtin.help_tags, { desc = "[F]ind [H]elp" })
+			map("n", "<leader>gr", builtin.lsp_references, { desc = "[G]oto [R]eferences" })
+			map("n", "<leader>fb", builtin.buffers, { desc = "[F]ind [B]uffers" })
+			map("n", "<leader>ft", builtin.treesitter, { desc = "[F]ind [T]reesitter" })
+			map("n", "<leader>fk", builtin.keymaps, { desc = "[F]ind [K]eymaps" })
 
 			-- Clone the default Telescope configuration
 			local vimgrep_arguments = { unpack(telescope_config.values.vimgrep_arguments) }

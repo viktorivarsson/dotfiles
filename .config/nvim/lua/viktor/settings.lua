@@ -23,6 +23,9 @@ vim.opt.swapfile = false
 vim.opt.hlsearch = true
 vim.opt.incsearch = true
 
+vim.o.ignorecase = true
+vim.o.smartcase = true
+
 vim.opt.spell = false
 
 vim.opt.termguicolors = true
