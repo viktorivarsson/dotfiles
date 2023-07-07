@@ -101,13 +101,11 @@ return {
 
 			lsp.ensure_installed({
 				"eslint",
-				"rust_analyzer",
 				"tsserver",
 				"cssls",
 				"denols",
 				"graphql",
 				"html",
-				"tailwindcss",
 			})
 
 			lsp.configure("tsserver", {
