@@ -81,6 +81,12 @@ export PATH="$HOME/.local/bin:$PATH" # ghcid
 # PHP
 export PATH="/usr/local/opt/php@7.4/bin:$PATH"
 
+# Ocaml (only if opam available)
+if command -v opam &> /dev/null
+then
+    eval $(opam env)
+fi
+
 # Homebrew
 eval $(/opt/homebrew/bin/brew shellenv)
 
