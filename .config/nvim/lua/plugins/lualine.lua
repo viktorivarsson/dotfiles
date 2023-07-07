@@ -11,13 +11,20 @@ return {
 		require("lualine").setup({
 			options = {
 				icons_enabled = true,
-				theme = "gruvbox",
+				theme = "tokyonight",
 			},
 			sections = {
 				lualine_a = { "mode" },
 				lualine_b = { "branch", "diff", "diagnostics", "searchcount" },
 				lualine_c = { { "filename", file_status = true, path = 1 } },
-				lualine_x = { "filetype" },
+				lualine_x = {
+					{
+						require("noice").api.statusline.mode.get,
+						cond = require("noice").api.statusline.mode.has,
+						color = { fg = "#ff9e64" },
+					},
+					"filetype",
+				},
 				lualine_y = { wpm.wpm, wpm.historic_graph, "progress" },
 				lualine_z = { "location" },
 			},

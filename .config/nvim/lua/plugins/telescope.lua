@@ -12,15 +12,21 @@ return {
 			local telescope_config = require("telescope.config")
 			local builtin = require("telescope.builtin")
 			local actions = require("telescope.actions")
-			local map = vim.keymap.set
 
-			map("n", "<leader>ff", builtin.find_files, { desc = "[F]ind [F]iles" })
-			map("n", "<leader>fg", builtin.live_grep, { desc = "[F]ind [G]rep" })
-			map("n", "<leader>fh", builtin.help_tags, { desc = "[F]ind [H]elp" })
-			map("n", "<leader>gr", builtin.lsp_references, { desc = "[G]oto [R]eferences" })
-			map("n", "<leader>fb", builtin.buffers, { desc = "[F]ind [B]uffers" })
-			map("n", "<leader>ft", builtin.treesitter, { desc = "[F]ind [T]reesitter" })
-			map("n", "<leader>fk", builtin.keymaps, { desc = "[F]ind [K]eymaps" })
+			local nmap = function(keys, func, desc)
+				if desc then
+					desc = "Telescope: " .. desc
+				end
+				vim.keymap.set("n", keys, func, { desc = desc })
+			end
+
+			nmap("<leader>ff", builtin.find_files, "[F]ind [F]iles")
+			nmap("<leader>fg", builtin.live_grep, "[F]ind [G]rep")
+			nmap("<leader>fh", builtin.help_tags, "[F]ind [H]elp")
+			nmap("<leader>gr", builtin.lsp_references, "[G]oto [R]eferences")
+			nmap("<leader>fb", builtin.buffers, "[F]ind [B]uffers")
+			nmap("<leader>ft", builtin.treesitter, "[F]ind [T]reesitter")
+			nmap("<leader>fk", builtin.keymaps, "[F]ind [K]eymaps")
 
 			-- Clone the default Telescope configuration
 			local vimgrep_arguments = { unpack(telescope_config.values.vimgrep_arguments) }

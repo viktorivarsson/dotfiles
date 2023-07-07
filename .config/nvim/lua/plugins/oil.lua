@@ -10,8 +10,7 @@ return {
 		})
 
 		local map = vim.api.nvim_set_keymap
-		local silent_options = { noremap = true, silent = true }
 
-		map("n", "<leader>pv", ":Oil<cr>", silent_options)
+		map("n", "<leader>pv", ":Oil<cr>", { noremap = true, silent = true, desc = "[P]roject [V]iew" })
 	end,
 }

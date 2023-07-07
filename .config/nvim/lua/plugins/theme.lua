@@ -2,12 +2,11 @@ return {
 	{
 		"folke/tokyonight.nvim",
 		config = function()
-			-- vim.cmd([[set background=dark]])
-			-- vim.cmd([[colorscheme tokyonight-night]])
+			vim.cmd([[set background=dark]])
+			vim.cmd([[colorscheme tokyonight-night]])
 		end,
 	},
 	{
-
 		"sainnhe/sonokai",
 		config = function()
 			-- vim.g.sonokai_style = "andromeda"
@@ -34,13 +33,6 @@ return {
 		config = function()
 			-- vim.cmd([[set background=dark]])
 			-- vim.cmd([[colorscheme  gruvbox]])
-		end,
-	},
-	{
-		"nyoom-engineering/oxocarbon.nvim",
-		config = function()
-			vim.cmd([[set background=dark]])
-			vim.cmd([[colorscheme oxocarbon]])
 		end,
 	},
 }

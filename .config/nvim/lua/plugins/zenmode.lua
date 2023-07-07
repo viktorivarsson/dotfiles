@@ -5,8 +5,7 @@ return {
 		require("zen-mode").setup({})
 
 		local map = vim.api.nvim_set_keymap
-		local options = { noremap = true, silent = true }
 
-		map("n", "<leader>z", ":ZenMode<cr>", options)
+		map("n", "<leader>z", ":ZenMode<cr>", { noremap = true, silent = true, desc = "[Z]en Mode" })
 	end,
 }

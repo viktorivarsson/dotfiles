@@ -3,13 +3,10 @@ local map = vim.api.nvim_set_keymap
 local options = { noremap = true }
 local silent_options = { noremap = true, silent = true }
 
-map("n", "<leader>l", "<cmd>Lazy<cr>", silent_options)
-
--- ex
--- map("n", "<leader>pv", ":Ex<cr>", silent_options)
+map("n", "<leader>l", "<cmd>Lazy<cr>", { desc = "[L]azy" })
 
 -- copy relative file path to clipboard
-map("n", "<leader>fp", ":let @+ = expand('%')<cr>", silent_options)
+map("n", "<leader>fp", ":let @+ = expand('%')<cr>", { desc = "Copy relative [F]ile [P]ath to clipboard" })
 
 -- Move lines up / down
 map("v", "J", ":m '>+1<cr>gv=gv", options)
@@ -24,26 +21,23 @@ map("n", "n", "nzz", silent_options)
 map("n", "N", "Nzz", silent_options)
 
 -- No hl search
-map("n", "<leader>nl", ":nohlsearch<cr>", silent_options)
+map("n", "<leader>nl", ":nohlsearch<cr>", { desc = "No [H]ighlight [L]ast search", silent = true })
 
 -- Yank and paste
 map("x", "<leader>p", '"_dP', options)
 map("v", "<leader>y", '"*y', options)
 
 -- Save
-map("n", "<leader>w", ":w!<cr>", options)
+map("n", "<leader>ww", ":update<cr>", { desc = "[W]rite [W]ithout prompt", silent = true })
 
 -- Quickfix
-map("n", "<leader>cf", ":copen<cr>", options)
-map("n", "<leader>cn", ":cn<cr>", options)
-map("n", "<leader>cp", ":cp<cr>", options)
-map("n", "<leader>cN", ":cnew<cr>", options)
-map("n", "<leader>cP", ":cold<cr>", options)
+map("n", "<leader>cf", ":copen<cr>", { desc = "[C]lose [F]ix", silent = true })
+map("n", "<leader>cn", ":cn<cr>", { desc = "Quickfix next", silent = true })
+map("n", "<leader>cp", ":cp<cr>", { desc = "Quickfix previous", silent = true })
+map("n", "<leader>cN", ":cnew<cr>", { desc = "Quickfix new", silent = true })
+map("n", "<leader>cP", ":cold<cr>", { desc = "Quickfix old", silent = true })
 
 -- Buffers
-map("n", "<leader>ha", ":b#<cr>", options)
-map("n", "<leader>bd", ":bd<cr>", options)
-map("n", "<leader>bb", ":buffers<cr>", options)
-
--- Edit VIM
-map("n", "<leader>1", ":e $MYVIMRC<cr>", options)
+map("n", "<leader>ha", ":b#<cr>", { desc = "[H]op [A]lternate buffer", silent = true })
+map("n", "<leader>bd", ":bd<cr>", { desc = "[B]uffer [D]elete", silent = true })
+map("n", "<leader>bb", ":buffers<cr>", { desc = "[B]uffer [B]uffer", silent = true })

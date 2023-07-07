@@ -3,8 +3,7 @@ return {
 	event = "VeryLazy",
 	config = function()
 		local map = vim.api.nvim_set_keymap
-		local options = { noremap = true, silent = true }
 
-		map("n", "<leader>fa", "<cmd>Neoformat<cr>", options)
+		map("n", "<leader>fa", "<cmd>Neoformat<cr>", { noremap = true, silent = true, desc = "[F]ormat [A]ll" })
 	end,
 }

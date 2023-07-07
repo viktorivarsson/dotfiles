@@ -5,12 +5,16 @@ return {
 		dependencies = "kyazdani42/nvim-web-devicons",
 		cmd = "TroubleToggle",
 		config = function()
-			local map = vim.api.nvim_set_keymap
-			local options = { noremap = true, silent = true }
+			local nmap = function(keys, func, desc)
+				if desc then
+					desc = "Trouble: " .. desc
+				end
+				vim.keymap.set("n", keys, func, { noremap = true, silent = true, desc = desc })
+			end
 
-			map("n", "<leader>xx", "<cmd>TroubleToggle<cr>", options)
-			map("n", "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>", options)
-			map("n", "<leader>xd", "<cmd>TroubleToggle document_diagnostics<cr>", options)
+			nmap("<leader>xx", "<cmd>TroubleToggle<cr>", "Toggle")
+			nmap("<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>", "Workspace diagnostics")
+			nmap("<leader>xd", "<cmd>TroubleToggle document_diagnostics<cr>", "Document diagnostics")
 		end,
 	},
 }

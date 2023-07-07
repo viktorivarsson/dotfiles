@@ -1,3 +1,31 @@
+local cmp_kinds = {
+	Text = "  ",
+	Method = "  ",
+	Function = "  ",
+	Constructor = "  ",
+	Field = "  ",
+	Variable = "  ",
+	Class = "  ",
+	Interface = "  ",
+	Module = "  ",
+	Property = "  ",
+	Unit = "  ",
+	Value = "  ",
+	Enum = "  ",
+	Keyword = "  ",
+	Snippet = "  ",
+	Color = "  ",
+	File = "  ",
+	Reference = "  ",
+	Folder = "  ",
+	EnumMember = "  ",
+	Constant = "  ",
+	Struct = "  ",
+	Event = "  ",
+	Operator = "  ",
+	TypeParameter = "  ",
+}
+
 return {
 	{
 		"neovim/nvim-lspconfig",
@@ -26,6 +54,8 @@ return {
 			},
 		},
 		config = function()
+			vim.keymap.set("n", "<leader>cm", ":Mason<cr>", { noremap = true, silent = true, desc = "Open Mason" })
+
 			local on_attach = function(_, bufnr)
 				local nmap = function(keys, func, desc)
 					if desc then
@@ -52,14 +82,6 @@ return {
 				nmap("[d", vim.diagnostic.goto_prev, "Previous [D]iagnostic")
 				nmap("]d", vim.diagnostic.goto_next, "Next [D]iagnostic")
 
-				-- vim.keymap.set("n", "<leader>/", function()
-				-- 	-- You can pass additional configuration to telescope to change theme, layout, etc.
-				-- 	require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
-				-- 		winblend = 10,
-				-- 		previewer = false,
-				-- 	}))
-				-- end, { desc = "[/] Fuzzily search in current buffer" })
-
 				vim.api.nvim_buf_create_user_command(bufnr, "Format", function(_)
 					vim.lsp.buf.format()
 				end, { desc = "Format current buffer with LSP" })
@@ -67,10 +89,9 @@ return {
 
 			require("mason").setup()
 			require("neodev").setup()
+
 			local nvim_lsp = require("lspconfig")
 
-			-- require("lspconfig").tsserver.setup({
-			-- 	capabilities = capabilities,
 			local servers = {
 				eslint = {},
 				tsserver = {
@@ -128,6 +149,16 @@ return {
 			local cmp_select = { behavior = cmp.SelectBehavior.Select }
 
 			cmp.setup({
+				window = {
+					completion = cmp.config.window.bordered(),
+					documentation = cmp.config.window.bordered(),
+				},
+				formatting = {
+					format = function(_, vim_item)
+						vim_item.kind = (cmp_kinds[vim_item.kind] or "") .. vim_item.kind
+						return vim_item
+					end,
+				},
 				snippet = {
 					expand = function(args)
 						luasnip.lsp_expand(args.body)
