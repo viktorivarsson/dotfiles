@@ -6,6 +6,7 @@ return {
 			{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 			{ "nvim-lua/plenary.nvim" },
 			{ "BurntSushi/ripgrep" },
+			{ "benfowler/telescope-luasnip.nvim" },
 		},
 		config = function()
 			local telescope = require("telescope")
@@ -27,6 +28,7 @@ return {
 			nmap("<leader>fb", builtin.buffers, "[F]ind [B]uffers")
 			nmap("<leader>ft", builtin.treesitter, "[F]ind [T]reesitter")
 			nmap("<leader>fk", builtin.keymaps, "[F]ind [K]eymaps")
+			nmap("<leader>fs", "<cmd>Telescope luasnip theme=ivy<cr>", "[F]ind [S]nippets")
 
 			-- Clone the default Telescope configuration
 			local vimgrep_arguments = { unpack(telescope_config.values.vimgrep_arguments) }
@@ -82,6 +84,7 @@ return {
 			})
 
 			telescope.load_extension("fzf")
+			telescope.load_extension("luasnip")
 		end,
 	},
 }
