@@ -142,13 +142,16 @@ return {
 			})
 
 			local luasnip = require("luasnip")
-			require("luasnip.loaders.from_vscode").lazy_load()
+			require("luasnip.loaders.from_snipmate").lazy_load()
 			luasnip.config.setup({})
 
 			local cmp = require("cmp")
 			local cmp_select = { behavior = cmp.SelectBehavior.Select }
 
 			cmp.setup({
+				completion = {
+					completeopt = "menu,menuone,noinsert",
+				},
 				window = {
 					completion = cmp.config.window.bordered(),
 					documentation = cmp.config.window.bordered(),
@@ -194,10 +197,9 @@ return {
 							fallback()
 						end
 					end,
-					["<c-space>"] = cmp.mapping(function(fallback)
+					["<c-space>"] = cmp.mapping(function()
 						if cmp.visible() then
 							cmp.close()
-							fallback()
 						else
 							cmp.complete()
 						end
