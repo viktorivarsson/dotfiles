@@ -2,37 +2,23 @@ return {
 	{
 		"folke/tokyonight.nvim",
 		config = function()
-			vim.cmd([[set background=dark]])
-			vim.cmd([[colorscheme tokyonight-night]])
-		end,
-	},
-	{
-		"sainnhe/sonokai",
-		config = function()
-			-- vim.g.sonokai_style = "andromeda"
-			-- vim.g.sonokai_better_performance = 1
-			-- vim.cmd([[colorscheme sonokai]])
-		end,
-	},
-	{
-		"arcticicestudio/nord-vim",
-		config = function()
 			-- vim.cmd([[set background=dark]])
-			-- vim.cmd([[colorscheme nord]])
+			-- vim.cmd([[colorscheme tokyonight-night]])
 		end,
 	},
 	{
-		"cocopon/iceberg.vim",
+		"navarasu/onedark.nvim",
 		config = function()
-			-- vim.cmd([[set background=dark]])
-			-- vim.cmd([[colorscheme iceberg]])
+			-- require("onedark").setup({
+			-- 	style = "darker",
+			-- })
+			-- require("onedark").load()
 		end,
 	},
 	{
-		"ellisonleao/gruvbox.nvim",
+		"yazeed1s/oh-lucy.nvim",
 		config = function()
-			-- vim.cmd([[set background=dark]])
-			-- vim.cmd([[colorscheme  gruvbox]])
+			vim.cmd([[colorscheme oh-lucy]])
 		end,
 	},
 }
