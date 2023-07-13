@@ -27,7 +27,8 @@ map("n", "<leader>nl", ":nohlsearch<cr>", { desc = "No [H]ighlight [L]ast search
 map("x", "<leader>p", '"_dP', options)
 map("v", "<leader>y", '"*y', options)
 
--- Save
+-- Save / quit
+map("n", "<leader>Q", ":qa!<cr>", { desc = "[Q]uit", silent = true })
 map("n", "<leader>ww", ":update<cr>", { desc = "[W]rite [W]ithout prompt", silent = true })
 
 -- Quickfix
