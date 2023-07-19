@@ -38,7 +38,7 @@ return {
 
 			telescope.setup({
 				defaults = {
-					file_ignore_patterns = { "node_modules", "yarn.lock", ".git", ".bin" },
+					file_ignore_patterns = { "node_modules", "yarn.lock", ".git", ".bin", "_opam", "_build" },
 					vimgrep_arguments = vimgrep_arguments,
 					path_display = {
 						truncate = 3,
