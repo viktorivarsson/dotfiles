@@ -4,17 +4,17 @@ return {
 	opts = {
 		max_count = 3,
 		restricted_keys = {
-			["h"] = { "n", "v" },
-			["j"] = { "n", "v" },
-			["k"] = { "n", "v" },
-			["l"] = { "n", "v" },
 			["<up>"] = { "n", "v" },
 			["<down>"] = { "n", "v" },
 			["<left>"] = { "n", "v" },
 			["<right>"] = { "n", "v" },
-			["<cr>"] = { "n", "v" },
 		},
-		disabled_keys = {},
+		disabled_keys = {
+			["<UP>"] = {},
+			["<RIGHT>"] = {},
+			["<DOWN>"] = {},
+			["<LEFT>"] = {},
+		},
 		disabled_filetypes = { "qf", "oil", "lazy", "mason" },
 	},
 }
