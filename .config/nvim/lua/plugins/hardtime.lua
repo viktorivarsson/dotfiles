@@ -15,6 +15,6 @@ return {
 			["<DOWN>"] = {},
 			["<LEFT>"] = {},
 		},
-		disabled_filetypes = { "qf", "oil", "lazy", "mason" },
+		disabled_filetypes = { "qf", "oil", "lazy", "mason", "Trouble", "undotree" },
 	},
 }
