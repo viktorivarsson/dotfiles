@@ -3,6 +3,7 @@ return {
 	config = function()
 		require("gitsigns").setup({
 			numhl = true,
+			signcolumn = false,
 			on_attach = function(bufnr)
 				local gs = package.loaded.gitsigns
 
