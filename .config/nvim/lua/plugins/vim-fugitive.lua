@@ -18,9 +18,11 @@ return {
 				local opts = { buffer = bufnr, remap = false }
 
 				vim.keymap.set("n", "<leader>p", ":Git -c push.default=current push<cr>", opts)
+				vim.keymap.set("n", "<leader>P", ":Git pull --rebase<cr>", opts)
 
-				vim.keymap.set("n", "<leader>P", function()
-					vim.cmd.Git({ "pull", "--rebase" })
+				vim.keymap.set("n", "<leader>sr", function()
+					local branch = vim.fn.systemlist("git branch --show-current")[1]
+					vim.cmd("Git branch --set-upstream-to=origin/" .. branch .. " " .. branch)
 				end, opts)
 
 				vim.keymap.set("n", "<leader>mm", ":Git merge origin/main<cr>", opts)
