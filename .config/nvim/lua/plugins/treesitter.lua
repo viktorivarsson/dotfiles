@@ -2,9 +2,7 @@ return {
 	{
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
-		dependencies = {
-			"nvim-treesitter/nvim-treesitter-context",
-		},
+		dependencies = {},
 		config = function()
 			require("nvim-treesitter.configs").setup({
 				auto_install = true,
