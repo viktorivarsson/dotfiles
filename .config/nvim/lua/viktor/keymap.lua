@@ -28,8 +28,10 @@ map("x", "<leader>p", '"_dP', options)
 map("v", "<leader>y", '"*y', options)
 
 -- Save / quit
-map("n", "<leader>Q", ":qa!<cr>", { desc = "[Q]uit", silent = true })
+map("n", "<leader>q", ":q!<cr>", { desc = "[Q]uit", silent = true })
+map("n", "<leader>Q", ":qa!<cr>", { desc = "[Q]uit All", silent = true })
 map("n", "<leader>ww", ":update<cr>", { desc = "[W]rite [W]ithout prompt", silent = true })
+map("n", "<leader>wq", ":wq<cr>", { desc = "[W]rite [Q]uit", silent = true })
 
 -- Quickfix
 map("n", "<leader>cf", ":copen<cr>", { desc = "[C]lose [F]ix", silent = true })
