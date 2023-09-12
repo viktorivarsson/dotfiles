@@ -11,11 +11,16 @@ function run_step() {
 
   local start=`date +%s`
   $2
-  local end=`date +%s`
-  local runtime=$((end-start))
+  if [ $? -eq 0 ]; then
+    local end=`date +%s`
+    local runtime=$((end-start))
 
-  echo "[$STEP] - $1...done in $runtime sec"
-  echo ""
+    echo "[$STEP] - $1...done in $runtime sec"
+    echo ""
+  else
+    echo "[$STEP] - $1...failed"
+    exit 1
+  fi
 }
 
 # brew
@@ -30,11 +35,18 @@ run_step "update tmux plugins" "$HOME/.tmux/plugins/tpm/bin/update_plugins all"
 # npm
 run_step "set node to lts" "$HOME/.nvm/nvm.sh install --lts"
 run_step "set node to lts" "$HOME/.nvm/nvm.sh install-latest-npm"
-run_step "update npm" "npm update -g"
 
 # bun
-run_step "upgrade bun" "bun upgrade"
+if command -v bun > /dev/null; then
+  run_step "upgrade bun" "bun upgrade"
+else
+  echo "bun not installed, skipping..."
+fi
 
 # deno
-run_step "upgrade deno" "deno upgrade"
+if command -v deno > /dev/null; then
+  run_step "upgrade deno" "deno upgrade"
+else
+  echo "deno not installed, skipping..."
+fi
 
