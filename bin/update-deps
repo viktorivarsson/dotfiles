@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+
+start=`date +%s`
 echo "Updating dependencies..."
 echo ""
 
@@ -50,3 +52,6 @@ else
   echo "deno not installed, skipping..."
 fi
 
+end=`date +%s`
+runtime=$((end-start))
+echo "Done in $runtime sec"
