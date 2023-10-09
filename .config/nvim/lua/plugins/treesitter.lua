@@ -5,8 +5,12 @@ return {
 		dependencies = {},
 		config = function()
 			require("nvim-treesitter.configs").setup({
-				auto_install = true,
+				auto_install = false,
+				sync_install = false,
 				highlight = { enable = true },
+				ensure_installed = {},
+				ignore_install = {},
+				modules = {},
 				incremental_selection = {
 					enable = true,
 					keymaps = {
