@@ -1,4 +1,4 @@
-PROMPT='%F{blue}%1~%f %F{red}▸%f '
+# PROMPT='%F{blue}%1~%f %F{red}▸%f '
 
 # Navigation
 alias ..="cd ../"
@@ -93,3 +93,7 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# Starship prompt
+eval "$(starship init zsh)"
+
