@@ -63,6 +63,7 @@ export PATH="$HOME/.deno/bin:$PATH"
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 # Homebrew
+export HOMEBREW_BUNDLE_FILE="$HOME/.brewfile"
 eval $(/opt/homebrew/bin/brew shellenv)
 
 # Zoxide
