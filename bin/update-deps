@@ -34,11 +34,6 @@ run_step "brew upgrade" "brew upgrade"
 run_step "clanup tmux plugins" "$HOME/.tmux/plugins/tpm/bin/clean_plugins"
 run_step "update tmux plugins" "$HOME/.tmux/plugins/tpm/bin/update_plugins all"
 
-
-# npm
-run_step "set node to lts" "$HOME/.nvm/nvm.sh install --lts"
-run_step "set node to lts" "$HOME/.nvm/nvm.sh install-latest-npm"
-
 # bun
 if command -v bun > /dev/null; then
   run_step "upgrade bun" "bun upgrade"
