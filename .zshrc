@@ -88,15 +88,7 @@ export PATH="$DENO_INSTALL/bin:$PATH"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
-# bun completions
-[ -s "/Users/viktorivarsson/.bun/_bun" ] && source "/Users/viktorivarsson/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-
 # Go
-# export PATH="$HOME/go/bin:$PATH"
 export PATH="$PATH:$(go env GOPATH)/bin"
 
 # Starship prompt

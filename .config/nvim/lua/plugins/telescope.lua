@@ -1,90 +1,81 @@
 return {
-	{
-		"nvim-telescope/telescope.nvim",
-		tag = "0.1.4",
-		dependencies = {
-			{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-			{ "nvim-lua/plenary.nvim" },
-			{ "BurntSushi/ripgrep" },
-			{ "benfowler/telescope-luasnip.nvim" },
-		},
-		config = function()
-			local telescope = require("telescope")
-			local telescope_config = require("telescope.config")
-			local builtin = require("telescope.builtin")
-			local actions = require("telescope.actions")
-
-			local nmap = function(keys, func, desc)
-				if desc then
-					desc = "Telescope: " .. desc
-				end
-				vim.keymap.set("n", keys, func, { desc = desc })
-			end
-
-			nmap("<leader>ff", builtin.find_files, "[F]ind [F]iles")
-			nmap("<leader>fg", builtin.live_grep, "[F]ind [G]rep")
-			nmap("<leader>fh", builtin.help_tags, "[F]ind [H]elp")
-			nmap("<leader>gr", builtin.lsp_references, "[G]oto [R]eferences")
-			nmap("<leader>fb", builtin.buffers, "[F]ind [B]uffers")
-			nmap("<leader>ft", builtin.treesitter, "[F]ind [T]reesitter")
-			nmap("<leader>fk", builtin.keymaps, "[F]ind [K]eymaps")
-			nmap("<leader>fs", "<cmd>Telescope luasnip theme=ivy<cr>", "[F]ind [S]nippets")
-
-			-- Clone the default Telescope configuration
-			local vimgrep_arguments = { unpack(telescope_config.values.vimgrep_arguments) }
-			table.insert(vimgrep_arguments, "--hidden")
-			table.insert(vimgrep_arguments, "--glob")
-			table.insert(vimgrep_arguments, "!.git/*")
-
-			telescope.setup({
-				defaults = {
-					file_ignore_patterns = { "node_modules", "yarn.lock", ".yarn", ".git", ".bin", "_opam", "_build" },
-					vimgrep_arguments = vimgrep_arguments,
-					path_display = {
-						truncate = 3,
-					},
-					mappings = {
-						i = {
-							["<c-q>a"] = actions.send_to_qflist + actions.open_qflist,
-							["<c-q>s"] = actions.send_selected_to_qflist + actions.open_qflist,
-						},
-						n = {
-							["<c-q>a"] = actions.send_to_qflist + actions.open_qflist,
-							["<c-q>s"] = actions.send_selected_to_qflist + actions.open_qflist,
-						},
-					},
-				},
-				pickers = {
-					buffers = {
-						sort_mru = true,
-						theme = "ivy",
-						mappings = {
-							i = {
-								["<c-d>"] = "delete_buffer",
-							},
-						},
-					},
-					find_files = {
-						find_command = { "rg", "--files", "--hidden", "--glob", "!.git/*", "--glob", "!.bin/*" },
-						theme = "ivy",
-					},
-					live_grep = {
-						theme = "ivy",
-					},
-					help_tags = {
-						theme = "ivy",
-					},
-					lsp_references = {
-						theme = "ivy",
-					},
-					treesitter = {
-						theme = "ivy",
-					},
-				},
-			})
-
-			telescope.load_extension("fzf")
-			telescope.load_extension("luasnip")
-		end,
-	},
+  {
+    "nvim-telescope/telescope.nvim",
+    keys = function()
+      return {
+        {
+          "<leader>,",
+          "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>",
+          desc = "Switch Buffer",
+        },
+        { "<leader>/", LazyVim.telescope("live_grep"), desc = "Grep (Root Dir)" },
+        { "<leader>:", "<cmd>Telescope command_history<cr>", desc = "Command History" },
+        { "<leader><space>", LazyVim.telescope("files"), desc = "Find Files (Root Dir)" },
+        -- find
+        { "<leader>fb", "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>", desc = "Buffers" },
+        { "<leader>fc", LazyVim.telescope.config_files(), desc = "Find Config File" },
+        { "<leader>ff", LazyVim.telescope("files", { cwd = false }), desc = "Find Files (cwd)" },
+        { "<leader>fF", LazyVim.telescope("files"), desc = "Find Files (Root Dir)" },
+        { "<leader>fg", "<cmd>Telescope git_files<cr>", desc = "Find Files (git-files)" },
+        { "<leader>fr", LazyVim.telescope("oldfiles", { cwd = vim.uv.cwd() }), desc = "Recent (cwd)" },
+        { "<leader>fR", "<cmd>Telescope oldfiles<cr>", desc = "Recent" },
+        -- git
+        { "<leader>gc", "<cmd>Telescope git_commits<CR>", desc = "Commits" },
+        -- { "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "Status" },
+        -- search
+        { '<leader>s"', "<cmd>Telescope registers<cr>", desc = "Registers" },
+        { "<leader>sa", "<cmd>Telescope autocommands<cr>", desc = "Auto Commands" },
+        { "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Buffer" },
+        { "<leader>sc", "<cmd>Telescope command_history<cr>", desc = "Command History" },
+        { "<leader>sC", "<cmd>Telescope commands<cr>", desc = "Commands" },
+        { "<leader>sd", "<cmd>Telescope diagnostics bufnr=0<cr>", desc = "Document Diagnostics" },
+        { "<leader>sD", "<cmd>Telescope diagnostics<cr>", desc = "Workspace Diagnostics" },
+        { "<leader>sg", LazyVim.telescope("live_grep", { cwd = false }), desc = "Grep (cwd)" },
+        { "<leader>sG", LazyVim.telescope("live_grep"), desc = "Grep (Root Dir)" },
+        { "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Help Pages" },
+        { "<leader>sH", "<cmd>Telescope highlights<cr>", desc = "Search Highlight Groups" },
+        { "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "Key Maps" },
+        { "<leader>sM", "<cmd>Telescope man_pages<cr>", desc = "Man Pages" },
+        { "<leader>sm", "<cmd>Telescope marks<cr>", desc = "Jump to Mark" },
+        { "<leader>so", "<cmd>Telescope vim_options<cr>", desc = "Options" },
+        { "<leader>sR", "<cmd>Telescope resume<cr>", desc = "Resume" },
+        { "<leader>sw", LazyVim.telescope("grep_string", { cwd = false, word_match = "-w" }), desc = "Word (cwd)" },
+        { "<leader>sW", LazyVim.telescope("grep_string", { word_match = "-w" }), desc = "Word (Root Dir)" },
+        { "<leader>sw", LazyVim.telescope("grep_string", { cwd = false }), mode = "v", desc = "Selection (cwd)" },
+        { "<leader>sW", LazyVim.telescope("grep_string"), mode = "v", desc = "Selection (Root Dir)" },
+        {
+          "<leader>uC",
+          LazyVim.telescope("colorscheme", { enable_preview = true }),
+          desc = "Colorscheme with Preview",
+        },
+        {
+          "<leader>ss",
+          function()
+            require("telescope.builtin").lsp_document_symbols({
+              symbols = require("lazyvim.config").get_kind_filter(),
+            })
+          end,
+          desc = "Goto Symbol",
+        },
+        {
+          "<leader>sS",
+          function()
+            require("telescope.builtin").lsp_dynamic_workspace_symbols({
+              symbols = require("lazyvim.config").get_kind_filter(),
+            })
+          end,
+          desc = "Goto Symbol (Workspace)",
+        },
+      }
+    end,
+    -- change some options
+    opts = {
+      defaults = {
+        layout_strategy = "horizontal",
+        layout_config = { prompt_position = "top" },
+        sorting_strategy = "ascending",
+        winblend = 0,
+      },
+    },
+  },
 }
