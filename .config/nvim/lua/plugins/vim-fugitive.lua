@@ -28,6 +28,20 @@ return {
         vim.keymap.set("n", "<leader>cb", ":Git checkout -b ", opts)
         vim.keymap.set("n", "<leader>co", ":Git checkout ", opts)
         vim.keymap.set("n", "<leader>cm", ":Git checkout main<cr>", opts)
+
+        vim.keymap.set("n", "<leader>or", function()
+          local branch = vim.fn.systemlist("git branch --show-current")[1]
+          local remote = vim.fn.systemlist("git remote -v | awk '/origin.*push/ {print $2}'")
+
+          -- if the remote is an ssh url, remove the .git suffix
+          remote[1] = remote[1]:gsub("%.git$", "")
+
+          if branch == "main" or branch == "master" then
+            vim.fn.system("open " .. remote[1])
+          else
+            vim.fn.system("open " .. remote[1] .. "/tree/" .. branch)
+          end
+        end, opts)
       end,
     })
   end,
