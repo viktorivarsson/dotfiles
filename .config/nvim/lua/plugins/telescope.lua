@@ -52,7 +52,19 @@ return {
           "<leader>ss",
           function()
             require("telescope.builtin").lsp_document_symbols({
-              symbols = require("lazyvim.config").get_kind_filter(),
+              symbol_width = 50,
+              symbols = {
+                "variable",
+                "function",
+                "constant",
+                "method",
+                "struct",
+                "class",
+                "interface",
+                "enum",
+                "module",
+                "typeParameter",
+              },
             })
           end,
           desc = "Goto Symbol",
@@ -77,9 +89,11 @@ return {
         winblend = 0,
         mappings = {
           i = {
+            ["<C-f>"] = require("telescope.actions").preview_scrolling_down,
             ["<c-d>"] = require("telescope.actions").delete_buffer,
           },
           n = {
+            ["<C-f>"] = require("telescope.actions").preview_scrolling_down,
             ["<c-d>"] = require("telescope.actions").delete_buffer,
           },
         },
