@@ -25,9 +25,9 @@ return {
           header = vim.split(logo, "\n"),
         -- stylua: ignore
         center = {
-          { action = LazyVim.telescope("files"),                                 desc = " Find File",       icon = " ", key = "f" },
+          { action = LazyVim.pick("find_files"),                                 desc = " Find File",       icon = " ", key = "f" },
           { action = "ene | startinsert",                                        desc = " New File",        icon = " ", key = "n" },
-          { action = LazyVim.telescope("oldfiles", { cwd = vim.uv.cwd() }),      desc = " Recent Files",    icon = " ", key = "r" },
+          { action = LazyVim.pick("oldfiles", { cwd = vim.uv.cwd() }),      desc = " Recent Files",    icon = " ", key = "r" },
           { action = "Telescope live_grep",                                      desc = " Find Text",       icon = " ", key = "g" },
           { action = [[lua LazyVim.telescope.config_files()()]], desc = " Config",          icon = " ", key = "c" },
           { action = 'lua require("persistence").load()',                        desc = " Restore Session", icon = " ", key = "s" },

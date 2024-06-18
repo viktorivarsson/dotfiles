@@ -32,3 +32,5 @@ vim.opt.wrap = true
 vim.opt.swapfile = false
 
 -- vim.opt.signcolumn = "yes"
+
+vim.lsp.inlay_hint.enable(false)

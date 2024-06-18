@@ -27,3 +27,7 @@ map("n", "<leader>nl", ":nohlsearch<cr>", { desc = "No [H]ighlight [L]ast search
 -- Yank and paste
 map("x", "<leader>p", '"_dP', options)
 map("v", "<leader>y", '"*y', options)
+
+vim.keymap.set("n", "<leader>ih", function()
+  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+end, { desc = "Toggle [I]nlay [H]int" })
