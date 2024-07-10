@@ -89,8 +89,19 @@ export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
 # Go
-export PATH="$PATH:$(go env GOPATH)/bin"
+export PATH="$PATH:$HOME/go/bin"
 
 # Starship prompt
 eval "$(starship init zsh)"
 
+
+# proto
+export PROTO_HOME="$HOME/.proto"
+export PATH="$PROTO_HOME/shims:$PROTO_HOME/bin:$PATH"
+# go
+export GOBIN="$HOME/go/bin"
+export PATH="$GOBIN:$PATH"
+
+# go
+export GOBIN="$HOME/go/bin"
+export PATH="$GOBIN:$PATH"
