@@ -1,0 +1,5 @@
+node = "latest"
+npm = "latest"
+bun = "latest"
+gh = "latest"
+lua = "5.1"
