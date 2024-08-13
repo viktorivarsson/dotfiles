@@ -4,9 +4,9 @@
 alias ..="cd ../"
 alias ...="cd ../../"
 alias ....="cd ../../../"
-alias l="exa"
-alias ls="exa"
-alias ll="exa -la"
+alias l="eza"
+alias ls="eza"
+alias ll="eza -la"
 alias cat="bat"
 
 # Applications
