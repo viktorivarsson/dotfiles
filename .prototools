@@ -3,3 +3,6 @@ npm = "latest"
 bun = "latest"
 gh = "latest"
 lua = "5.1"
+
+[settings]
+auto-install = true
