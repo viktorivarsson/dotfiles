@@ -24,6 +24,7 @@ alias ycw="yarn codegen --watch"
 alias yui="yarn upgrade-interactive --latest"
 
 # Git
+alias git='LANG=en git'
 alias gst="git status"
 alias gl="git pull"
 alias gp="git push"
