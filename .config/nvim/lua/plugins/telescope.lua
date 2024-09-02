@@ -91,6 +91,9 @@ return {
           i = {
             ["<C-f>"] = require("telescope.actions").preview_scrolling_down,
             ["<c-d>"] = require("telescope.actions").delete_buffer,
+            ["<C-q>a"] = require("telescope.actions").send_to_qflist + require("telescope.actions").open_qflist,
+            ["<C-q>s"] = require("telescope.actions").send_selected_to_qflist
+              + require("telescope.actions").open_qflist,
           },
           n = {
             ["<C-f>"] = require("telescope.actions").preview_scrolling_down,
