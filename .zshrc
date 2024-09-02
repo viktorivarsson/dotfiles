@@ -1,5 +1,7 @@
 # PROMPT='%F{blue}%1~%f %F{red}▸%f '
 
+export LANG=en_US.UTF-8
+
 # Navigation
 alias ..="cd ../"
 alias ...="cd ../../"
