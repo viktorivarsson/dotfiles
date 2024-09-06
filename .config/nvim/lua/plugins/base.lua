@@ -8,6 +8,15 @@ return {
     },
   },
 
+  {
+    "catppuccin",
+    priority = 1000,
+    lazy = false,
+    opts = {
+      transparent_background = true,
+    },
+  },
+
   -- change some telescope options and a keymap to browse plugin files
 
   -- { import = "lazyvim.plugins.extras.lang.typescript" },
