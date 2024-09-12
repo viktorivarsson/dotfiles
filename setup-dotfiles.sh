@@ -1,8 +1,7 @@
 setup_link() {
-	ln -nfs "$HOME/code/dotfiles/$1" "$HOME/${2:-$1}"
+  ln -nfs "$HOME/code/dotfiles/$1" "$HOME/${2:-$1}"
 }
 
-setup_link ".config/cheat"
 setup_link ".config/nvim"
 setup_link ".config/starship.toml"
 setup_link ".config/brewfile/Brewfile" ".brewfile"
