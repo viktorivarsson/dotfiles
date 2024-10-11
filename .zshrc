@@ -52,6 +52,12 @@ function sync-dotfiles() {
     ~/code/dotfiles/setup-dotfiles.sh
 }
 
+function clean-node-modules() {
+    echo "Cleaning node_modules..."
+    find . -name "node_modules" -type d -prune -exec rm -rf '{}' +
+    echo "Done!"
+}
+
 # NVM
 export NVM_DIR="$HOME/.nvm"
 [[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh" --no-use
