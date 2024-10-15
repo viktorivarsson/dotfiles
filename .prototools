@@ -1,4 +1,5 @@
 node = "latest"
+deno = "latest"
 npm = "latest"
 bun = "latest"
 gh = "latest"
