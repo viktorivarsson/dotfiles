@@ -1,4 +1,4 @@
-local js = { { "biome", "prettierd", "prettier " } }
+local js = { { "biome", "prettierd", "prettier" } }
 
 return {
   "stevearc/conform.nvim",
