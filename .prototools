@@ -2,6 +2,7 @@ node = "latest"
 deno = "latest"
 npm = "latest"
 bun = "latest"
+go = "latest"
 gh = "latest"
 lua = "5.1"
 
