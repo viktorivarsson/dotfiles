@@ -1,13 +1,9 @@
 bun = "latest"
 deno = "latest"
-gh = "latest"
 go = "latest"
 lua = "~5.1"
 node = "latest"
 npm = "latest"
-
-[plugins]
-gh = "https://raw.githubusercontent.com/appthrust/proto-toml-plugins/main/gh/plugin.toml"
 
 [settings]
 auto-install = true
