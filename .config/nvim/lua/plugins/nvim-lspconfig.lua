@@ -1,3 +1,5 @@
+local util = require("lspconfig.util")
+
 return {
   "neovim/nvim-lspconfig",
   opts = {
@@ -5,8 +7,10 @@ return {
       enabled = false,
     },
     servers = {
-      ---@type lspconfig.options.tsserver
-      tsserver = {
+      denols = {
+        root_dir = util.root_pattern("deno.json", "deno.jsonc"),
+      },
+      ts_ls = {
         handlers = {
           ["textDocument/publishDiagnostics"] = function(_, result, ctx, config)
             if result.diagnostics == nil then
