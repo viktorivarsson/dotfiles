@@ -82,3 +82,6 @@ export PATH="$PROTO_HOME/shims:$PROTO_HOME/bin:$PATH"
 # go
 export GOBIN="$HOME/go/bin"
 export PATH="$GOBIN:$PATH"
+
+# Deno
+export PATH="$HOME/.deno/bin:$PATH"

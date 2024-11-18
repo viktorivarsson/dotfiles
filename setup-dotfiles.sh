@@ -9,4 +9,4 @@ setup_link ".tmux.conf"
 setup_link ".zshrc"
 setup_link ".prototools"
 
-deno install -f --allow-read --allow-run ./scripts/npr/npr.ts
+deno install -f --allow-read --allow-run --global ./scripts/npr/npr.ts
