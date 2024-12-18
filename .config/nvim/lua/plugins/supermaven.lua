@@ -16,6 +16,5 @@ return {
     local completion_preview = require("supermaven-nvim.completion_preview")
 
     vim.keymap.set("i", "<c-j>", completion_preview.on_accept_suggestion, { noremap = true, silent = true })
-    -- vim.keymap.set("i", "<c-q", completion_preview.on_accept_suggestion_word, { noremap = true, silent = true })
   end,
 }

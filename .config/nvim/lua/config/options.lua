@@ -23,6 +23,9 @@ autocmd("BufEnter", {
   command = "set fo-=c fo-=r fo-=o",
 })
 
+-- Disable animations in snacks
+vim.g.snacks_animate = false
+
 -- Struggle with tmux escape time
 vim.opt.timeoutlen = 1000
 vim.opt.ttimeoutlen = 0
