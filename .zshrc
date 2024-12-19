@@ -47,6 +47,10 @@ function clean-node-modules() {
     echo "Done!"
 }
 
+if [[ -f ~/.zshrc.local ]]; then
+    source ~/.zshrc.local
+fi
+
 # Custom bin
 export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/code/dotfiles/bin:$PATH"
