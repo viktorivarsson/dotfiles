@@ -1,0 +1,4 @@
+theme = catppuccin-mocha
+font-family = MonispaceNe NF
+title = " "
+macos-titlebar-proxy-icon = hidden
