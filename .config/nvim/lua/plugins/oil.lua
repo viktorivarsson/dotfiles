@@ -11,6 +11,6 @@ return {
 
     local map = vim.api.nvim_set_keymap
 
-    map("n", "<leader>pv", ":Oil<cr>", { noremap = true, silent = true, desc = "[P]roject [V]iew" })
+    map("n", "<leader>.", ":Oil<cr>", { noremap = true, silent = true, desc = "Oil (Project View)" })
   end,
 }
