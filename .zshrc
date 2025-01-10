@@ -1,4 +1,3 @@
-# PROMPT='%F{blue}%1~%f %F{red}▸%f '
 
 export LANG=en_US.UTF-8
 
@@ -34,6 +33,12 @@ alias dcr="docker-compose run"
 # Python
 alias python=/opt/homebrew/bin/python3
 
+function add_to_path() {
+  if [[ -n "$1" ]]; then
+    export PATH="$1:$PATH"
+  fi
+}
+
 # Sync Dotfiles
 function sync-dotfiles() {
     echo "Pulling dotfiles repo..."
@@ -52,8 +57,8 @@ if [[ -f ~/.zshrc.local ]]; then
 fi
 
 # Custom bin
-export PATH="$HOME/bin:$PATH"
-export PATH="$HOME/code/dotfiles/bin:$PATH"
+add_to_path "$HOME/bin"
+add_to_path "$HOME/code/dotfiles/bin"
 
 # Homebrew
 export HOMEBREW_BUNDLE_FILE="$HOME/.brewfile"
@@ -71,21 +76,21 @@ export PUPPETEER_EXECUTABLE_PATH=`which chromium`
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+add_to_path "$BUN_INSTALL/bin"
 
 # Go
-export PATH="$PATH:$HOME/go/bin"
+add_to_path "$HOME/go/bin"
 
 # Starship prompt
 eval "$(starship init zsh)"
 
 # proto
 export PROTO_HOME="$HOME/.proto"
-export PATH="$PROTO_HOME/shims:$PROTO_HOME/bin:$PATH"
+add_to_path "$PROTO_HOME/shims:$PROTO_HOME/bin:$PATH"
 
 # go
 export GOBIN="$HOME/go/bin"
-export PATH="$GOBIN:$PATH"
+add_to_path "$GOBIN"
 
 # Deno
-export PATH="$HOME/.deno/bin:$PATH"
+add_to_path "$HOME/.deno/bin"
