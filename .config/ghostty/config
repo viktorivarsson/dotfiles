@@ -1,4 +1,6 @@
 theme = catppuccin-mocha
 font-family = MonispaceNe NF
+font-size = 14
+window-padding-x = 20
 title = " "
 macos-titlebar-proxy-icon = hidden
