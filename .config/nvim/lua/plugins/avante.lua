@@ -43,6 +43,9 @@ return {
 
   opts = {
     provider = "copilot",
+    copilot = {
+      model = "claude-3.5-sonnet",
+    },
   },
 
   init = function()
