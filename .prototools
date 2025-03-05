@@ -1,7 +1,6 @@
 bun = "latest"
 deno = "latest"
 go = "latest"
-lua = "~5.1"
 node = "latest"
 npm = "latest"
 
