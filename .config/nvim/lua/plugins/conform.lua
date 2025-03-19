@@ -2,6 +2,7 @@ local js = { { "biome", "prettierd", "prettier" } }
 
 return {
   "stevearc/conform.nvim",
+  tag = "v8.4.0",
   event = { "BufWritePre" },
   cmd = { "ConformInfo" },
   opts = {
