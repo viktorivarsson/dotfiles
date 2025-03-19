@@ -1,6 +1,8 @@
-theme = catppuccin-mocha
+# theme = catppuccin-mocha
+theme = xcodedarkhc
 font-family = MonispaceNe NF
 font-size = 14
 window-padding-x = 20
 title = " "
 macos-titlebar-proxy-icon = hidden
+
