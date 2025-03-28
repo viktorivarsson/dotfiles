@@ -1,6 +1,10 @@
 return {
   "saghen/blink.cmp",
   opts = {
+    keymap = {
+      -- disable enter
+      ["<CR>"] = {},
+    },
     completion = {
       menu = {
         border = "rounded",
