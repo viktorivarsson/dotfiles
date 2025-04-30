@@ -44,7 +44,9 @@ return {
   opts = {
     provider = "copilot",
     copilot = {
-      model = "claude-3.7-sonnet",
+      -- model = "claude-3.7-sonnet",
+      model = "gemini-2.5-pro",
+      -- model = "o4-mini",
     },
   },
 
@@ -85,10 +87,7 @@ return {
 ]]
     local avante_optimize_code = "Optimize the following code"
     local avante_summarize = "Summarize the following text"
-    local avante_translate = "Translate this into Chinese, but keep any code blocks inside intact"
     local avante_explain_code = "Explain the following code"
-    local avante_complete_code = "Complete the following codes written in " .. vim.bo.filetype
-    local avante_add_docstring = "Add docstring to the following codes"
     local avante_fix_bugs = "Fix the bugs inside the following codes if any"
     local avante_add_tests = "Implement tests for the following code"
 
@@ -132,32 +131,11 @@ return {
           desc = "Summarize text(ask)",
         },
         {
-          "<leader>an",
-          function()
-            require("avante.api").ask({ question = avante_translate })
-          end,
-          desc = "Translate text(ask)",
-        },
-        {
           "<leader>ax",
           function()
             require("avante.api").ask({ question = avante_explain_code })
           end,
           desc = "Explain Code(ask)",
-        },
-        {
-          "<leader>ac",
-          function()
-            require("avante.api").ask({ question = avante_complete_code })
-          end,
-          desc = "Complete Code(ask)",
-        },
-        {
-          "<leader>ad",
-          function()
-            require("avante.api").ask({ question = avante_add_docstring })
-          end,
-          desc = "Docstring(ask)",
         },
         {
           "<leader>ab",
@@ -200,20 +178,6 @@ return {
             prefill_edit_window(avante_optimize_code)
           end,
           desc = "Optimize Code(edit)",
-        },
-        {
-          "<leader>aC",
-          function()
-            prefill_edit_window(avante_complete_code)
-          end,
-          desc = "Complete Code(edit)",
-        },
-        {
-          "<leader>aD",
-          function()
-            prefill_edit_window(avante_add_docstring)
-          end,
-          desc = "Docstring(edit)",
         },
         {
           "<leader>aB",
