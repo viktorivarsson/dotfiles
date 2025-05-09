@@ -44,8 +44,8 @@ return {
   opts = {
     provider = "copilot",
     copilot = {
-      -- model = "claude-3.7-sonnet",
-      model = "gemini-2.5-pro",
+      model = "claude-3.7-sonnet",
+      -- model = "gemini-2.5-pro",
       -- model = "o4-mini",
     },
   },
