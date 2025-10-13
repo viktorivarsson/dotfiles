@@ -1,4 +1,3 @@
-
 export LANG=en_US.UTF-8
 
 # Navigation
@@ -10,12 +9,16 @@ alias ls="eza"
 alias ll="eza -la"
 alias cat="bat"
 
+alias plz="sudo !!"
+alias wtf="git status"
+
 # Applications
 alias n="nvim"
 
 # Git
 alias git='LANG=en git'
 alias gst="git status"
+alias wtf="git status"
 alias gl="git pull"
 alias gp="git push"
 alias gm="git merge"
