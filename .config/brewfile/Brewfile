@@ -1,6 +1,5 @@
 tap "homebrew/bundle"
 tap "homebrew/services"
-brew "ansible"
 brew "bat"
 brew "cloudflared"
 brew "eza"
