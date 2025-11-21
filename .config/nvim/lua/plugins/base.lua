@@ -28,6 +28,7 @@ return {
         "tsx",
         "typescript",
         "graphql",
+        "svelte",
       })
     end,
   },
