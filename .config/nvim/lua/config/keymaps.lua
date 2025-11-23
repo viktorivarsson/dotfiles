@@ -31,3 +31,9 @@ map("v", "<leader>y", '"*y', options)
 vim.keymap.set("n", "<leader>ih", function()
   vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
 end, { desc = "Toggle [I]nlay [H]int" })
+
+-- Terminal mode window navigation
+map("t", "<C-h>", "<C-\\><C-n><C-w>h", silent_options)
+map("t", "<C-j>", "<C-\\><C-n><C-w>j", silent_options)
+map("t", "<C-k>", "<C-\\><C-n><C-w>k", silent_options)
+map("t", "<C-l>", "<C-\\><C-n><C-w>l", silent_options)
