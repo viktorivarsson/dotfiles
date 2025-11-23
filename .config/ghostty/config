@@ -1,5 +1,5 @@
-# theme = catppuccin-mocha
-theme = Xcode Dark hc
+theme = Catppuccin Mocha
+# theme = Xcode Dark hc
 font-family = MonispaceNe NF
 font-size = 14
 window-padding-x = 20

@@ -2,16 +2,34 @@ return {
   "folke/snacks.nvim",
   opts = {
     picker = {
-        sources = {
+      sources = {
         files = {
           hidden = true,
           ignored = true,
-          exclude = { "dist/*", "node_modules/*", ".git/*", "build/*", "*.log", "coverage/*", ".svelte-kit/*", ".vscode/*" },
+          exclude = {
+            "dist/*",
+            "node_modules/*",
+            ".git/*",
+            "build/*",
+            "*.log",
+            "coverage/*",
+            ".svelte-kit/*",
+            ".vscode/*",
+          },
         },
         grep = {
           hidden = true,
           ignored = true,
-          exclude = { "dist/*", "node_modules/*", ".git/*", "build/*", "*.log", "coverage/*", ".svelte-kit/*", ".vscode/*" },
+          exclude = {
+            "dist/*",
+            "node_modules/*",
+            ".git/*",
+            "build/*",
+            "*.log",
+            "coverage/*",
+            ".svelte-kit/*",
+            ".vscode/*",
+          },
         },
       },
     },
@@ -35,17 +53,32 @@ return {
     {
       "<leader>sg",
       function()
-        Snacks.picker.grep({ hidden = true, ignored = true, exclude = { "dist/*", "node_modules/*", ".git/*", "build/*", "*.log", "coverage/*" } })
+        Snacks.picker.grep({
+          hidden = true,
+          ignored = true,
+          exclude = { "dist/*", "node_modules/*", ".git/*", "build/*", "*.log", "coverage/*" },
+          layout = { preset = "vertical" },
+        })
       end,
       desc = "[S]earch [G]rep (including hidden files)",
     },
     {
       "<leader>sf",
       function()
-        Snacks.picker.files({ hidden = true, ignored = true, exclude = { "dist/*", "node_modules/*", ".git/*", "build/*", "*.log", "coverage/*" } })
+        Snacks.picker.files({
+          hidden = true,
+          ignored = true,
+          exclude = { "dist/*", "node_modules/*", ".git/*", "build/*", "*.log", "coverage/*" },
+        })
       end,
       desc = "[S]earch [F]iles (including hidden files)",
     },
-    
+    {
+      "<leader>sk",
+      function()
+        Snacks.picker.keymaps({ layout = { preset = "vertical" } })
+      end,
+      desc = "[S]earch [K]eymaps",
+    },
   },
 }
