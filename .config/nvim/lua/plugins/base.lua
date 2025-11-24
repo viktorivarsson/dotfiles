@@ -4,17 +4,29 @@ return {
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "catppuccin",
+      -- colorscheme = "catppuccin",
+      colorscheme = "onedark",
     },
   },
 
+  -- {
+  --   "catppuccin",
+  --   priority = 1000,
+  --   lazy = false,
+  --   opts = {
+  --     transparent_background = true,
+  --   },
+  -- },
+
   {
-    "catppuccin",
-    priority = 1000,
-    lazy = false,
-    opts = {
-      transparent_background = true,
-    },
+    "navarasu/onedark.nvim",
+    priority = 1000, -- make sure to load this before all the other start plugins
+    config = function()
+      require("onedark").setup({
+        style = "darker",
+      })
+      require("onedark").load()
+    end,
   },
 
   -- change some telescope options and a keymap to browse plugin files
