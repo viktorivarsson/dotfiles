@@ -38,16 +38,17 @@ return {
     {
       "<leader>fs",
       function()
-        Snacks.scratch()
+        local dir_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+        Snacks.scratch({ file = "~/.local/share/nvim/snacks/scratch/" .. dir_name .. ".md" })
       end,
-      desc = "Toggle Scratch Buffer",
+      desc = "Toggle Directory Scratch Buffer",
     },
     {
       "<leader>fS",
       function()
-        Snacks.scratch.select()
+        Snacks.scratch({ file = "~/.local/share/nvim/snacks/scratch/global.md" })
       end,
-      desc = "Select Scratch Buffer",
+      desc = "Toggle Global Scratch Buffer",
     },
     -- Enhanced search keymaps
     {
