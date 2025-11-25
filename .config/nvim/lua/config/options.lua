@@ -8,15 +8,6 @@ local autocmd = vim.api.nvim_create_autocmd
 
 opt.clipboard = ""
 
--- Highlight on yank
-augroup("YankHighlight", { clear = true })
-autocmd("TextYankPost", {
-  group = "YankHighlight",
-  callback = function()
-    vim.highlight.on_yank({ higroup = "IncSearch", timeout = "50" })
-  end,
-})
-
 -- Don't auto open ocmment on new lines
 autocmd("BufEnter", {
   pattern = "",
@@ -30,7 +21,6 @@ vim.g.snacks_animate = false
 vim.opt.timeoutlen = 1000
 vim.opt.ttimeoutlen = 0
 
-vim.opt.smartindent = true
 vim.opt.wrap = true
 vim.opt.swapfile = false
 
