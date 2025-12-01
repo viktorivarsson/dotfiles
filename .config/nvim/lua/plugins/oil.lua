@@ -6,6 +6,6 @@ return {
     },
   },
   keys = {
-    { "<leader>.", "<cmd>Oil<cr>", desc = "Oil (Project View)" },
+    { "<leader>e", "<cmd>Oil<cr>", desc = "Oil (Project View)" },
   },
 }

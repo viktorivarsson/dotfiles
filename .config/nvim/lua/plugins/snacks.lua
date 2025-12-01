@@ -18,6 +18,8 @@ return {
             "**/.svelte-kit/*",
             "**/.vscode/*",
             "**/yarn.lock",
+            "**/.data/*",
+            "**/.cache/*",
           },
         },
         grep = {
@@ -35,12 +37,18 @@ return {
             "**/.svelte-kit/*",
             "**/.vscode/*",
             "**/yarn.lock",
+            "**/.data/*",
+            "**/.cache/*",
           },
         },
       },
     },
   },
   keys = {
+    {
+      "<leader>.",
+      nil,
+    },
     {
       "<leader>fs",
       function()
@@ -72,6 +80,8 @@ return {
             "**/coverage/*",
             "**/__generated__/*",
             "**/yarn.lock",
+            "**/.data/*",
+            "**/.cache/*",
           },
           layout = { preset = "vertical" },
         })
@@ -93,6 +103,8 @@ return {
             "**/coverage/*",
             "**/__generated__/*",
             "**/yarn.lock",
+            "**/.data/*",
+            "**/.cache/*",
           },
         })
       end,
