@@ -1,5 +1,5 @@
 local function get_formatters(bufnr)
-  local root = vim.fn.findfile(".git", ".;") or vim.fn.getcwd()
+  local root = vim.fn.getcwd()
 
   -- Check for biome.json or biome configuration
   if
