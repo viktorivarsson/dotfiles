@@ -1,0 +1,61 @@
+{
+  "aliases": {
+    "i": [
+      {
+        "cmd": "install"
+      }
+    ],
+    "d": [
+      {
+        "cmd": "dev"
+      },
+      {
+        "cmd": "start"
+      }
+    ],
+    "b": [
+      {
+        "cmd": "build"
+      }
+    ],
+    "t": [
+      {
+        "cmd": "test"
+      }
+    ],
+    "l": [
+      {
+        "cmd": "lint"
+      }
+    ],
+    "c": [
+      {
+        "cmd": "check"
+      },
+      {
+        "cmd": "ts:check"
+      },
+      {
+        "cmd": "type-check"
+      }
+    ],
+    "ui": [
+      {
+        "cmd": "update",
+        "args": [
+          "--interactive"
+        ]
+      }
+    ],
+    "add": [
+      {
+        "cmd": "add"
+      }
+    ],
+    "rm": [
+      {
+        "cmd": "remove"
+      }
+    ]
+  }
+}

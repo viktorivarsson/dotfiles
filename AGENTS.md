@@ -7,8 +7,8 @@
 - **Check**: No linting configured - focus on manual review
 
 ### TypeScript/Deno (scripts)
-- **Run**: `deno run scripts/npr/npr.ts`
-- **Install**: `deno install --global ./scripts/npr/npr.ts`
+- **Run**: `deno run scripts/npr/npr.ts` or `deno run scripts/x/x.ts`
+- **Install**: `deno compile scripts/x/x.ts -o bin/x` or `deno compile scripts/npr/npr.ts -o bin/npr`
 - **Format**: `deno fmt scripts/`
 - **Lint**: `deno lint scripts/`
 
