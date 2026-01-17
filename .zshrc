@@ -28,6 +28,49 @@ alias gco="git checkout"
 alias glog="git log --graph --abbrev-commit"
 alias gclean="git clean -dfX"
 
+# Git reset commits
+function reset-commits() {
+  local count=${1:-1}
+  local mode="--soft"
+  
+  # Handle --hard flag
+  if [[ "$1" == "--hard" ]]; then
+    mode="--hard"
+    count=${2:-1}
+  fi
+  
+  # Validate count is a number
+  if ! [[ "$count" =~ ^[0-9]+$ ]]; then
+    echo "Error: '$count' is not a valid number"
+    return 1
+  fi
+  
+  # Show BIG WARNING for --hard
+  if [[ "$mode" == "--hard" ]]; then
+    echo "\033[0;31m⚠️  WARNING: --hard reset will permanently lose changes!\033[0m"
+    echo "This cannot be undone. Make sure you're certain!"
+    echo ""
+  fi
+  
+  # Show commits to be reset
+  echo "\033[0;33mResetting last $count commit(s) with --${mode} mode\033[0m"
+  echo "\033[0;32mRecent commits to be reset:\033[0m"
+  git log -$count --oneline --decorate
+  echo ""
+  
+  # Prompt for confirmation (no Enter required)
+  echo -n "\033[1mReset these commits? [y/N]: \033[0m"
+  read response
+  
+  # Only proceed on y/Y
+  if [[ "$response" =~ ^[yY]$ ]]; then
+    git reset $mode HEAD~$count
+    echo "Reset complete."
+  else
+    echo "\033[0;33mAborted.\033[0m"
+  fi
+}
+
 # Docker
 alias dcb="docker-compose build"
 alias dcu="docker-compose up"
@@ -94,6 +137,3 @@ add_to_path "$PROTO_HOME/shims:$PROTO_HOME/bin:$PATH"
 # go
 export GOBIN="$HOME/go/bin"
 add_to_path "$GOBIN"
-
-# Deno
-add_to_path "$HOME/.deno/bin"
