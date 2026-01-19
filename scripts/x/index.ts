@@ -3,6 +3,18 @@
 import path from "node:path";
 import { existsSync, readFileSync } from "node:fs";
 import { spawn } from "node:child_process";
+import { search } from "@inquirer/prompts";
+
+const runPrompt = async <T>(fn: () => Promise<T>): Promise<T> => {
+	try {
+		return await fn();
+	} catch (error) {
+		if (error instanceof Error && error.name === "ExitPromptError") {
+			process.exit(0);
+		}
+		throw error;
+	}
+};
 
 interface Command {
 	cmd: string;
@@ -218,10 +230,37 @@ const listCommands = (
 
 	if (scripts && scripts.length > 0) {
 		console.log("\n\x1b[1;36mPackage scripts:\x1b[0m");
-		for (const script of scripts) {
+		const sortedScripts = [...scripts].sort();
+		for (const script of sortedScripts) {
 			console.log(`  ${script}`);
 		}
 	}
+};
+
+const interactiveSelect = async (
+	scripts: string[] | undefined,
+): Promise<string | undefined> => {
+	const choices: Array<{ name: string; value: string }> = [];
+
+	if (scripts && scripts.length > 0) {
+		const sortedScripts = [...scripts].sort();
+		for (const script of sortedScripts) {
+			choices.push({ name: script, value: script });
+		}
+	}
+
+	if (choices.length === 0) {
+		console.log("No scripts available");
+		return undefined;
+	}
+
+	return await runPrompt(() =>
+		search({
+			message: "Select a script to run:",
+			source: (term) =>
+				term ? choices.filter((choice) => choice.name.includes(term)) : choices,
+		}),
+	);
 };
 
 const main = async () => {
@@ -244,8 +283,30 @@ const main = async () => {
 	const aliases = getMergedAliases(projectRoot);
 	const args = process.argv.slice(2);
 
-	if (args.length === 0) {
+	if (args.length === 0 || (args.length === 1 && args[0] === "-i")) {
 		const scripts = getPackageJsonScripts(projectRoot);
+
+		if (args.length === 1 && args[0] === "-i") {
+			const selected = await interactiveSelect(scripts);
+			if (!selected) {
+				process.exit(0);
+			}
+			const commandArgs = resolveCommand(
+				selected,
+				[],
+				projectRoot,
+				packageManager,
+				aliases,
+			);
+			if (!commandArgs) {
+				console.error(`Command '${selected}' has no valid fallback commands`);
+				process.exit(1);
+			}
+			console.log(`Running: ${commandArgs.join(" ")}`);
+			const exitCode = await runCommand(commandArgs, projectRoot);
+			process.exit(exitCode);
+		}
+
 		listCommands(aliases, scripts);
 		process.exit(0);
 	}
