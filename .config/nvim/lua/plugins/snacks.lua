@@ -15,6 +15,7 @@ local default_excludes = {
   "**/routeTree.gen.ts",
   "**/bun.lock",
   "**/generated/",
+  "**/gql.generated.js",
 }
 
 return {
