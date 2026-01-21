@@ -8,18 +8,17 @@ return {
     },
     servers = {
       svelte = {},
-      oxlint = {},
       denols = {
         root_dir = util.root_pattern("deno.json", "deno.jsonc"),
       },
-      tsgo = {
+      ts_ls = {
         handlers = {
           ["textDocument/publishDiagnostics"] = function(_, result, ctx, config)
             if result.diagnostics == nil then
               return
             end
 
-            -- ignore some diagnostics
+            -- ignore some tsserver diagnostics
             local idx = 1
             while idx <= #result.diagnostics do
               local entry = result.diagnostics[idx]
