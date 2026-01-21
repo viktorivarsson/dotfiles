@@ -11,4 +11,6 @@ setup_link ".tmux.conf"
 setup_link ".zshrc"
 setup_link ".prototools"
 
+# Build x binary
+bun install --cwd ./scripts/x
 bun build --compile --outfile x scripts/x/index.ts && mv x bin/x
