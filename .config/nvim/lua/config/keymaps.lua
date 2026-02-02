@@ -37,3 +37,17 @@ map("t", "<C-h>", "<C-\\><C-n><C-w>h", silent_options)
 map("t", "<C-j>", "<C-\\><C-n><C-w>j", silent_options)
 map("t", "<C-k>", "<C-\\><C-n><C-w>k", silent_options)
 map("t", "<C-l>", "<C-\\><C-n><C-w>l", silent_options)
+
+-- Accept AI inline suggestion with <C-j>, otherwise accept Blink dropdown with <C-y>
+vim.keymap.set("i", "<C-j>", function()
+  -- Try Copilot suggestion first (zbirenbaum/copilot.lua)
+  local ok_copilot, copilot_suggestion = pcall(require, "copilot.suggestion")
+  if ok_copilot and copilot_suggestion and copilot_suggestion.is_visible and copilot_suggestion.is_visible() then
+    copilot_suggestion.accept()
+    return
+  end
+
+  -- Fallback: send Blink dropdown accept (<C-y>)
+  local keys = vim.api.nvim_replace_termcodes("<C-y>", true, false, true)
+  vim.api.nvim_feedkeys(keys, "n", false)
+end, { silent = true })
