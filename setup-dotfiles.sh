@@ -1,5 +1,5 @@
 setup_link() {
-  ln -nfs "$HOME/code/dotfiles/$1" "$HOME/${2:-$1}"
+  ln -nfs "$HOME/code/private/dotfiles/$1" "$HOME/${2:-$1}"
 }
 
 setup_link ".config/ghostty"
