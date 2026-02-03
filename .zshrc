@@ -88,8 +88,8 @@ function add_to_path() {
 # Sync Dotfiles
 function sync-dotfiles() {
     echo "Pulling dotfiles repo..."
-    git --git-dir ~/code/dotfiles/.git pull
-    ~/code/dotfiles/setup-dotfiles.sh
+    git --git-dir ~/code/private/dotfiles/.git pull
+    ~/code/private/dotfiles/setup-dotfiles.sh
 }
 
 function clean-node-modules() {

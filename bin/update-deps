@@ -25,7 +25,7 @@ function run_step() {
 }
 
 # brew
-run_step "install brew bundle" "brew bundle install --file $HOME/code/dotfiles/.config/brewfile/Brewfile"
+run_step "install brew bundle" "brew bundle install --file $HOME/code/private/dotfiles/.config/brewfile/Brewfile"
 run_step "brew update" "brew update"
 run_step "brew upgrade" "brew upgrade"
 
