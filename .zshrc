@@ -104,7 +104,7 @@ fi
 
 # Custom bin
 add_to_path "$HOME/bin"
-add_to_path "$HOME/code/dotfiles/bin"
+add_to_path "$HOME/code/private/dotfiles/bin"
 
 # Homebrew
 export HOMEBREW_BUNDLE_FILE="$HOME/.brewfile"
