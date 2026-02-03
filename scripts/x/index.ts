@@ -19,6 +19,7 @@ const runPrompt = async <T>(fn: () => Promise<T>): Promise<T> => {
 interface Command {
   cmd: string;
   args?: string[];
+  runners?: string[];
 }
 
 interface Config {
@@ -164,12 +165,27 @@ const resolveCommand = (
   const aliasCommands = aliases[command];
 
   if (aliasCommands) {
+    // First, try to find commands with explicit runners matching the current runner
+    const explicitMatches = aliasCommands.filter((cmd) =>
+      cmd.runners?.includes(packageManager),
+    );
+
+    // If we have explicit matches, use only those
+    // Otherwise, fall back to commands without runners specified
+    const matchingCommands = explicitMatches.length > 0
+      ? explicitMatches
+      : aliasCommands.filter((cmd) => !cmd.runners);
+
+    if (matchingCommands.length === 0) {
+      return undefined;
+    }
+
     const scripts = getPackageJsonScripts(projectRoot);
 
-    for (let i = 0; i < aliasCommands.length; i++) {
-      const aliasCmd = aliasCommands[i]!;
+    for (let i = 0; i < matchingCommands.length; i++) {
+      const aliasCmd = matchingCommands[i]!;
       const fullArgs = [...(aliasCmd.args || []), ...args];
-      const isLast = i === aliasCommands.length - 1;
+      const isLast = i === matchingCommands.length - 1;
 
       if (scripts?.includes(aliasCmd.cmd)) {
         return [packageManager, "run", aliasCmd.cmd, ...fullArgs];
@@ -324,7 +340,7 @@ const main = async () => {
       );
       if (!commandArgs) {
         console.error(
-          `Command '${selected}' has no valid fallback commands`,
+          `No command defined for '${selected}' with runner '${packageManager}'`,
         );
         process.exit(1);
       }
@@ -351,7 +367,9 @@ const main = async () => {
   );
 
   if (!commandArgs) {
-    console.error(`Alias '${command}' has no valid fallback commands`);
+    console.error(
+      `No command defined for '${command}' with runner '${packageManager}'`,
+    );
     process.exit(1);
   }
 

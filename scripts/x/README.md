@@ -30,9 +30,10 @@ deno install --allow-read --allow-run --allow-env --global ./scripts/x/x.ts
 | `t` | `test` | Run tests |
 | `l` | `lint` | Run linter |
 | `c` | `check` → `ts:check` → `type-check` | Run type checking |
-| `ui` | `update --interactive` | Interactive dependency update |
+| `ui` | `upgrade-interactive` (yarn), `update --interactive` (bun/pnpm), `exec npm-check-updates` (npm) | Interactive dependency update |
 | `add` | `add` | Add package |
 | `rm` | `remove` | Remove package |
+| `x` | `x` (bun), `dlx` (pnpm), `exec` (yarn/npm) | Execute a package |
 
 ## Usage
 
@@ -65,6 +66,10 @@ Create a `.xrc.json` in your project root to override or extend aliases:
   "aliases": {
     "dev": [
       {"cmd": "dev:custom"}
+    ],
+    "deploy": [
+      {"cmd": "deploy:staging", "runners": ["bun"]},
+      {"cmd": "deploy", "runners": ["pnpm", "npm"]}
     ]
   }
 }
@@ -76,9 +81,33 @@ Project aliases are prioritized over global aliases.
 
 Global config is located at `~/.config/x/config.json`. You can customize aliases by editing this file.
 
+## Runner-Specific Aliases
+
+Aliases can be defined to work with specific package managers using the `runners` field:
+
+```json
+{
+  "aliases": {
+    "ui": [
+      {"cmd": "upgrade-interactive", "runners": ["yarn"]},
+      {"cmd": "update", "args": ["--interactive"], "runners": ["bun", "pnpm"]},
+      {"cmd": "exec", "args": ["npm-check-updates"], "runners": ["npm"]}
+    ]
+  }
+}
+```
+
+**Matching rules:**
+- Commands WITH `runners`: Only match for specified package managers
+- Commands WITHOUT `runners`: Act as fallback when no explicit runner matches
+
+This allows you to use the same alias across different projects while running the appropriate command for each package manager.
+
 ## How It Works
 
-1. **Alias resolution**: If the command is an alias, try each fallback in order
+1. **Alias resolution**: If the command is an alias:
+   - First, try commands with explicit `runners` matching the detected package manager
+   - If no explicit matches, fall back to commands without `runners`
 2. **Script-first**: If a script exists in `package.json`, run it with `<pm> run <script>`
 3. **Executable fallback**: If no script exists, run `<pm> <cmd>` directly
 4. **Pass-through**: Unknown commands are passed to the package manager
@@ -107,6 +136,30 @@ Running: bun test
 ```bash
 $ x add lodash
 Running: bun add lodash
+```
+
+### Execute a package
+```bash
+$ x x cowsay "hello"
+Running: bun x cowsay hello
+# or with npm:
+Running: npm exec cowsay hello
+```
+
+### Same alias, different package managers
+The `ui` alias automatically runs the correct command for each package manager:
+```bash
+# Yarn project
+$ x ui
+Running: yarn upgrade-interactive
+
+# pnpm project  
+$ x ui
+Running: pnpm update --interactive
+
+# npm project
+$ x ui
+Running: npm exec npm-check-updates
 ```
 
 ## Similar Tools

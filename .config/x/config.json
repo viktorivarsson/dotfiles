@@ -41,10 +41,18 @@
     ],
     "ui": [
       {
+        "cmd": "upgrade-interactive",
+        "runners": ["yarn"]
+      },
+      {
         "cmd": "update",
-        "args": [
-          "--interactive"
-        ]
+        "args": ["--interactive"],
+        "runners": ["bun", "pnpm"]
+      },
+      {
+        "cmd": "exec",
+        "args": ["npm-check-updates"],
+        "runners": ["npm"]
       }
     ],
     "add": [
@@ -55,6 +63,20 @@
     "rm": [
       {
         "cmd": "remove"
+      }
+    ],
+    "x": [
+      {
+        "cmd": "x",
+        "runners": ["bun"]
+      },
+      {
+        "cmd": "dlx",
+        "runners": ["pnpm"]
+      },
+      {
+        "cmd": "exec",
+        "runners": ["yarn", "npm"]
       }
     ]
   }
