@@ -217,6 +217,7 @@ const runCommand = async (
   const child = spawn(command, commandArgs.slice(1), {
     cwd: projectRoot,
     stdio: "inherit",
+    env: process.env,
   });
 
   return new Promise((resolve) => {
