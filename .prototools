@@ -6,3 +6,6 @@ npm = "latest"
 
 [settings]
 auto-install = true
+
+[plugins.tools]
+gh = "https://raw.githubusercontent.com/appthrust/proto-toml-plugins/main/gh/plugin.toml"
