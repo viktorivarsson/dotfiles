@@ -140,3 +140,4 @@ add_to_path "$PROTO_HOME/shims:$PROTO_HOME/bin:$PATH"
 # go
 export GOBIN="$HOME/go/bin"
 add_to_path "$GOBIN"
+export PATH="$HOME/.local/bin:$PATH"
