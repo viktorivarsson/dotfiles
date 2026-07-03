@@ -25,14 +25,15 @@ function run_step() {
 }
 
 # brew
+export HOMEBREW_NO_ASK=1
 run_step "install brew bundle" "brew bundle install --file $HOME/code/private/dotfiles/.config/brewfile/Brewfile"
 run_step "brew update" "brew update"
-run_step "brew upgrade" "brew upgrade"
+run_step "brew upgrade" "brew upgrade --yes"
 
 # proto toolchain
 if command -v proto >/dev/null; then
-  run_step "proto upgrade" "proto upgrade"
-  run_step "proto install" "proto install"
+  run_step "proto upgrade" "proto upgrade --yes"
+  run_step "proto install" "proto install --yes"
 else
   echo "proto not installed, skipping..."
 fi
