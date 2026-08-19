@@ -141,3 +141,6 @@ add_to_path "$PROTO_HOME/shims:$PROTO_HOME/bin:$PATH"
 export GOBIN="$HOME/go/bin"
 add_to_path "$GOBIN"
 export PATH="$HOME/.local/bin:$PATH"
+
+# Vite+ bin (https://viteplus.dev)
+. "$HOME/.vite-plus/env"
