@@ -5,6 +5,8 @@ setup_link() {
 setup_link ".config/ghostty"
 setup_link ".config/nvim"
 setup_link ".config/starship.toml"
+mkdir -p "$HOME/.config/waystone"
+setup_link ".config/waystone/config.toml"
 setup_link ".config/brewfile/Brewfile" ".brewfile"
 setup_link ".config/x"
 setup_link ".tmux.conf"

@@ -1,0 +1,17 @@
+# Shared Waystone configuration. This file is symlinked by setup-dotfiles.sh.
+#
+# Machine-specific settings belong in ~/.config/waystone/local.toml. That file
+# is intentionally not tracked by dotfiles and overrides these defaults.
+
+[defaults]
+editor = ["nvim"]
+agent = ["codex"]
+
+[[roots]]
+path = "~/code/private"
+label = "private"
+scan_depth = 3
+
+[[projects]]
+path = "~/code/private/car-crawler"
+isolated = ["data/db.sqlite", "data/bauhaus-stock.json"]

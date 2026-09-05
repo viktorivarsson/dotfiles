@@ -1,3 +1,59 @@
+local function send_waystone_context(selection, line, column)
+  local file = vim.api.nvim_buf_get_name(0)
+  if file == "" then
+    vim.notify("Waystone can only send context from a file buffer", vim.log.levels.WARN)
+    return
+  end
+
+  local command = {
+    "waystone",
+    "send",
+    "--file",
+    file,
+    "--line",
+    tostring(line),
+    "--column",
+    tostring(column),
+  }
+  if selection then
+    table.insert(command, "--selection")
+  end
+
+  vim.system(command, { stdin = selection, text = true }, function(result)
+    if result.code ~= 0 then
+      vim.schedule(function()
+        vim.notify(result.stderr:gsub("%s+$", ""), vim.log.levels.ERROR)
+      end)
+    end
+  end)
+end
+
+local function enable_waystone_mappings()
+  vim.keymap.set("n", "<leader>aw", function()
+    local cursor = vim.api.nvim_win_get_cursor(0)
+    send_waystone_context(nil, cursor[1], cursor[2] + 1)
+  end, { desc = "Waystone Send Cursor Context" })
+
+  vim.keymap.set("x", "<leader>aw", function()
+    local start = vim.api.nvim_buf_get_mark(0, "<")
+    local finish = vim.api.nvim_buf_get_mark(0, ">")
+    local selection = vim.api.nvim_buf_get_text(0, start[1] - 1, start[2], finish[1] - 1, finish[2] + 1, {})
+    send_waystone_context(table.concat(selection, "\n"), start[1], start[2] + 1)
+  end, { desc = "Waystone Send Selection" })
+end
+
+local function configure_waystone_mappings()
+  if not vim.env.TMUX or vim.fn.executable("tmux") ~= 1 or vim.fn.executable("waystone") ~= 1 then
+    return
+  end
+
+  vim.system({ "tmux", "display-message", "-p", "#{@waystone_worktree}" }, { text = true }, function(result)
+    if result.code == 0 and result.stdout:match("%S") then
+      vim.schedule(enable_waystone_mappings)
+    end
+  end)
+end
+
 return {
   {
     "folke/sidekick.nvim",
@@ -177,6 +233,7 @@ return {
     config = function()
       -- Ensure default setup is applied
       require("sidekick").setup()
+      configure_waystone_mappings()
     end,
   },
 
