@@ -1,9 +1,11 @@
 {
+  "model": "sonnet",
   "enabledPlugins": {
     "caveman@caveman": true,
     "frontend-design@claude-plugins-official": true,
     "code-simplifier@claude-plugins-official": true,
-    "ruby-lsp@claude-plugins-official": true
+    "ruby-lsp@claude-plugins-official": true,
+    "rust-analyzer-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "caveman": {
@@ -14,6 +16,5 @@
     }
   },
   "effortLevel": "high",
-  "skipWorkflowUsageWarning": true,
-  "model": "sonnet"
+  "skipWorkflowUsageWarning": true
 }
