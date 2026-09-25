@@ -31,12 +31,10 @@ const PROJECT_CONFIG_FILE = ".xrc.json";
 
 const PACKAGE_MANAGER_LOCKFILES = [
   { name: "bun", files: ["bun.lock", "bun.lockb"] },
-  { name: "pnpm", files: ["pnpm-lock.yaml"] },
+  { name: "pnpm", files: ["pnpm-lock.yaml", "pnpm-workspace.yaml"] },
   { name: "yarn", files: ["yarn.lock"] },
   { name: "npm", files: ["package-lock.json"] },
 ];
-
-const MAX_SEARCH_DEPTH = 5;
 
 const fileExists = (filePath: string): boolean => {
   return existsSync(filePath);
@@ -59,9 +57,7 @@ const loadJsonFile = (
 
 const detectClosestPackageManager = (wd: string): string | undefined => {
   let currentDir = wd;
-  let depth = 0;
-
-  while (depth < MAX_SEARCH_DEPTH) {
+  while (true) {
     for (const { name, files } of PACKAGE_MANAGER_LOCKFILES) {
       for (const file of files) {
         if (fileExists(path.join(currentDir, file))) {
@@ -76,7 +72,6 @@ const detectClosestPackageManager = (wd: string): string | undefined => {
     }
 
     currentDir = parentDir;
-    depth++;
   }
 
   return undefined;
