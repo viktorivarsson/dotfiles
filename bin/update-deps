@@ -34,12 +34,13 @@ run_step "brew upgrade" "brew upgrade --yes"
 if command -v proto >/dev/null; then
   run_step "proto upgrade" "proto upgrade --yes"
   run_step "proto install" "proto install --yes"
+  run_step "proto clean" "proto clean --yes"
 else
   echo "proto not installed, skipping..."
 fi
 
 # tmux
-run_step "clanup tmux plugins" "$HOME/.tmux/plugins/tpm/bin/clean_plugins"
+run_step "cleanup tmux plugins" "$HOME/.tmux/plugins/tpm/bin/clean_plugins"
 run_step "update tmux plugins" "$HOME/.tmux/plugins/tpm/bin/update_plugins all"
 
 # impeccable skill (Claude Code + Codex)
