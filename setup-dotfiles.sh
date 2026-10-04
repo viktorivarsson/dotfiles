@@ -18,11 +18,16 @@ setup_link ".prototools"
 # is legacy/built-in-only) — see https://www.agensi.io/learn/where-are-codex-cli-skills-stored
 mkdir -p "$HOME/.claude/skills" "$HOME/.claude/agents" "$HOME/.agents/skills"
 
-for skill_dir in skills/*/; do
-  skill_name=$(basename "$skill_dir")
-  setup_link "skills/$skill_name" ".claude/skills/$skill_name"
-  setup_link "skills/$skill_name" ".agents/skills/$skill_name"
-done
+# Skills are maintained in their own repo. Clone it on new machines, then
+# install/update symlinks from its setup script.
+SKILLS_REPO="$HOME/code/private/agent-skills"
+if [ ! -d "$SKILLS_REPO/.git" ]; then
+  mkdir -p "$(dirname "$SKILLS_REPO")"
+  git clone https://github.com/viktorivarsson/agent-skills.git "$SKILLS_REPO"
+else
+  git -C "$SKILLS_REPO" pull --ff-only
+fi
+"$SKILLS_REPO/setup-skills.sh"
 
 setup_link "GLOBAL.md" ".claude/CLAUDE.md"
 setup_link "GLOBAL.md" ".codex/AGENTS.md"

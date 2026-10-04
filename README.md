@@ -6,11 +6,11 @@ pulling changes.
 
 ## Claude Code + Codex
 
-- `skills/<name>/SKILL.md` — shared skills, symlinked into both
-  `~/.claude/skills/<name>` and `~/.agents/skills/<name>` (Codex reads user
-  skills from `~/.agents/skills`, not `~/.codex/skills`). Add a new skill by
-  creating the folder and re-running the setup script — no per-tool wiring
-  needed.
+- Skills live in [`agent-skills`](https://github.com/viktorivarsson/agent-skills)
+  and are symlinked into both `~/.claude/skills/<name>` and
+  `~/.agents/skills/<name>` (Codex reads user skills from `~/.agents/skills`,
+  not `~/.codex/skills`). `setup-dotfiles.sh` clones that repo on a new machine
+  and runs its installer.
 - `GLOBAL.md` — instructions loaded in every project by both tools
   (symlinked to `~/.claude/CLAUDE.md` and `~/.codex/AGENTS.md`). Keep it
   short: only things that need to be ambient everywhere, not what a skill's
