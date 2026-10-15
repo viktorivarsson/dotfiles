@@ -25,3 +25,12 @@ every project on this machine, not just this repo.
   Preserve exact names in code, API identifiers, and commands.
 - Claim full ASD-STE100 compliance only after checking the text against
   the complete rules and dictionary.
+
+## Writing readable code
+
+- Avoid nested ternaries. Prefer explicit branches with early returns.
+  Extract small, named pure functions when they make the logic easier to follow.
+- Use braces and multiline bodies for control flow where supported, even for
+  one statement. Separate logical steps with blank lines.
+- Use descriptive names. Keep related logic together.
+  Extract helpers only when they make the code easier to understand.
