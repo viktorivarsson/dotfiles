@@ -4,6 +4,14 @@ Machine config for macOS, applied via symlinks (`setup-dotfiles.sh`), not
 copies. Run it after cloning, and again (or run `sync-dotfiles`) after
 pulling changes.
 
+## Toolchains
+
+`.prototools` is symlinked to `~/.prototools` and defines the tools managed by
+`bin/update-deps`. The updater runs proto from the home directory with
+`--config-mode local`, so project configs and `~/.proto/.prototools` do not
+affect machine updates. Other proto commands can still load those files.
+Use `proto debug config` to inspect the merged configuration.
+
 ## Claude Code + Codex
 
 - Skills live in [`agent-skills`](https://github.com/viktorivarsson/agent-skills)

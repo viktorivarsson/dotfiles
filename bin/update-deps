@@ -7,45 +7,55 @@ echo ""
 STEP=0
 
 function run_step() {
+  local label="$1"
   STEP=$((STEP + 1))
-  echo "[$STEP] - $1..."
+  echo "[$STEP] - $label..."
+  shift
 
   local start=$(date +%s)
-  $2
+  "$@"
   if [ $? -eq 0 ]; then
     local end=$(date +%s)
     local runtime=$((end - start))
 
-    echo "[$STEP] - $1...done in $runtime sec"
+    echo "[$STEP] - $label...done in $runtime sec"
     echo ""
   else
-    echo "[$STEP] - $1...failed"
+    echo "[$STEP] - $label...failed"
     exit 1
   fi
 }
 
+function run_proto() {
+  (
+    cd "$HOME" || exit 1
+    # Use only ~/.prototools, excluding project configs and ~/.proto/.prototools.
+    proto "$@" --config-mode local
+  )
+}
+
 # brew
 export HOMEBREW_NO_ASK=1
-run_step "install brew bundle" "brew bundle install --file $HOME/code/private/dotfiles/.config/brewfile/Brewfile"
-run_step "brew update" "brew update"
-run_step "brew upgrade" "brew upgrade --yes"
+run_step "install brew bundle" brew bundle install --file "$HOME/code/private/dotfiles/.config/brewfile/Brewfile"
+run_step "brew update" brew update
+run_step "brew upgrade" brew upgrade --yes
 
 # proto toolchain
 if command -v proto >/dev/null; then
-  run_step "proto upgrade" "proto upgrade --yes"
-  run_step "proto install" "proto install --yes"
-  run_step "proto clean" "proto clean --yes"
+  run_step "proto upgrade" run_proto upgrade --yes
+  run_step "proto install" run_proto install --yes
+  run_step "proto clean" run_proto clean --yes
 else
   echo "proto not installed, skipping..."
 fi
 
 # tmux
 run_step "cleanup tmux plugins" "$HOME/.tmux/plugins/tpm/bin/clean_plugins"
-run_step "update tmux plugins" "$HOME/.tmux/plugins/tpm/bin/update_plugins all"
+run_step "update tmux plugins" "$HOME/.tmux/plugins/tpm/bin/update_plugins" all
 
 # impeccable skill (Claude Code + Codex)
 if command -v npx >/dev/null; then
-  run_step "update impeccable" "npx --yes impeccable update --global --yes"
+  run_step "update impeccable" npx --yes impeccable update --global --yes
 fi
 
 end=$(date +%s)
