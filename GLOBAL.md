@@ -12,25 +12,22 @@ every project on this machine, not just this repo.
 
 ## Writing explanations and documentation
 
-- Apply [ISO 24495-1:2023](https://www.iso.org/standard/78907.html)
-  plain language principles. Give readers the information they need.
-  Make it easy to find, understand, and use.
-- For technical text in English, follow
+- Use plain language. Give readers the information they need to act.
+- Write short, direct sentences. Prefer active voice and consistent terms.
+- Put each procedural step in a separate sentence.
+- Explain unfamiliar terms when the intended reader needs that explanation.
+- Preserve technical meaning and exact names in code, API identifiers, and commands.
+- Use [ISO 24495-1](https://www.iso.org/standard/78907.html) and
   [ASD-STE100](https://www.asd-ste100.org/assets/files/ASD-STE100_ISSUE9.pdf)
-  rules where applicable. Use its approved vocabulary and permitted
-  technical nouns and verbs.
-- Write short sentences. Use active voice and consistent terms.
-  Put each instruction in a separate sentence.
-- Explain unfamiliar terms at first use. Keep the technical meaning accurate.
-  Preserve exact names in code, API identifiers, and commands.
-- Claim full ASD-STE100 compliance only after checking the text against
-  the complete rules and dictionary.
+  as references when relevant. Claim compliance only after checking the
+  applicable requirements.
 
 ## Writing readable code
 
-- Avoid nested ternaries. Prefer explicit branches with early returns.
-  Extract small, named pure functions when they make the logic easier to follow.
-- Use braces and multiline bodies for control flow where supported, even for
-  one statement. Separate logical steps with blank lines.
+- Avoid nested ternaries. Prefer explicit branches and early returns when clearer.
+- Use braces and multiline bodies for control flow where supported.
 - Use descriptive names. Keep related logic together.
-  Extract helpers only when they make the code easier to understand.
+- Separate logical steps with blank lines.
+- Extract small helpers when they make the code easier to understand.
+  Prefer pure functions where practical.
+- Follow established project conventions when they differ from these defaults.
