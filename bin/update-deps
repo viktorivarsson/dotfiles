@@ -44,7 +44,7 @@ run_step "brew upgrade" brew upgrade --yes
 if command -v proto >/dev/null; then
   run_step "proto upgrade" run_proto upgrade --yes
   run_step "proto install" run_proto install --yes
-  run_step "proto clean" run_proto clean --yes
+  run_step "proto clean" run_proto clean --yes --log debug
 else
   echo "proto not installed, skipping..."
 fi
