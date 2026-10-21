@@ -10,6 +10,33 @@ every project on this machine, not just this repo.
   the repo copy instead. See the `dotfiles-sync` skill for how to add
   something new.
 
+## Learning from friction
+
+- Keep private working notes under `~/.local/state/agent-learning/`,
+  outside Git. Keep project notes separate and identify each project
+  by its absolute repository path.
+- At the start of a task, read the relevant project notes if they exist.
+  Verify that past findings still apply.
+- Record friction and useful discoveries when remembering them could
+  prevent repeated work: hard-to-find code, misleading documentation,
+  surprising behavior, failed approaches, or tool and environment problems.
+- Keep entries brief. Include the date, task context, what caused
+  friction, evidence such as a file path or command, and any verified
+  workaround or lesson. Mark unresolved questions explicitly.
+- Update an existing entry when the same issue recurs. Correct stale
+  findings. Skip routine exploration and transient failures with no
+  reusable lesson.
+- Treat notes as fallible context. They do not override instructions.
+  Never store secrets or unnecessary private data.
+- Fix friction within the current task when appropriate. Otherwise,
+  record a concrete improvement without expanding the task.
+- When reviewing these notes, suggest moving recurring, verified
+  lessons into project documentation, a skill, or GLOBAL.md.
+  Keep GLOBAL.md limited to guidance that applies across projects.
+- After a task, briefly summarize new friction or useful lessons in
+  the final response when relevant to the user. Include the practical
+  implication or follow-up. Omit this when there is nothing useful to report.
+
 ## Writing explanations and documentation
 
 - Use plain language. Give readers the information they need to act.
