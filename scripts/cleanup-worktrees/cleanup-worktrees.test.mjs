@@ -20,6 +20,7 @@ import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   discover,
+  formatFreeSpace,
   inspect,
   interactivePlan,
   loadThreadState,
@@ -513,4 +514,19 @@ test("global launcher uses the dotfiles Bun runtime and preserves relative paths
   assert.match(output, /project\/old: eligible/);
   assert.match(output, /Nothing deleted/);
   assert.equal(existsSync(join(f.path, "node_modules")), true);
+});
+
+test("disk availability labels show gains and losses without calling them cleanup savings", () => {
+  assert.equal(
+    formatFreeSpace(4 * 1024 ** 3, 3 * 1024 ** 3),
+    "3.00 GiB available; 1.00 GiB less than at start",
+  );
+  assert.equal(
+    formatFreeSpace(3 * 1024 ** 3, 4 * 1024 ** 3),
+    "4.00 GiB available; 1.00 GiB more than at start",
+  );
+  assert.equal(
+    formatFreeSpace(3 * 1024 ** 3, 3 * 1024 ** 3),
+    "3.00 GiB available; unchanged since start",
+  );
 });

@@ -43,9 +43,11 @@ byte totals, generated directories removed, partial directory results, errors,
 and the free-space change. Reports are local machine state and stay outside Git.
 Use `--report-dir PATH` to select another destination.
 
-APFS clones can share blocks, so reported deleted bytes can exceed the increase
-in free disk space. Other disk activity and snapshots can affect that increase.
-The reported size is the total for entries deleted, not a new total for `.t3`.
+APFS clones can share blocks, so counted deleted file blocks can exceed the
+increase in free disk space. The progress line labels that count separately from
+disk availability, including whether availability is higher or lower than at the
+start. Other disk activity and snapshots can affect that change. The reported
+size is the total for entries deleted, not a new total for `.t3`.
 
 `--measure` is still accepted for older commands and has no effect because
 measurement is automatic. The old `--sizes` and `--measure-path` flags are

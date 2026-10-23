@@ -377,6 +377,21 @@ function formatBytes(bytes) {
   return `${bytes} B`;
 }
 
+export function formatFreeSpace(before, after) {
+  const difference = after - before;
+  if (difference > 0) {
+    return `${formatBytes(after)} available; ${
+      formatBytes(difference)
+    } more than at start`;
+  }
+  if (difference < 0) {
+    return `${formatBytes(after)} available; ${
+      formatBytes(-difference)
+    } less than at start`;
+  }
+  return `${formatBytes(after)} available; unchanged since start`;
+}
+
 export function removeMeasuredDirectory(target, options = {}) {
   if (!directory(target) || realpathSync(target) !== target) {
     throw new Error(`Expected a real directory: ${target}`);
@@ -557,8 +572,8 @@ export function cleanup(options, inventory = scanWorktrees(options)) {
     console.log(
       `Progress: ${report.files} files, ${report.directories} directories, ${report.symlinks} symlinks removed; ${
         formatBytes(report.reportedRemovedBytes)
-      } reported; free-space change ${
-        formatBytes(freeBytes(options.root) - before)
+      } of deleted file blocks counted (may be shared); disk: ${
+        formatFreeSpace(before, freeBytes(options.root))
       }.`,
     );
   }
@@ -591,7 +606,9 @@ export function cleanup(options, inventory = scanWorktrees(options)) {
           report.removedDirectories.push(path);
           results.get(path).status = "removed";
           console.log(
-            `Removed ${path}: ${formatBytes(totals.reportedBytes)} reported.`,
+            `Removed ${path}: ${
+              formatBytes(totals.reportedBytes)
+            } of file blocks counted (may be shared).`,
           );
           progress();
         },
@@ -612,12 +629,12 @@ export function cleanup(options, inventory = scanWorktrees(options)) {
   console.log(
     `Finished: ${report.removedDirectories.length} generated directories trimmed in ${report.trimmedWorktrees.length} worktrees; ${
       formatBytes(report.reportedRemovedBytes)
-    } reported removed.`,
+    } of deleted file blocks counted (may be shared).`,
   );
   console.log(
     `Free space: ${formatBytes(before)} before; ${
-      formatBytes(after)
-    } after; change ${formatBytes(after - before)}.`,
+      formatFreeSpace(before, after)
+    }.`,
   );
   console.log(
     "Reported sizes can include APFS shared blocks. Other disk activity can affect the free-space change.",
