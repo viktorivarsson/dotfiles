@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+cleanup_repo="$HOME/code/private/dotfiles"
+cleanup_bun="$(cd "$cleanup_repo" && proto --config-mode local --reporter text bin bun)" || exit 1
+
+exec "$cleanup_bun" "$cleanup_repo/scripts/cleanup-worktrees/cleanup-worktrees.mjs" "$@"

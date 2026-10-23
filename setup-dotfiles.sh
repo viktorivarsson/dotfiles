@@ -13,6 +13,9 @@ setup_link ".tmux.conf"
 setup_link ".zshrc"
 setup_link ".prototools"
 
+mkdir -p "$HOME/.local/bin"
+setup_link "bin/cleanup-worktrees" ".local/bin/cleanup-worktrees"
+
 # Claude Code + Codex: shared skills, global instructions, Claude settings
 # Codex reads user skills from ~/.agents/skills, not ~/.codex/skills (that path
 # is legacy/built-in-only) — see https://www.agensi.io/learn/where-are-codex-cli-skills-stored
@@ -45,3 +48,6 @@ fi
 # Build x binary
 bun install --cwd ./scripts/x
 bun build --compile --outfile x scripts/x/index.ts && mv x bin/x
+
+# Install the interactive cleanup command's prompt dependencies.
+bun install --cwd "$HOME/code/private/dotfiles/scripts/cleanup-worktrees" --frozen-lockfile

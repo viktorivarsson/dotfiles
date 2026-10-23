@@ -1,0 +1,11 @@
+{
+  "name": "cleanup-worktrees",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "bun test --timeout 30000"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^8.7.4"
+  }
+}
