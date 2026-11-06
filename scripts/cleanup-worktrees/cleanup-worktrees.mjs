@@ -282,6 +282,30 @@ export function orcaCheck(path, workspaces, days, now = Date.now()) {
     ) {
       blockers.push("Orca workspace has live or unverifiable sessions");
     }
+    const review = owner.linkedPR;
+    if (review !== null) {
+      if (!review || typeof review !== "object" || review.state !== "merged") {
+        blockers.push("Orca PR is open, unmerged or unverifiable");
+      }
+    }
+    const otherReview = owner.linkedGitLabMR || owner.linkedBitbucketPR ||
+      owner.linkedAzureDevOpsPR || owner.linkedGiteaPR;
+    const unresolvedReview = Array.isArray(owner.linkedItems) &&
+      owner.linkedItems.some((item) =>
+        [
+          "pr",
+          "mr",
+          "pull_request",
+          "pull-request",
+          "merge_request",
+          "merge-request",
+        ].includes(item.type) &&
+        (item.provider !== "github" || !review || review.state !== "merged" ||
+          !Number.isSafeInteger(review.number) || item.number !== review.number)
+      );
+    if (otherReview || unresolvedReview) {
+      blockers.push("linked review state cannot be verified by Orca cleanup");
+    }
     if (!Number.isFinite(owner.lastActivityAt) || owner.lastActivityAt <= 0) {
       blockers.push("missing or invalid Orca activity time");
     } else if (now - owner.lastActivityAt < days * DAY) {

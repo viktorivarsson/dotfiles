@@ -105,7 +105,13 @@ it uses `orca` on macOS or `orca-ide` on Linux.
 
 Every local Orca workspace sharing a path must be inactive, unpinned, unselected
 and outside the main checkout. Live or unverifiable terminals, unfinished agents
-and missing activity timestamps block cleanup. Both Orca activity and observed
+and missing activity timestamps block cleanup. Open PRs, closed but unmerged PRs,
+and unknown PR state also block cleanup, even with `--days 0`. Orca must report
+an attached GitHub PR as merged before its workspace can qualify. Other linked
+review providers are conservatively blocked because their merge state is not
+verified here. Workspaces without a PR use the inactivity rule.
+
+Both Orca activity and observed
 file/Git activity must be older than the cooldown. Missing owners and incomplete
 snapshots block cleanup. These checks run again before trimming each selected
 worktree. The existing Git and process checks also apply.

@@ -566,6 +566,8 @@ function orcaOwner(path) {
     status: "inactive",
     agents: [],
     lastActivityAt: 1,
+    linkedPR: null,
+    linkedItems: [],
   };
 }
 
@@ -738,8 +740,59 @@ test("Orca state is reloaded before deletion and an unavailable CLI preserves ou
     () => trimTree(reviewed, options, () => []),
     /live or unverifiable/,
   );
+  writeState({ ...owner, linkedPR: { state: "open" } });
+  assert.throws(() => trimTree(reviewed, options, () => []), /PR is open/);
   rmSync(cli);
   assert.throws(() => trimTree(reviewed, options, () => []));
   assert.equal(existsSync(join(f.path, "node_modules")), true);
   assert.equal(existsSync(join(f.path, "apps/example/node_modules")), true);
+});
+
+test("Orca protects open, closed-unmerged and unknown PRs even with no cooldown", () => {
+  const path = "/nonexistent-orca-fixture/worktree";
+  const owner = orcaOwner(path);
+  for (
+    const linkedPR of [
+      undefined,
+      42,
+      { state: "open" },
+      { state: "closed" },
+      {},
+    ]
+  ) {
+    assert.ok(orcaCheck(path, [{ ...owner, linkedPR }], 0).blockers.length);
+  }
+  assert.deepEqual(
+    orcaCheck(path, [{ ...owner, linkedPR: { state: "merged" } }], 3).blockers,
+    [],
+  );
+  assert.deepEqual(orcaCheck(path, [owner], 3).blockers, []);
+  assert.ok(
+    orcaCheck(path, [{
+      ...owner,
+      linkedPR: { state: "merged" },
+      lastActivityAt: Date.now(),
+    }], 3).blockers.length,
+  );
+  assert.ok(
+    orcaCheck(path, [{ ...owner, linkedGitLabMR: 42 }], 0).blockers.length,
+  );
+  assert.ok(
+    orcaCheck(path, [{
+      ...owner,
+      linkedItems: [{ provider: "github", type: "pr", number: 42 }],
+    }], 0).blockers.length,
+  );
+});
+
+test("a merged PR does not approve another linked PR", () => {
+  const path = "/nonexistent-orca-fixture/worktree";
+  const owner = {
+    ...orcaOwner(path),
+    linkedPR: { state: "merged", number: 42 },
+    linkedItems: [{ provider: "github", type: "pr", number: 43 }],
+  };
+  assert.ok(orcaCheck(path, [owner], 0).blockers.length);
+  owner.linkedItems[0].number = 42;
+  assert.deepEqual(orcaCheck(path, [owner], 0).blockers, []);
 });
