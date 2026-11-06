@@ -22,6 +22,7 @@ import { checkbox, confirm, input, select } from "@inquirer/prompts";
 
 const DAY = 86_400_000;
 const DEFAULT_ROOT = join(homedir(), ".t3/worktrees");
+const ORCA_ROOT = join(homedir(), "orca/workspaces");
 const GENERATED = new Set(["node_modules", ".turbo", ".vite", "dist"]);
 const SKIP_SCAN = new Set([
   ...GENERATED,
@@ -95,10 +96,15 @@ export function parseOptions(args) {
   if (positionals.length > 1 || !["inventory", "trim"].includes(command)) {
     throw new Error("Choose inventory or trim.");
   }
-  const policy = values.policy ??
-    (resolve(values.root) === DEFAULT_ROOT ? "settled" : "age");
-  if (!["settled", "age"].includes(policy)) {
-    throw new Error("--policy must be settled or age.");
+  let defaultPolicy = "age";
+  if (resolve(values.root) === DEFAULT_ROOT) {
+    defaultPolicy = "settled";
+  } else if (resolve(values.root) === ORCA_ROOT) {
+    defaultPolicy = "orca";
+  }
+  const policy = values.policy ?? defaultPolicy;
+  if (!["settled", "age", "orca"].includes(policy)) {
+    throw new Error("--policy must be settled, age or orca.");
   }
   const days = values.days ?? (policy === "settled" ? "1" : "3");
   if (!/^\d+$/.test(days) || !Number.isSafeInteger(Number(days))) {
@@ -213,6 +219,81 @@ export function settlementCheck(path, threads, days, now = Date.now()) {
   };
 }
 
+export function loadOrcaState(invoke = run) {
+  let command = process.env.ORCA_CLI_COMMAND;
+  if (!command) {
+    if (process.env.ORCA_DEV_REPO_ROOT) {
+      command = "orca-dev";
+    } else {
+      command = process.platform === "linux" ? "orca-ide" : "orca";
+    }
+  }
+  const response = JSON.parse(invoke(command, ["worktree", "ps", "--json"]));
+  const result = response.result;
+  if (
+    response.ok !== true || !result || result.truncated !== false ||
+    !Array.isArray(result.worktrees) ||
+    !Array.isArray(result.hostScope?.hostIds) ||
+    !result.hostScope.hostIds.includes("local") ||
+    !Array.isArray(result.hostScope.omittedHostIds) ||
+    result.hostScope.omittedHostIds.length
+  ) {
+    throw new Error("Incomplete Orca workspace state; no cleanup performed.");
+  }
+  return result.worktrees;
+}
+
+export function orcaCheck(path, workspaces, days, now = Date.now()) {
+  const owners = workspaces.filter((workspace) => {
+    if (workspace.hostId !== "local" || typeof workspace.path !== "string") {
+      return false;
+    }
+    const ownerPath = existsSync(workspace.path)
+      ? realpathSync(workspace.path)
+      : resolve(workspace.path);
+    return ownerPath === path;
+  });
+  const blockers = [];
+  if (!owners.length) {
+    blockers.push("no local Orca workspace owns this path");
+  }
+  function finished(agent) {
+    if (
+      Number.isFinite(agent.updatedAt) && now - agent.updatedAt < days * DAY
+    ) {
+      blockers.push(`Orca agent activity within ${days} days`);
+    }
+    return agent.state === "done" && Array.isArray(agent.children) &&
+      agent.children.every(finished);
+  }
+  for (const owner of owners) {
+    if (
+      owner.workspaceKind !== "git" || owner.isMainWorktree !== false ||
+      owner.isPinned !== false || owner.isActive !== false
+    ) {
+      blockers.push("Orca workspace is main, pinned, selected or unverifiable");
+    }
+    if (
+      owner.liveTerminalCount !== 0 || owner.hasAttachedPty !== false ||
+      owner.unverifiableTerminalCount !== 0 ||
+      owner.terminalVerdict !== "none" ||
+      !["inactive", "done"].includes(owner.status) ||
+      !Array.isArray(owner.agents) || !owner.agents.every(finished)
+    ) {
+      blockers.push("Orca workspace has live or unverifiable sessions");
+    }
+    if (!Number.isFinite(owner.lastActivityAt) || owner.lastActivityAt <= 0) {
+      blockers.push("missing or invalid Orca activity time");
+    } else if (now - owner.lastActivityAt < days * DAY) {
+      blockers.push(`Orca activity within ${days} days`);
+    }
+  }
+  return {
+    blockers: [...new Set(blockers)],
+    label: `${owners.length} Orca workspaces`,
+  };
+}
+
 export function discover(root) {
   const result = [];
   for (const group of readdirSync(root)) {
@@ -229,7 +310,7 @@ export function discover(root) {
   return result.sort((a, b) => a.name.localeCompare(b.name));
 }
 
-export function inspect(tree, options, cwdPaths = [], threadState) {
+export function inspect(tree, options, cwdPaths = [], threadState, orcaState) {
   const { path } = tree;
   const blockers = [];
   const candidates = [];
@@ -263,6 +344,11 @@ export function inspect(tree, options, cwdPaths = [], threadState) {
       options.days,
     );
     blockers.push(...settlement.blockers);
+  }
+  let orca;
+  if (options.policy === "orca") {
+    orca = orcaCheck(path, orcaState ?? loadOrcaState(), options.days);
+    blockers.push(...orca.blockers);
   }
   const tracked = git(path, ["ls-files", "-z"]).split("\0").filter(Boolean);
   const gitDir = realpathSync(
@@ -330,12 +416,13 @@ export function inspect(tree, options, cwdPaths = [], threadState) {
   }
   const activity = settlement?.label ??
     `observed activity ${ageDays.toFixed(1)}d ago`;
+  const activityLabel = orca ? `${orca.label}; ${activity}` : activity;
   return {
     ...tree,
     candidates: candidates.filter((rel) => ignored.has(rel)).sort(),
     blockers,
     ageDays,
-    activity,
+    activity: activityLabel,
   };
 }
 
@@ -484,9 +571,25 @@ export function scanWorktrees(options, log = console.log) {
   const threads = options.policy === "settled"
     ? loadThreadState(options.db)
     : undefined;
+  let orcaState;
+  if (options.policy === "orca") {
+    try {
+      orcaState = loadOrcaState();
+    } catch (error) {
+      const reason =
+        `Orca state unavailable; skipping cleanup: ${error.message}`;
+      log(reason);
+      return selected.map((tree) => ({
+        ...tree,
+        blockers: [reason],
+        candidates: [],
+        activity: "Orca unavailable",
+      }));
+    }
+  }
   return selected.map((tree, index) => {
     try {
-      const inspection = inspect(tree, options, cwds, threads);
+      const inspection = inspect(tree, options, cwds, threads, orcaState);
       let status = "eligible";
       if (inspection.blockers.length) {
         status = `SKIP: ${inspection.blockers.join("; ")}`;
@@ -689,6 +792,12 @@ export function findLocations() {
       value: DEFAULT_ROOT,
     });
   }
+  if (directory(ORCA_ROOT)) {
+    locations.push({
+      name: "Orca workspaces · inactive for at least 3 days",
+      value: ORCA_ROOT,
+    });
+  }
   const seen = new Set();
   for (const base of bases) {
     const path = join(base, ".waystone/worktrees");
@@ -801,7 +910,7 @@ export async function main(args) {
     console.log(`Usage: cleanup-worktrees [inventory|trim] [options]
 Run with no arguments in a terminal for the interactive menu.
   --root PATH       Worktree parent, default ~/.t3/worktrees
-  --policy POLICY   settled for T3's default root, age for other roots
+  --policy POLICY   settled for T3, orca for ~/orca/workspaces, age for other roots
   --days N          Minimum days since settlement (default 1) or activity (default 3)
   --t3-db PATH      T3 statev2.sqlite, read-only
   --worktree P/W    Select a project/worktree; repeat for more

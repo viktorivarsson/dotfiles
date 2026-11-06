@@ -9,7 +9,7 @@ and avoiding older Bun versions pinned in other projects.
 The menu lets you:
 
 1. Choose cleanup or a read-only inventory.
-2. Choose T3, a detected Waystone location, or another folder.
+2. Choose T3, Orca, a detected Waystone location, or another folder.
 3. Set the minimum days, with a default of one day settled for T3.
 4. Select eligible worktrees with Space. Press `a` to select all.
 5. Review their generated directories and confirm deletion.
@@ -86,6 +86,32 @@ settlement timestamps from `~/.t3/userdata/statev2.sqlite`, verified against
 T3's thread API. This is an internal schema; T3 updates may require adapting the
 reader. Database errors or unsupported values stop cleanup. Automatic settlement
 without a persisted explicit override is conservatively excluded.
+
+## Orca workspaces
+
+The menu detects `~/orca/workspaces`. This root defaults to the `orca` policy
+with a three-day cooldown. Use `--policy orca` for a custom Orca worktree root.
+
+```sh
+cleanup-worktrees inventory --root ~/orca/workspaces
+cleanup-worktrees trim --root ~/orca/workspaces --worktree project/task --apply
+```
+
+The script reads `orca worktree ps --json`; it never edits Orca's database.
+If Orca is uninstalled, stopped or unavailable, the inventory explains why and
+skips its workspaces. T3 and Waystone remain usable without Orca installed.
+It honors `ORCA_CLI_COMMAND` and `ORCA_DEV_REPO_ROOT`. Outside a dev session
+it uses `orca` on macOS or `orca-ide` on Linux.
+
+Every local Orca workspace sharing a path must be inactive, unpinned, unselected
+and outside the main checkout. Live or unverifiable terminals, unfinished agents
+and missing activity timestamps block cleanup. Both Orca activity and observed
+file/Git activity must be older than the cooldown. Missing owners and incomplete
+snapshots block cleanup. These checks run again before trimming each selected
+worktree. The existing Git and process checks also apply.
+
+This trims generated directories only. For complete workspace removal, use
+Orca's own `orca worktree rm` command.
 
 ## Explicit commands
 

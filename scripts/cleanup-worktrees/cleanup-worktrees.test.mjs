@@ -23,9 +23,12 @@ import {
   formatFreeSpace,
   inspect,
   interactivePlan,
+  loadOrcaState,
   loadThreadState,
+  orcaCheck,
   parseOptions,
   removeMeasuredDirectory,
+  scanWorktrees,
   settlementCheck,
   trimTree,
 } from "./cleanup-worktrees.mjs";
@@ -500,6 +503,22 @@ test("global launcher uses the dotfiles Bun runtime and preserves relative paths
   const launcher = fileURLToPath(
     new URL("../../bin/cleanup-worktrees", import.meta.url),
   );
+  const home = join(f.root, "home");
+  const dotfiles = join(home, "code/private/dotfiles");
+  const fakeBin = join(f.root, "bin");
+  mkdirSync(join(home, "code/private"), { recursive: true });
+  mkdirSync(fakeBin);
+  symlinkSync(fileURLToPath(new URL("../../", import.meta.url)), dotfiles);
+  writeFileSync(join(home, "runtime"), process.execPath);
+  writeFileSync(
+    join(fakeBin, "proto"),
+    `#!/bin/sh
+[ "$*" = "--config-mode local --reporter text bin bun" ] || exit 1
+[ "$PWD" = "$HOME/code/private/dotfiles" ] || exit 1
+cat "$HOME/runtime"
+`,
+  );
+  chmodSync(join(fakeBin, "proto"), 0o755);
   const output = execFileSync(launcher, [
     "inventory",
     "--root",
@@ -510,6 +529,7 @@ test("global launcher uses the dotfiles Bun runtime and preserves relative paths
     cwd: f.root,
     encoding: "utf8",
     timeout: 30_000,
+    env: { ...process.env, HOME: home, PATH: `${fakeBin}:${process.env.PATH}` },
   });
   assert.match(output, /project\/old: eligible/);
   assert.match(output, /Nothing deleted/);
@@ -529,4 +549,197 @@ test("disk availability labels show gains and losses without calling them cleanu
     formatFreeSpace(3 * 1024 ** 3, 3 * 1024 ** 3),
     "3.00 GiB available; unchanged since start",
   );
+});
+
+function orcaOwner(path) {
+  return {
+    path,
+    hostId: "local",
+    workspaceKind: "git",
+    isMainWorktree: false,
+    isPinned: false,
+    isActive: false,
+    liveTerminalCount: 0,
+    hasAttachedPty: false,
+    unverifiableTerminalCount: 0,
+    terminalVerdict: "none",
+    status: "inactive",
+    agents: [],
+    lastActivityAt: 1,
+  };
+}
+
+test("Orca root defaults to safety checks and a three-day cooldown", () => {
+  const options = parseOptions([
+    "--root",
+    join(process.env.HOME, "orca/workspaces"),
+  ]);
+  assert.equal(options.policy, "orca");
+  assert.equal(options.days, 3);
+  assert.throws(() => parseOptions(["--policy", "orca", "--all-settled"]));
+});
+
+test("Orca checks protect every owner, live agents, terminals and unknown state", () => {
+  const path = "/nonexistent-orca-fixture/worktree";
+  const owner = orcaOwner(path);
+  assert.deepEqual(orcaCheck(path, [owner], 3).blockers, []);
+  for (
+    const change of [
+      { hostId: "remote" },
+      { isMainWorktree: true },
+      { isPinned: true },
+      { isActive: true },
+      { liveTerminalCount: 1 },
+      { hasAttachedPty: true },
+      { unverifiableTerminalCount: 1 },
+      { terminalVerdict: "unknown" },
+      { status: "working" },
+      { agents: undefined },
+      { lastActivityAt: 0 },
+      { lastActivityAt: Date.now() },
+      { isPinned: undefined },
+      { agents: [{ state: "working", children: [] }] },
+      {
+        agents: [{
+          state: "done",
+          children: [{ state: "working", children: [] }],
+        }],
+      },
+    ]
+  ) {
+    assert.ok(
+      orcaCheck(path, [{ ...owner, ...change }], 3).blockers.length,
+      JSON.stringify(change),
+    );
+  }
+  assert.ok(
+    orcaCheck(path, [owner, { ...owner, isActive: true }], 0).blockers.length,
+  );
+  assert.ok(orcaCheck(path, [], 0).blockers.length);
+  assert.deepEqual(
+    orcaCheck(
+      path,
+      [{ ...owner, agents: [{ state: "done", children: [] }] }],
+      0,
+    ).blockers,
+    [],
+  );
+});
+
+test("Orca reader refuses failed, truncated and incomplete host snapshots", () => {
+  const response = {
+    ok: true,
+    result: {
+      worktrees: [],
+      truncated: false,
+      hostScope: { hostIds: ["local"], omittedHostIds: [] },
+    },
+  };
+  assert.deepEqual(loadOrcaState(() => JSON.stringify(response)), []);
+  for (
+    const result of [
+      { ...response.result, truncated: true },
+      { ...response.result, truncated: undefined },
+      { ...response.result, hostScope: undefined },
+      {
+        ...response.result,
+        hostScope: { hostIds: ["local"], omittedHostIds: ["remote"] },
+      },
+    ]
+  ) {
+    assert.throws(() =>
+      loadOrcaState(() => JSON.stringify({ ok: true, result }))
+    );
+  }
+  assert.throws(() => loadOrcaState(() => JSON.stringify({ ok: false })));
+  assert.throws(() => loadOrcaState(() => "invalid json"));
+});
+
+test("Orca inspection retains Git and process protections", (t) => {
+  const f = fixture(t);
+  const options = { ...f.options, policy: "orca" };
+  const owners = [orcaOwner(f.path)];
+  assert.deepEqual(
+    inspect(f.tree, options, [], undefined, owners).blockers,
+    [],
+  );
+  assert.ok(
+    inspect(f.tree, options, [f.path], undefined, owners).blockers.length,
+  );
+  f.file("untracked.txt");
+  assert.ok(inspect(f.tree, options, [], undefined, owners).blockers.length);
+});
+
+test("missing Orca CLI skips Orca workspaces without throwing or disabling age scans", (t) => {
+  const f = fixture(t);
+  const previous = process.env.ORCA_CLI_COMMAND;
+  process.env.ORCA_CLI_COMMAND = join(f.root, "missing-orca");
+  t.after(() => {
+    if (previous === undefined) {
+      delete process.env.ORCA_CLI_COMMAND;
+    } else {
+      process.env.ORCA_CLI_COMMAND = previous;
+    }
+  });
+  const options = parseOptions([
+    "--root",
+    f.parent,
+    "--policy",
+    "orca",
+    "--days",
+    "0",
+  ]);
+  const messages = [];
+  const inventory = scanWorktrees(options, (message) => messages.push(message));
+  assert.equal(inventory.length, 1);
+  assert.equal(inventory[0].error, undefined);
+  assert.deepEqual(inventory[0].candidates, []);
+  assert.match(inventory[0].blockers[0], /Orca state unavailable/);
+  assert.ok(messages.length);
+  const generic = scanWorktrees({ ...options, policy: "age" }, () => {});
+  assert.equal(generic[0].error, undefined);
+  assert.ok(generic[0].candidates.length);
+});
+
+test("Orca state is reloaded before deletion and an unavailable CLI preserves output", (t) => {
+  const f = fixture(t);
+  const previous = process.env.ORCA_CLI_COMMAND;
+  const cli = join(f.root, "orca-cli");
+  process.env.ORCA_CLI_COMMAND = cli;
+  t.after(() => {
+    if (previous === undefined) {
+      delete process.env.ORCA_CLI_COMMAND;
+    } else {
+      process.env.ORCA_CLI_COMMAND = previous;
+    }
+  });
+  const state = join(f.root, "state.json");
+  writeFileSync(cli, '#!/bin/sh\ncat "' + state + '"\n');
+  chmodSync(cli, 0o755);
+  const owner = orcaOwner(f.path);
+  const writeState = (workspace) =>
+    writeFileSync(
+      state,
+      JSON.stringify({
+        ok: true,
+        result: {
+          worktrees: [workspace],
+          truncated: false,
+          hostScope: { hostIds: ["local"], omittedHostIds: [] },
+        },
+      }),
+    );
+  const options = { ...f.options, policy: "orca" };
+  writeState(owner);
+  const reviewed = inspect(f.tree, options);
+  assert.deepEqual(reviewed.blockers, []);
+  writeState({ ...owner, agents: [{ state: "working", children: [] }] });
+  assert.throws(
+    () => trimTree(reviewed, options, () => []),
+    /live or unverifiable/,
+  );
+  rmSync(cli);
+  assert.throws(() => trimTree(reviewed, options, () => []));
+  assert.equal(existsSync(join(f.path, "node_modules")), true);
+  assert.equal(existsSync(join(f.path, "apps/example/node_modules")), true);
 });

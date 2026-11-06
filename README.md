@@ -15,7 +15,7 @@ Use `proto debug config` to inspect the merged configuration.
 ## Worktree disk cleanup
 
 Run `cleanup-worktrees` from any directory for an interactive menu. Choose T3,
-Waystone, or another worktree location, review eligible checkouts, and confirm
+Orca, Waystone, or another worktree location, review eligible checkouts, and confirm
 cleanup. T3 worktrees default to settled for at least one day.
 
 Measurement is automatic during deletion. Progress includes removed entries,
