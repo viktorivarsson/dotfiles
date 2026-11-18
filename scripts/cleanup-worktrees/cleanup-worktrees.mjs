@@ -10,9 +10,9 @@ import {
   realpathSync,
   rmdirSync,
   statfsSync,
-  unlinkSync,
   writeFileSync,
 } from "node:fs";
+import { lstat, unlink } from "node:fs/promises";
 import { randomUUID } from "node:crypto";
 import { homedir } from "node:os";
 import { join, relative, resolve, sep } from "node:path";
@@ -503,51 +503,114 @@ export function formatFreeSpace(before, after) {
   return `${formatBytes(after)} available; unchanged since start`;
 }
 
-export function removeMeasuredDirectory(target, options = {}) {
+export async function removeMeasuredDirectory(target, options = {}) {
   if (!directory(target) || realpathSync(target) !== target) {
     throw new Error(`Expected a real directory: ${target}`);
   }
+  const concurrency = options.concurrency ?? 8;
+  if (!Number.isInteger(concurrency) || concurrency < 1 || concurrency > 32) {
+    throw new Error("Deletion concurrency must be an integer from 1 to 32.");
+  }
   const totals = { reportedBytes: 0, files: 0, directories: 0, symlinks: 0 };
   const seenHardlinks = options.seenHardlinks ?? new Set();
-  let lastProgress = Date.now();
+  const knownHardlinks = new Set();
+  const pending = new Set();
+  let failure;
 
-  function remove(path) {
-    const stats = lstatSync(path);
-    let kind;
-    if (stats.isDirectory()) {
-      for (const entry of readdirSync(path)) {
-        remove(join(path, entry));
-      }
-      rmdirSync(path);
-      kind = "directories";
-    } else {
-      unlinkSync(path);
-      kind = stats.isSymbolicLink() ? "symlinks" : "files";
-    }
-    // Count only successful removals. Track hardlinks without retaining every inode.
+  function record(path, stats, kind) {
     const inode = `${stats.dev}:${stats.ino}`;
     let bytes = 0;
     if (!seenHardlinks.has(inode)) {
       bytes = typeof stats.blocks === "number"
         ? stats.blocks * 512
         : stats.size;
-      if (!stats.isDirectory() && stats.nlink > 1) {
+      if (knownHardlinks.has(inode)) {
         seenHardlinks.add(inode);
       }
     }
     totals.reportedBytes += bytes;
     totals[kind]++;
     options.onDeleted?.({ target, path, kind, reportedBytes: bytes });
-    if (Date.now() - lastProgress >= 2000) {
-      options.onProgress?.(target, { ...totals });
-      lastProgress = Date.now();
-    }
   }
-  remove(target);
+
+  function* entries(path) {
+    const stats = lstatSync(path);
+    if (!stats.isDirectory() || realpathSync(path) !== path) {
+      throw new Error(`Directory changed during cleanup: ${path}`);
+    }
+    for (const entry of readdirSync(path, { withFileTypes: true })) {
+      const child = join(path, entry.name);
+      if (entry.isDirectory()) {
+        yield* entries(child);
+      } else {
+        yield { path: child, directory: false };
+      }
+    }
+    yield { path, directory: true, stats };
+  }
+
+  async function removeFile(path) {
+    const stats = await lstat(path);
+    if (stats.isDirectory()) {
+      throw new Error(`Entry changed during cleanup: ${path}`);
+    }
+    // Register shared inodes before unlinking. Completion order may differ from
+    // stat order, and the last remaining link can already have nlink === 1.
+    if (stats.nlink > 1) {
+      knownHardlinks.add(`${stats.dev}:${stats.ino}`);
+    }
+    await unlink(path);
+    record(path, stats, stats.isSymbolicLink() ? "symlinks" : "files");
+  }
+
+  const progress = options.onProgress
+    ? setInterval(() => {
+      try {
+        options.onProgress(target, { ...totals });
+      } catch (error) {
+        failure ??= error;
+      }
+    }, 2000)
+    : undefined;
+  try {
+    for (const entry of entries(target)) {
+      if (failure) {
+        break;
+      }
+      if (entry.directory) {
+        // A directory is removed only after every queued child has finished.
+        await Promise.all(pending);
+        if (failure) {
+          break;
+        }
+        rmdirSync(entry.path);
+        record(entry.path, entry.stats, "directories");
+      } else {
+        const job = removeFile(entry.path)
+          .catch((error) => {
+            failure ??= error;
+          })
+          .finally(() => pending.delete(job));
+        pending.add(job);
+        if (pending.size >= concurrency) {
+          await Promise.race(pending);
+        }
+      }
+    }
+  } catch (error) {
+    failure ??= error;
+  } finally {
+    // Drain in-flight operations before reporting an error or saving a report.
+    await Promise.all(pending);
+    clearInterval(progress);
+  }
+  if (failure) {
+    throw failure;
+  }
   return totals;
 }
 
-export function trimTree(tree, options, getCwds = processDirectories) {
+export async function trimTree(tree, options, getCwds = processDirectories) {
   const current = inspect(tree, options, getCwds());
   if (current.blockers.length) {
     throw new Error(`${tree.name}: ${current.blockers.join("; ")}`);
@@ -563,7 +626,7 @@ export function trimTree(tree, options, getCwds = processDirectories) {
     options.log?.(
       `[${index + 1}/${current.candidates.length}] Removing ${target}`,
     );
-    const totals = removeMeasuredDirectory(target, options);
+    const totals = await removeMeasuredDirectory(target, options);
     options.onRemoved?.(target, totals);
   }
   return current.candidates;
@@ -642,7 +705,7 @@ export function scanWorktrees(options, log = console.log) {
   });
 }
 
-export function cleanup(options, inventory = scanWorktrees(options)) {
+export async function cleanup(options, inventory = scanWorktrees(options)) {
   const candidates = inventory.filter((tree) =>
     !tree.blockers.length && tree.candidates.length &&
     (!options.worktree.length || options.worktree.includes(tree.name))
@@ -707,7 +770,7 @@ export function cleanup(options, inventory = scanWorktrees(options)) {
   for (const [index, tree] of candidates.entries()) {
     console.log(`Worktree ${index + 1}/${candidates.length}: ${tree.name}`);
     try {
-      trimTree(tree, {
+      await trimTree(tree, {
         ...options,
         seenHardlinks,
         log: console.log,
@@ -925,7 +988,7 @@ export async function main(args) {
   if (args.length === 0 && process.stdin.isTTY && process.stdout.isTTY) {
     const plan = await interactivePlan();
     if (plan) {
-      cleanup(plan.options, plan.inventory);
+      await cleanup(plan.options, plan.inventory);
     }
     return;
   }
@@ -949,7 +1012,7 @@ Only ignored node_modules, .turbo, .vite and dist at package roots are eligible.
 Source, branches, and T3 history remain. APFS blocks may be shared.`);
     return;
   }
-  cleanup(options);
+  await cleanup(options);
 }
 
 if (

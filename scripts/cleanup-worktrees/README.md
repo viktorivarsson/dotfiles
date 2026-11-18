@@ -30,6 +30,11 @@ It counts hardlinked file blocks once across the batch. It never follows
 symlinks. This combines size accounting and deletion in one traversal. There are
 no full `.t3` scans and no separate `du` pass.
 
+File removals use a bounded queue of up to eight concurrent operations. Parent
+directories are removed after their children finish. On failure, the queue stops
+accepting work and drains the operations already in flight before reporting
+partial results. This overlaps filesystem waits while keeping memory bounded.
+
 The command logs inventory progress, each worktree, and each generated
 directory. During longer removals it prints a progress line about every two
 seconds with removed file, directory and symlink counts, the running reported

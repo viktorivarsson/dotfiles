@@ -148,7 +148,7 @@ function stateFixture(f) {
   return { db, sql };
 }
 
-test("settled trimming ignores file age but reloads T3 state before deleting", (t) => {
+test("settled trimming ignores file age but reloads T3 state before deleting", async (t) => {
   const f = fixture(t);
   const state = stateFixture(f);
   const options = { ...f.options, days: 1, policy: "settled", db: state.db };
@@ -156,10 +156,13 @@ test("settled trimming ignores file age but reloads T3 state before deleting", (
   state.sql(
     "INSERT INTO orchestration_v2_projection_runs VALUES ('owner', 'running');",
   );
-  assert.throws(() => trimTree(f.tree, options, () => []), /unfinished run/);
+  await assert.rejects(
+    () => trimTree(f.tree, options, () => []),
+    /unfinished run/,
+  );
   assert.equal(existsSync(join(f.path, "node_modules")), true);
   state.sql("UPDATE orchestration_v2_projection_runs SET status='completed';");
-  trimTree(f.tree, options, () => []);
+  await trimTree(f.tree, options, () => []);
   assert.equal(existsSync(join(f.path, "node_modules")), false);
 });
 
@@ -194,11 +197,11 @@ test("inventory finds nested dependencies and preserves all files", (t) => {
   assert.equal(discover(f.parent).length, 1);
 });
 
-test("trim deletes generated directories while preserving source, environment, and other caches", (t) => {
+test("trim deletes generated directories while preserving source, environment, and other caches", async (t) => {
   const f = fixture(t);
   f.file("dist/output.js");
   f.file(".turbo/cache");
-  trimTree(f.tree, f.options, () => []);
+  await trimTree(f.tree, f.options, () => []);
   for (
     const rel of ["node_modules", "apps/example/node_modules", "dist", ".turbo"]
   ) {
@@ -217,32 +220,35 @@ test("trim deletes generated directories while preserving source, environment, a
   }
 });
 
-test("dirty, excluded, recent, and active worktrees cannot be trimmed", (t) => {
+test("dirty, excluded, recent, and active worktrees cannot be trimmed", async (t) => {
   const f = fixture(t);
-  assert.throws(
+  await assert.rejects(
     () => trimTree(f.tree, { ...f.options, days: 14 }, () => []),
     /activity within/,
   );
-  assert.throws(
+  await assert.rejects(
     () =>
       trimTree(f.tree, { ...f.options, exclude: ["project/old"] }, () => []),
     /excluded/,
   );
-  assert.throws(
+  await assert.rejects(
     () => trimTree(f.tree, f.options, () => [join(f.path, "apps/example")]),
     /process/,
   );
   f.file("uncommitted.txt");
-  assert.throws(() => trimTree(f.tree, f.options, () => []), /uncommitted/);
+  await assert.rejects(
+    () => trimTree(f.tree, f.options, () => []),
+    /uncommitted/,
+  );
   assert.equal(existsSync(join(f.path, "node_modules")), true);
 });
 
-test("a tracked file inside ignored output protects that entire directory", (t) => {
+test("a tracked file inside ignored output protects that entire directory", async (t) => {
   const f = fixture(t);
   f.file("dist/important.txt");
   f.git("-C", f.path, "add", "-f", "dist/important.txt");
   f.git("-C", f.path, "commit", "-m", "tracked output");
-  trimTree(f.tree, f.options, () => []);
+  await trimTree(f.tree, f.options, () => []);
   assert.equal(existsSync(join(f.path, "dist/important.txt")), true);
 });
 
@@ -295,16 +301,16 @@ test("source mtimes contribute to inactivity even with old commit and index time
   );
 });
 
-test("process inspection failure prevents deletion", (t) => {
+test("process inspection failure prevents deletion", async (t) => {
   const f = fixture(t);
-  assert.throws(() =>
+  await assert.rejects(() =>
     trimTree(f.tree, f.options, () => {
       throw new Error("lsof failed");
     }), /lsof failed/);
   assert.equal(existsSync(join(f.path, "node_modules")), true);
 });
 
-test("unignored output and symlinked dependency directories are preserved", (t) => {
+test("unignored output and symlinked dependency directories are preserved", async (t) => {
   const f = fixture(t);
   f.file("apps/example/.vite/local-data");
   const external = join(f.root, "external");
@@ -316,7 +322,10 @@ test("unignored output and symlinked dependency directories are preserved", (t) 
   assert.equal(report.candidates.includes("node_modules"), false);
   assert.equal(report.candidates.includes("apps/example/.vite"), false);
   // The unignored output also makes the checkout dirty, preventing any trim.
-  assert.throws(() => trimTree(f.tree, f.options, () => []), /uncommitted/);
+  await assert.rejects(
+    () => trimTree(f.tree, f.options, () => []),
+    /uncommitted/,
+  );
   assert.equal(existsSync(join(external, "keep.txt")), true);
 });
 
@@ -328,7 +337,7 @@ function duBytes(...paths) {
     );
 }
 
-test("incremental deletion counts allocated bytes once for hardlinks and preserves symlink targets", (t) => {
+test("incremental deletion counts allocated bytes once for hardlinks and preserves symlink targets", async (t) => {
   const f = fixture(t);
   const path = join(f.path, "node_modules");
   f.file("node_modules/dependency/large.bin", Buffer.alloc(128 * 1024, "data"));
@@ -340,7 +349,7 @@ test("incremental deletion counts allocated bytes once for hardlinks and preserv
   symlinkSync(join(f.root, "missing"), join(path, "broken"));
   const expected = duBytes(path);
   const entries = [];
-  const result = removeMeasuredDirectory(path, {
+  const result = await removeMeasuredDirectory(path, {
     onDeleted: (entry) => entries.push(entry),
   });
   assert.equal(result.reportedBytes, expected);
@@ -355,11 +364,11 @@ test("incremental deletion counts allocated bytes once for hardlinks and preserv
   assert.equal(existsSync(path), false);
 });
 
-test("partial deletion events account only for entries actually removed", (t) => {
+test("partial deletion events account only for entries actually removed", async (t) => {
   const f = fixture(t);
   const path = join(f.path, "node_modules");
   const events = [];
-  assert.throws(() =>
+  await assert.rejects(() =>
     removeMeasuredDirectory(path, {
       onDeleted: (entry) => {
         events.push(entry);
@@ -703,7 +712,7 @@ test("missing Orca CLI skips Orca workspaces without throwing or disabling age s
   assert.ok(generic[0].candidates.length);
 });
 
-test("Orca state is reloaded before deletion and an unavailable CLI preserves output", (t) => {
+test("Orca state is reloaded before deletion and an unavailable CLI preserves output", async (t) => {
   const f = fixture(t);
   const previous = process.env.ORCA_CLI_COMMAND;
   const cli = join(f.root, "orca-cli");
@@ -736,14 +745,14 @@ test("Orca state is reloaded before deletion and an unavailable CLI preserves ou
   const reviewed = inspect(f.tree, options);
   assert.deepEqual(reviewed.blockers, []);
   writeState({ ...owner, agents: [{ state: "working", children: [] }] });
-  assert.throws(
+  await assert.rejects(
     () => trimTree(reviewed, options, () => []),
     /live or unverifiable/,
   );
   writeState({ ...owner, linkedPR: { state: "open" } });
-  assert.throws(() => trimTree(reviewed, options, () => []), /PR is open/);
+  await assert.rejects(() => trimTree(reviewed, options, () => []), /PR is open/);
   rmSync(cli);
-  assert.throws(() => trimTree(reviewed, options, () => []));
+  await assert.rejects(() => trimTree(reviewed, options, () => []));
   assert.equal(existsSync(join(f.path, "node_modules")), true);
   assert.equal(existsSync(join(f.path, "apps/example/node_modules")), true);
 });
@@ -795,4 +804,51 @@ test("a merged PR does not approve another linked PR", () => {
   assert.ok(orcaCheck(path, [owner], 0).blockers.length);
   owner.linkedItems[0].number = 42;
   assert.deepEqual(orcaCheck(path, [owner], 0).blockers, []);
+});
+
+test("parallel deletion drains in-flight work before reporting an error", async (t) => {
+  const f = fixture(t);
+  const path = join(f.root, "parallel");
+  mkdirSync(path);
+  for (let index = 0; index < 50; index++) {
+    writeFileSync(join(path, String(index)), "fixture");
+  }
+  const removed = [];
+  await assert.rejects(() =>
+    removeMeasuredDirectory(path, {
+      onDeleted: (entry) => {
+        removed.push(entry.path);
+        if (removed.length === 1) {
+          throw new Error("injected failure");
+        }
+      },
+    }), /injected failure/);
+  assert.ok(removed.length >= 1 && removed.length <= 8);
+  for (const entry of removed) {
+    assert.equal(existsSync(entry), false);
+  }
+  const remaining = readdirSync(path);
+  assert.equal(remaining.length + removed.length, 50);
+  await new Promise((resolve) => setTimeout(resolve, 30));
+  assert.deepEqual(readdirSync(path), remaining);
+});
+
+test("parallel hardlink accounting remains deduplicated across generated directories", async (t) => {
+  const f = fixture(t);
+  const first = join(f.root, "first");
+  const second = join(f.root, "second");
+  mkdirSync(first);
+  mkdirSync(second);
+  const source = join(first, "source");
+  writeFileSync(source, Buffer.alloc(128 * 1024, "data"));
+  for (let index = 0; index < 32; index++) {
+    linkSync(source, join(first, String(index)));
+    linkSync(source, join(second, String(index)));
+  }
+  const expected = duBytes(first, second);
+  const seenHardlinks = new Set();
+  const a = await removeMeasuredDirectory(first, { seenHardlinks });
+  const b = await removeMeasuredDirectory(second, { seenHardlinks });
+  assert.equal(a.files + b.files, 65);
+  assert.equal(a.reportedBytes + b.reportedBytes, expected);
 });
