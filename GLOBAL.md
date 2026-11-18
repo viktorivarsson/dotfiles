@@ -49,12 +49,7 @@ every project on this machine, not just this repo.
   as references when relevant. Claim compliance only after checking the
   applicable requirements.
 
-## Writing readable code
+## Skills
 
-- Avoid nested ternaries. Prefer explicit branches and early returns when clearer.
-- Use braces and multiline bodies for control flow where supported.
-- Use descriptive names. Keep related logic together.
-- Separate logical steps with blank lines.
-- Extract small helpers when they make the code easier to understand.
-  Prefer pure functions where practical.
-- Follow established project conventions when they differ from these defaults.
+When writing, refactoring, or reviewing code, read and follow the `coding` skill.
+Follow project conventions when they differ from its defaults.
