@@ -3,8 +3,8 @@
 Symlinked to `~/.claude/CLAUDE.md` and `~/.codex/AGENTS.md` — applies to
 every project on this machine, not just this repo.
 
-- Machine config (shell, editor, terminal, package manager toolchains,
-  Claude/Codex skills) is managed as dotfiles at `~/code/private/dotfiles`
+- Machine config (shell, editor, terminal, and package manager toolchains)
+  is managed as dotfiles at `~/code/private/dotfiles`
   and applied via symlinks (`setup-dotfiles.sh`), not copied. Don't edit
   files directly under `$HOME` for anything the repo already manages — edit
   the repo copy instead. See the `dotfiles-sync` skill for how to add
@@ -53,3 +53,15 @@ every project on this machine, not just this repo.
 
 When writing, refactoring, or reviewing code, read and follow the `coding` skill.
 Follow project conventions when they differ from its defaults.
+
+Skills are maintained in `~/code/private/agent-skills` and linked into both
+agents by that repo's `setup-skills.sh`. For choosing a workflow or checking
+which commands need explicit invocation, read
+`~/code/private/agent-skills/docs/README.md` and its linked catalog.
+
+Before adding or updating external skills, stage the complete candidate outside
+the installed skill directories. Record the exact upstream commit and preserve
+the license. Show me the changes, including scripts, dependencies, and invocation
+policy, and get my approval before promotion. Downloading a candidate does not
+authorize running its scripts or installing dependencies. Keep local adaptations
+distinguishable from upstream content.
